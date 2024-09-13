@@ -46,15 +46,15 @@ const Header = () => {
                 width: "80%",
                 backgroundColor: "rgb(226, 250, 242)"
             }}>
-                <Col md={6} sm={10} className='col-top'>                
-                    <IoMdMenu style={{fontSize: "50px", cursor: "pointer"}} onClick={() => showDrawer()} />
-                    <img style={{cursor: "pointer"}} onClick={() => navigate("/")} height={40} src="../../../../public/Remove-bg.ai_1726163241481.png" alt="" />
+                <Col md={6} sm={20} className='col-top'>                
+                    <IoMdMenu style={{fontSize: "6vh", cursor: "pointer"}} onClick={() => showDrawer()} />
+                    <img style={{cursor: "pointer", height: "5vh"}} onClick={() => navigate("/")} src="../../../../public/Remove-bg.ai_1726163241481.png" alt="" />
                 </Col>
 
                 <Col md={11} sm={24} xs={24} className='col-top'>                                    
                     <Navbar  className="navbar-custom">
                         <Container>
-                            <Nav className="me-auto">
+                            <Nav className="me-auto nav-links">
                                 <Nav.Link href="/" className={getActiveLinkClass('/')}>Tất cả</Nav.Link>
                                 <Nav.Link href="#features" className={getActiveLinkClass('features')}>Tại nhà</Nav.Link>
                                 <Nav.Link href="#pricing" className={getActiveLinkClass('/pricing')}>Tại viện</Nav.Link>
@@ -64,20 +64,23 @@ const Header = () => {
                     </Navbar>
                 </Col>
 
-                <Col md={4} sm={18} xs={24} className='col-top'> 
-                    <Input 
-                    style={{
-                        borderRadius: "50px",
-                        height: "50px",
-                    }}
-                    size="large" 
-                    placeholder="Tìm kiếm đi cậu..." 
-                    prefix={<SearchOutlined />} />                
+                <Col md={4} sm={24} xs={24} className='col-top icon-container'> 
+                    <div className="icon-wrapper">
+                        <Input 
+                        style={{
+                            borderRadius: "5vh",
+                            height: "8vh",
+                            fontSize: "2vh",
+                        }}
+                        size="large" 
+                        placeholder="Tìm kiếm đi cậu..." 
+                        prefix={<SearchOutlined />} />
+                    </div>                                    
                 </Col>
 
-                <Col md={3} sm={6} xs={0} className='col-top'> 
-                    <FaRegHandshake size={35} title='Hợp tác' style={{cursor: "pointer"}} /> 
-                    <GiTimeBomb size={35} title='Lịch hẹn' style={{marginLeft: "30px", cursor: "pointer"}} /> 
+                <Col md={3} sm={0} xs={0} className='col-top icon-container'> 
+                    <FaRegHandshake size={"5vh"} title='Hợp tác' style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                    <GiTimeBomb size={"5vh"} title='Lịch hẹn' style={{marginLeft: "5vh", cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
                 </Col>
             </Row>
 

@@ -1,4 +1,57 @@
 .body-top {
-    background-color: rgb(73 188 226);
+    background-color: rgb(184, 235, 252);
     height: 50vh;
+}
+
+.danh-cho-ban {
+    background-color: rgb(255, 255, 255);
+    // height: 50vh;
+    display: flex;
+    justify-content: center;
+
+    .ben-trong {
+        display: flex;
+        justify-content: start;
+        width: 80%;
+    }
+
+    .cot-ben-trong {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .htron {
+        height: 30vh;
+        width: 30vh;
+        background-color: yellow;
+        border-radius: 50%;
+    }
+
+    .hcn-toan-dien {
+        width: 80vh;
+        // width: 550px;
+        height: 13vh;
+        border-radius: 5vh;
+        border: 1px solid rgb(231, 223, 223);
+        background-image: url('../../../../public/ic_background_grid_item.b108f491.png');
+        background-size: cover; /* Phủ toàn bộ khu vực của phần tử */
+        background-position: center; /* Căn giữa hình nền */
+        background-repeat: no-repeat; /* Ngăn không cho hình nền lặp lại */        
+    }
+
+    .boc-ngoai-Imghcn {
+        width: 10vh;
+        height: 10vh;
+        // background-color: rgb(187, 187, 187);
+        background-color: rgb(255, 246, 238);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 8% 20%;
+    }
+
+
 }
