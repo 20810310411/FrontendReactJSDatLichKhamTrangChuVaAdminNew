@@ -1,67 +1,29 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  decrement,
-  increment,
-  incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
-  selectCount,
-} from "./redux/counter/counterSlice";
-import styles from './styles/Counter.module.css';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/TrangChu/Home";
+import Login from "./pages/Admin/Login";
+import Register from "./pages/Admin/Register";
+import HomeAdmin from "./pages/Admin/HomeAdmin";
 
-export default function App() {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
-  const [incrementAmount, setIncrementAmount] = useState('2');
-
-  const incrementValue = Number(incrementAmount) || 0;
+const App = () => {
 
   return (
-    <div>
-      <div className={styles.row}>
-        <button
-          className={styles.button}
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          -
-        </button>
-        <span className={styles.value}>{count}</span>
-        <button
-          className={styles.button}
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          +
-        </button>
-      </div>
-      <div className={styles.row}>
-        <input
-          className={styles.textbox}
-          aria-label="Set increment amount"
-          value={incrementAmount}
-          onChange={(e) => setIncrementAmount(e.target.value)}
-        />
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementByAmount(incrementValue))}
-        >
-          Add Amount
-        </button>
-        <button
-          className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
-        >
-          Add Async
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementIfOdd(incrementValue))}
-        >
-          Add If Odd
-        </button>
-      </div>
-    </div>
-  );
+    <>
+      <Routes>
+        {/* trang chu */}
+        <Route path="/" element={<Home/>} />  
+
+
+        {/* home page admin */}
+        <Route path="/home-page-admin" element={<HomeAdmin/>} />  
+        {/* Login admin */}
+        <Route path="/login-admin" element={<Login/>} />  
+        {/* Register admin */}
+        <Route path="/register-admin" element={<Register />} />  
+
+
+      </Routes>
+    </>
+  )
 }
+
+export default App;

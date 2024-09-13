@@ -1,0 +1,67 @@
+.header-top {
+    text-align: center;
+    width: 100%;
+    height: 80px;
+    background-color: rgb(226, 250, 242);
+
+    .menu-header {
+        background-color: rgb(226, 250, 242);        
+
+        .ant-menu-item {
+            border-radius: 25px; /* Đặt border-radius để tạo border tròn */        
+            // margin: 0 4px; /* Khoảng cách giữa các item (tùy chọn) */
+            // padding: 0 16px; /* Đảm bảo có đủ không gian cho border-radius */
+            // line-height: 1.5; /* Điều chỉnh line-height cho cân đối */
+        }
+
+        .ant-menu-item {
+            a {
+                text-decoration: none; /* Loại bỏ gạch chân */
+            }        
+        }
+
+        .ant-menu-item-selected {
+            background-color: orange; /* Màu nền cho item được chọn */
+            color: rgb(255, 255, 255); /* Màu chữ cho item được chọn */
+            border-radius: 25px; /* Đảm bảo border-radius giữ nguyên khi chọn */
+            text-decoration: none; /* Loại bỏ gạch chân */
+        }
+    }
+
+    .col-top {
+        text-align: center;
+    }
+}
+
+.navbar-custom {
+    font-size: 22px;
+    
+
+    .nav-link {
+        
+        margin-right: 10px; /* Khoảng cách giữa các liên kết */
+        transition: background-color 0.3s, border 0.3s; /* Hiệu ứng chuyển màu mượt mà */
+        border-radius: 30px;
+        padding: 9px 15px; /* Padding để làm cho liên kết cao hơn */
+        line-height: 1.4; /* Căn chỉnh văn bản trong liên kết */
+        color: black;
+
+        &.active {
+            border: 2px solid orange; /* Đặt border khi liên kết được chọn */
+            border-radius: 30px; /* Đặt border-radius để tạo border tròn */
+            background-color: orange; /* Màu nền khi liên kết được chọn */
+            color: white; /* Màu chữ khi liên kết được chọn */
+            text-decoration: none; /* Loại bỏ gạch chân */
+        }
+    }
+}
+
+.txt-menu {
+    cursor: pointer;
+    color: rgb(98, 215, 228);
+    font-size: 18px;
+    margin: 0;
+}
+.active-txt-menu {
+    color: red;
+}
