@@ -3,6 +3,7 @@ import Home from "./pages/TrangChu/Home";
 import Login from "./pages/Admin/Login";
 import Register from "./pages/Admin/Register";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
+import PageViewDoctor from "./pages/TrangChu/ViewDoctor/pageViewDoctor";
 
 const App = () => {
 
@@ -11,14 +12,15 @@ const App = () => {
       <Routes>
         {/* trang chu */}
         <Route path="/" element={<Home/>} />  
+        <Route path="/view-doctor" element={<PageViewDoctor/>} />  
 
 
         {/* home page admin */}
-        <Route path="/home-page-admin" element={<HomeAdmin/>} />  
+        <Route path="/admin/home-page-admin" element={<HomeAdmin/>} />  
         {/* Login admin */}
-        <Route path="/login-admin" element={<Login/>} />  
+        <Route path="/admin/login-admin" element={<Login/>} />  
         {/* Register admin */}
-        <Route path="/register-admin" element={<Register />} />  
+        <Route path="/admin/register-admin" element={<Register />} />  
 
 
       </Routes>

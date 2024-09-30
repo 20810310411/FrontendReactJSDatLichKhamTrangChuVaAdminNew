@@ -15,3 +15,8 @@ export const callRegister = (email, password, firstName, lastName, address, phon
     }
     return axios.post(URL_BACKEND, data)
 }
+
+export const callLogout = () => {
+    const URL_BACKEND = '/api/users/logout-admin'    
+    return axios.post(URL_BACKEND)
+}

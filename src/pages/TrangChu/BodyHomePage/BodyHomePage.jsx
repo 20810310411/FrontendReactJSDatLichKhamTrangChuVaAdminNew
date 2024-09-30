@@ -1,12 +1,44 @@
-import { Col, Divider, Row } from "antd"
+import { Carousel, Col, Divider, Row } from "antd"
 import './bodyHomePage.scss'
 import HinhTron from "../../../components/TrangChu/HinhTron/HinhTron"
 import HinhChuNhat from "../../../components/TrangChu/HinhChuNhat/HinhChuNhat";
 import HinhVuong from "../../../components/TrangChu/HinhVuong/Slider";
+import HinhTronSlider from "../../../components/TrangChu/HinhVuong/HinhTronSlider";
+import { useEffect, useState } from "react";
+import { fetchAllChuyenKhoa, fetchAllDoctor } from "../../../services/apiDoctor";
 
 
 
 const BodyHomePage = () => {
+
+    const [dataDoctor, setDataDoctor] = useState(null)
+    const [dataChuyenKhoa, setDataChuyenKhoa] = useState(null)
+    const [loadingCard, setLoadingCard] = useState(true)
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await listChuyenKhoa();
+            await listDoctor();
+        };
+    
+        fetchData();
+    }, [])
+
+    const listDoctor = async () => {
+        const res = await fetchAllDoctor()
+        if(res && res.data){
+            setDataDoctor(res.data)
+        }
+    }
+
+    const listChuyenKhoa = async () => {
+        setLoadingCard(true)
+        const res = await fetchAllChuyenKhoa()
+        if(res && res.data){
+            setDataChuyenKhoa(res.data)
+        }
+        setLoadingCard(false)
+    }
 
     // Mảng chứa các giá trị src và txtP
     const items = [
@@ -66,45 +98,83 @@ const BodyHomePage = () => {
         },
     ];
 
-    const items_ChuyenKhoa = [
+    const items_ChuyenKhoa = dataChuyenKhoa ? dataChuyenKhoa.map(chuyenKhoa => ({
+        src: chuyenKhoa.image, 
+        txtP: `${chuyenKhoa.name}`,
+    })) : [];
+
+    const items_CoSoYTe = [
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101655-nhi-khoa.png',
-            txtP: 'Nhi khoa'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2018/06/18/083122lo-go-viet-duc.jpg',
+            txtP: 'Bệnh viện Hữu nghị Việt Đức'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101638-da-lieu.png',
-            txtP: 'Da liễu'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2019/03/11/152704logo-bvcr-moi.jpg',
+            txtP: 'Bệnh viện Chợ Rẫy'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101739-viem-gan.png',
-            txtP: 'Bệnh viêm gan'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2022/08/26/092249-doctor-check.jpg',
+            txtP: 'Doctor Check - Tầm Soát Bệnh Để Sống Thọ Hơn'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101713-suc-khoe-tam-than.png',
-            txtP: 'Sức khỏe tâm thần'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2022/07/14/155206-logo-y-duoc-1.jpg',
+            txtP: 'Phòng khám Bệnh viện Đại Học Y Dược 1'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101655-nhi-khoa.png',
-            txtP: 'Nhi khoa'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2019/07/31/085056logobenhvien108.jpg',
+            txtP: 'Trung tâm Khám sức khỏe định kỳ, Bệnh vện Trung ương Quân đội 108'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101638-da-lieu.png',
-            txtP: 'Da liễu'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2023/05/16/153236-logo-hung-viet.jpg',
+            txtP: 'Bệnh viện Ung bướu Hưng Việt'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101739-viem-gan.png',
-            txtP: 'Bệnh viêm gan'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2022/08/29/104922-logo-med-tai-ha-noi--01.png',
+            txtP: 'Hệ thống y tế MEDLATEC'
         },
         {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/12/26/101713-suc-khoe-tam-than.png',
-            txtP: 'Sức khỏe tâm thần'
+            src: 'https://cdn.bookingcare.vn/fo/w640/2022/06/23/160340-logo-diag.png',
+            txtP: 'Trung tâm xét nghiệm Diag Laboratories'
+        },
+        {
+            src: 'https://cdn.bookingcare.vn/fo/w640/2021/04/07/103904-logo-thucuc.png',
+            txtP: 'Hệ thống Y tế Thu Cúc TCI'
         },
     ];
+
+    const items_BacSiNoiBat = dataDoctor ? dataDoctor.map(doctor => ({
+        src: doctor.image, 
+        txtP: `${doctor.chucVuId.map(chucVu => chucVu.name).join(', ')}
+                , ${doctor.lastName} ${doctor.firstName}`,
+        txtB: `${doctor.chuyenKhoaId.map(chuyenKhoa => chuyenKhoa.name).join(', ')}`
+    })) : [];
+    
 
 
     return (
         <>
-            <Row className="body-top"></Row>
+            <Row className="body-top">
+                <div style={{ position: 'relative', width: '75%', margin: "2px auto" }}>
+                    <Carousel className="custom-carousel" autoplay draggable={true} arrows={true}>
+                        <div>                    
+                            <img width={"100%"} height={350} style={{borderRadius: "20px"}} src="https://cdn.bookingcare.vn/fo/w1920/2023/10/10/163557-dat-lich-cham-soc-wecare247.png" alt="" />
+                        </div>
+                        <div>
+                            <img width={"100%"} height={350} style={{borderRadius: "20px"}} src="https://cdn.bookingcare.vn/fo/w1920/2023/09/07/141422-144204-dat-lich-kham-bookingcare-pharmacity.jpg" alt="" />
+                        </div>
+                        <div>
+                            <img width={"100%"} height={350} style={{borderRadius: "20px"}} src="https://bookingcare.vn/_next/image?url=https%3A%2F%2Fcdn.bookingcare.vn%2Ffo%2F2024%2F03%2F15%2F094346-hoi-dap-cong-dong.png&w=1920&q=75" alt="" />
+                        </div>
+                        <div>
+                            <img width={"100%"} height={350} style={{borderRadius: "20px"}} src="https://cdn.bookingcare.vn/fo/w1920/2023/10/10/163557-dat-lich-cham-soc-wecare247.png" alt="" />
+                        </div>
+                        <div>
+                            <img width={"100%"} height={350} style={{borderRadius: "20px"}} src="https://bookingcare.vn/_next/image?url=https%3A%2F%2Fcdn.bookingcare.vn%2Ffo%2F2023%2F11%2F02%2F134537-group-12314.png&w=1920&q=75" alt="" />
+                        </div>
+                    </Carousel>          
+                </div>
+            </Row>
+            
 
             <div className="danh-cho-ban">                
                 <Row  className="ben-trong">
@@ -146,14 +216,14 @@ const BodyHomePage = () => {
                             padding: "3px 10px"}}
                         >Xem thêm</span>    
                     </div>                     
-                    <HinhVuong items={items_ChuyenKhoa} />                     
+                    <HinhVuong items={items_ChuyenKhoa} width={300} height={250} loadingCard={loadingCard} />                     
                 </Row>                        
             </div>
 
-            <div className="danh-cho-ban" style={{marginTop: "30px"}}>                
+            <div className="danh-cho-ban" style={{margin: "30px 0"}}>                
                 <Row  className="ben-trong" >
                     <div style={{display: "flex", width: "100%", justifyContent: "space-between" }}>
-                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 0"}}>Chuyên khoa</span>                    
+                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 0"}}>Cơ sở y tế</span>                    
                         <span style={{
                             fontWeight: "500", 
                             fontSize: "3vh", 
@@ -168,8 +238,79 @@ const BodyHomePage = () => {
                             padding: "3px 10px"}}
                         >Xem thêm</span>    
                     </div> 
-                                     
+                    <HinhVuong items={items_CoSoYTe} width={300} height={200} loadingCard={loadingCard}  />              
                 </Row>                        
+            </div>
+
+            <Row    
+                className="ben-trong" 
+                style={{
+                    backgroundImage: "url('https://cdn.bookingcare.vn/fo/2023/11/01/140311-background5.png')",
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                    marginBottom: "20px",
+                    // height: "80vh"
+                }}>
+                    <div style={{display: "flex", width: "100%", justifyContent: "space-between" }}>
+                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 22vh"}}>Bác sĩ nổi bật</span>                    
+                        <span style={{
+                            fontWeight: "500", 
+                            fontSize: "3vh", 
+                            backgroundColor: "blue", 
+                            height: "50px", 
+                            lineHeight: "45px",
+                            borderRadius: "15px",
+                            textAlign: "center",
+                            backgroundColor: "#d0edf7",
+                            color: "rgb(45 145 179)",
+                            margin: "3vh 22vh",
+                            padding: "3px 10px"}}
+                        >Xem thêm</span>    
+                    </div> 
+                    <div 
+                        style={{
+                            backgroundColor: "transparent", 
+                            width: "77%", height: "80%",                        
+                            position: "relative",
+                            left: "24vh",
+                            
+                        }}>
+                        <HinhTronSlider items={items_BacSiNoiBat} urlDoctor={"/view-doctor"} />              
+                    </div>                    
+            </Row> 
+
+            <div className="danh-cho-ban" style={{margin: "30px 0"}}>                
+                <Row  className="ben-trong" >
+                    <div style={{display: "flex", width: "100%", justifyContent: "space-between" }}>
+                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 0"}}>Khám từ xa</span>                    
+                        <span style={{
+                            fontWeight: "500", 
+                            fontSize: "3vh", 
+                            backgroundColor: "blue", 
+                            height: "50px", 
+                            lineHeight: "45px",
+                            borderRadius: "15px",
+                            textAlign: "center",
+                            backgroundColor: "#d0edf7",
+                            color: "rgb(45 145 179)",
+                            marginTop: "10px",
+                            padding: "3px 10px"}}
+                        >Xem thêm</span>    
+                    </div> 
+                    <HinhVuong items={items_CoSoYTe}  width={300} height={200} loadingCard={loadingCard} />              
+                </Row>                        
+            </div>
+
+            <div className="danh-cho-ban">                
+                <Row  className="ben-trong">
+                    <span style={{fontWeight: "500", fontSize: "4vh", width: "100%", padding: "4vh 0"}}>Gợi ý của BookingCare</span>                    
+                    {items.map((item, index) => (
+                        <Col key={index} md={6} sm={10} xs={24} className="cot-ben-trong">
+                            <HinhTron src={item.src} txtP={item.txtP} />
+                        </Col>
+                    ))}                 
+                </Row>                                        
             </div>
         </>
     )

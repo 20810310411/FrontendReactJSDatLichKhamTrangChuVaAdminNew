@@ -11,6 +11,15 @@ const Login = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [remember, setRemember] = useState(false); // Trạng thái của checkbox "Ghi nhớ tài khoản"
 
+    // Kiểm tra access_token khi component load
+    useEffect(() => {
+        const accessToken = localStorage.getItem("access_token");
+        if (accessToken) {
+            // Nếu đã có token, điều hướng đến trang admin
+            navigate("/admin/home-page-admin");
+        }
+    }, [navigate]);
+    
     // Khi trang load, kiểm tra xem có dữ liệu trong localStorage không
     useEffect(() => {
         const rememberedAccount = localStorage.getItem("rememberedAccount");
@@ -35,6 +44,8 @@ const Login = () => {
         
         if(res.data){
             localStorage.setItem("access_token", res.access_token)
+            localStorage.setItem("lastName", res.data.lastName);
+            localStorage.setItem("firstName", res.data.firstName);
             message.success("Đăng nhập thành công!")
 
             if (remember) {
@@ -45,7 +56,8 @@ const Login = () => {
                 localStorage.removeItem("rememberedAccount");
             }
             
-            navigate("/home-page-admin")
+            navigate("/admin/home-page-admin")
+            
         } else {
             notification.error({ 
                 message: "Đăng nhập không thành công!",
@@ -139,7 +151,7 @@ const Login = () => {
                         </Form>
                         <Divider />
                         <div style={{ textAlign: "center" }}>
-                            Chưa có tài khoản? <Link to={"/register-admin"}>Đăng ký tại đây</Link>
+                            Chưa có tài khoản? <Link to={"/admin/register-admin"}>Đăng ký tại đây</Link>
                         </div>
 
                     </fieldset>

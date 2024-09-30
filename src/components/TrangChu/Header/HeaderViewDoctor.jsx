@@ -1,51 +1,43 @@
-import { Col, Row, Input, Drawer, Divider } from 'antd'
-import '../Header/header.scss'
+import { Col, Divider, Drawer, Input, Row } from 'antd'
+import './HeaderViewDoctor.scss'
 import { IoMdMenu } from 'react-icons/io'
-import { Link, NavLink, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { SearchOutlined } from '@ant-design/icons'
-import { FaRegHandshake } from 'react-icons/fa'
-import { GiTimeBomb } from 'react-icons/gi'
-import { RxTimer } from 'react-icons/rx'
-import { PiHandshakeBold } from 'react-icons/pi'
-const Header = () => {
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { RxTimer } from 'react-icons/rx';
+
+
+const HeaderViewDoctor = () => {
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
 
+    const showDrawer = () => {
+        setOpen(true);
+      };
+      const onClose = () => {
+        setOpen(false);
+      };
+
     const handleClick = (section) => {
         setActiveTxtMenu(section);
         navigate(`${section}`);
     };
 
-    const showDrawer = () => {
-      setOpen(true);
-    };
-    const onClose = () => {
-      setOpen(false);
-    };
-
-    const getActiveLinkClass = (linkPath) => {
-        if (linkPath === '/') {
-            return location.pathname === linkPath ? 'active' : '';
-        }
-        return location.hash === linkPath ? 'active' : '';
-    };
-
     return (
-        <div className='header-top'>
+        <>
+            <div className='header-top'>
             <Row style={{
                 justifyContent: "center", 
                 alignItems: "center", 
                 height: '100%',
                 textAlign: "center",
                 display: "inline-flex",
-                width: "85%",
+                width: "80%",
                 backgroundColor: "rgb(226, 250, 242)"
             }}>
                 <Col md={6} sm={20} className='col-top'>                
@@ -53,36 +45,35 @@ const Header = () => {
                     <img style={{cursor: "pointer", height: "5vh"}} onClick={() => navigate("/")} src="../../../../public/Remove-bg.ai_1726163241481.png" alt="" />
                 </Col>
 
-                <Col md={11} sm={24} xs={24} className='col-top'>                                    
-                    <Navbar  className="navbar-custom">
+                <Col md={13} sm={24} xs={24} className='col-top'>                                    
+                    <Navbar className="navbar-custom" style={{textAlign: "start"}}>
                         <Container>
                             <Nav className="me-auto nav-links">
-                                <Nav.Link href="/" className={getActiveLinkClass('/')}>Tất cả</Nav.Link>
-                                <Nav.Link href="#features" className={getActiveLinkClass('features')}>Tại nhà</Nav.Link>
-                                <Nav.Link href="#pricing" className={getActiveLinkClass('/pricing')}>Tại viện</Nav.Link>
-                                <Nav.Link href="#Sống" className={getActiveLinkClass('/Sống')}>Sống khỏe</Nav.Link>
+                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Chuyên khoa</p>
+                                    <p style={{fontSize: "13px"}}>Tìm bác sĩ theo chuyên khoa</p>
+                                </Nav.Link>
+                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Cơ sở y tế</p>
+                                    <p style={{fontSize: "13px"}}>Chọn bệnh viện phòng khám</p>
+                                </Nav.Link>
+                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Bác sĩ</p>
+                                    <p style={{fontSize: "13px"}}>Chọn bác sĩ giỏi</p>
+                                </Nav.Link>
+                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Gói khám</p>
+                                    <p style={{fontSize: "13px"}}>Khám sức khỏe tổng quát</p>
+                                </Nav.Link>                                
                             </Nav>
                         </Container>
                     </Navbar>
-                </Col>
+                </Col>                
 
-                <Col md={4} sm={24} xs={24} className='col-top icon-container'> 
-                    <div className="icon-wrapper">
-                        <Input 
-                        style={{
-                            borderRadius: "5vh",
-                            height: "8vh",
-                            fontSize: "2vh",
-                        }}
-                        size="large" 
-                        placeholder="Tìm kiếm đi cậu..." 
-                        prefix={<SearchOutlined />} />
-                    </div>                                    
-                </Col>
-
-                <Col md={3} sm={0} xs={0} className='col-top icon-container'> 
-                    <PiHandshakeBold size={"5vh"} title='Hợp tác' style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
-                    <RxTimer size={"5vh"} title='Lịch hẹn' style={{marginLeft: "5vh", cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                <Col md={5} sm={0} xs={0} className='col-top icon-container' style={{position: "relative", right: "-10vh"}}> 
+                    <div style={{ cursor: "pointer", color: "rgb(69, 195, 210)",  }}>
+                        <RxTimer size={"5vh"} title='Lịch hẹn' />
+                    </div>                
                 </Col>
             </Row>
 
@@ -114,7 +105,9 @@ const Header = () => {
                 <p className={`txt-menu ${activeTxtMenu === '#lien-he6' ? 'active-txt-menu' : ''}`} onClick={() => handleClick("#lien-he6")}>Vai trò của BookingCare</p>
                 <Divider/>
             </Drawer>
-        </div>
+            </div>
+        </>
     )
 }
-export default Header
+
+export default HeaderViewDoctor

@@ -1,59 +1,71 @@
-import React, { useState } from 'react';
-import './slider.scss';
-import { Card } from 'antd';
+import React, { useRef } from 'react';
+import { Card, Carousel, Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
-const HinhVuong = ({ items }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const HinhVuong = ({ items, width, height, loadingCard }) => {
+  const carouselRef = useRef(null);
 
-   // Hàm kiểm tra xem nút trước có nên hiển thị không
-   const isPrevButtonVisible = currentIndex > 0;
-   // Hàm kiểm tra xem nút tiếp theo có nên hiển thị không
-   const isNextButtonVisible = items.length > 4 && currentIndex < items.length - 3;
- 
-   const handleNext = () => {
-     if (isNextButtonVisible) {
-       setCurrentIndex((prevIndex) => prevIndex + 1);
-     }
-   };
- 
-   const handlePrev = () => {
-     if (isPrevButtonVisible) {
-       setCurrentIndex((prevIndex) => prevIndex - 1);
-     }
-   };
+  const onChange = (currentSlide) => {
+    console.log(currentSlide);
+  };
+
+  const chunkArray = (array, size) => {
+    const result = [];
+    for (let i = 0; i < array.length; i += size) {
+      result.push(array.slice(i, i + size));
+    }
+    return result;
+  };
+
+  const chunkedItems = chunkArray(items, 3);
+
+  const goToPrev = () => {
+    carouselRef.current.prev();
+  };
+
+  const goToNext = () => {
+    carouselRef.current.next();
+  };
 
   return (
-    <div className="slider-container">
-      {/* Hiển thị nút trái nếu còn có item để di chuyển */}
-      {isPrevButtonVisible && (
-        <button className="slider-button left" onClick={handlePrev} style={{  color: '#333', fontWeight: "500" }}>
-          <LeftOutlined />
-        </button>
-      )}
-      <div
-        className="slider-wrapper"
-        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
-      >
-        {items.map((item, index) => (        
-            <Card
-                // bordered={false}
-                style={{
-                    width: 400, border: "1px solid rgb(187, 187, 187)", marginRight: "8vh", height: 370, left: "20px", borderRadius: "15px"
-                }}
-            >
-                <img src={item.src} alt={item.txtP} width={300} height={250} />
-                <p style={{fontWeight: "500", fontSize: "3vh", width: "100%", textAlign: "center" }}>{item.txtP}</p>
-            </Card>
+    <div style={{ position: 'relative', width: '100%' }}>
+      <Carousel ref={carouselRef} afterChange={onChange} draggable={true}>
+        {chunkedItems.map((chunk, chunkIndex) => (
+          <div key={chunkIndex}>
+            <div className="slider-wrapper" style={{ display: 'flex', justifyContent: 'space-between' }}>
+              {chunk.map((item, index) => (
+                <Card
+                  key={index}
+                  style={{
+                    width: 350,
+                    border: "1px solid rgb(187, 187, 187)",
+                    margin: "0 8px",
+                    height: 370,
+                    borderRadius: "15px",
+                  }}
+                  loading={loadingCard}
+                >
+                  <img src={item.src} alt={item.txtP} width={width} height={height} />
+                  <p style={{ fontWeight: "500", fontSize: "20px", textAlign: "center" }}>{item.txtP}</p>
+                </Card>
+              ))}
+            </div>
+          </div>
         ))}
-      </div>
-
-      {/* Hiển thị nút phải nếu còn có item để di chuyển */}
-      {isNextButtonVisible && (
-        <button className="slider-button right" onClick={handleNext} style={{  color: '#333', fontWeight: "500" }}>
-          <RightOutlined />
-        </button>
-      )}
+      </Carousel>
+      
+      <Button 
+        onClick={goToPrev} 
+        style={{ position: 'absolute', top: '40%', left: '-15px', zIndex: 1, height: "40px" }}
+      >
+        <LeftOutlined />
+      </Button>
+      <Button 
+        onClick={goToNext} 
+        style={{ position: 'absolute', top: '40%', right: '-15px', zIndex: 1, height: "40px" }}
+      >
+        <RightOutlined />
+      </Button>
     </div>
   );
 };

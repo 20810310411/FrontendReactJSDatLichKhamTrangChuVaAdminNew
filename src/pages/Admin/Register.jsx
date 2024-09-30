@@ -23,7 +23,7 @@ const Register = () => {
         if(res.data){
             message.success(res.message)
             formRegister.resetFields()
-            navigate("/login-admin")
+            navigate("/admin/login-admin")
         } else {
             notification.error({ 
                 message: "Đăng ký không thành công!",
