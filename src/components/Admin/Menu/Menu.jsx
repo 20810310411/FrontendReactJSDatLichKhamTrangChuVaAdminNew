@@ -1,9 +1,10 @@
 import { HomeOutlined, HomeTwoTone, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, message } from 'antd';
 import { useEffect, useState } from 'react';
-import { FaUserDoctor } from 'react-icons/fa6';
+import { FaCircleInfo, FaUserDoctor } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import { callLogout } from '../../../services/api';
+import { IoIosPaperPlane } from 'react-icons/io';
 
 const MenuNav = (props) => {
 
@@ -51,7 +52,7 @@ const MenuNav = (props) => {
             style: { pointerEvents: "none", userSelect: "none" }     
         },
         {
-            key: 'home',
+            key: '/admin/home-page-admin',
             label: <Link to={"/admin/home-page-admin"}>Trang chủ</Link>,
             icon: <HomeOutlined />,    
         },
@@ -61,12 +62,14 @@ const MenuNav = (props) => {
             icon: <FaUserDoctor />,
             children: [
                 {
-                    key: '5',
-                    label: 'Option 5',
+                    key: '/admin/quan-ly-doctor',
+                    label: <Link to="/admin/quan-ly-doctor">Thông tin bác sĩ</Link>,
+                    icon: <FaCircleInfo />
                 },
                 {
-                    key: '6',
-                    label: 'Option 6',
+                    key: '/admin/ke-hoach-doctor',
+                    label: <Link to="/admin/ke-hoach-doctor">Kế hoạch khám bệnh của bác sĩ</Link>,
+                    icon: <IoIosPaperPlane />
                 },
                 {
                     key: 'sub3',
@@ -101,7 +104,7 @@ const MenuNav = (props) => {
         },
         {
             key: 'logout',
-            label: <label onClick={() => handleLogout()}>Đăng xuất</label>,     
+            label: <Link onClick={() => handleLogout()}>Đăng xuất</Link>,     
             icon: <LogoutOutlined />,    
         },
         {
@@ -129,7 +132,7 @@ const MenuNav = (props) => {
             
         }}
         defaultOpenKeys={['sub1']}
-        selectedKeys={[current]}
+        selectedKeys={[location.pathname]} // Đặt selectedKeys dựa trên đường dẫn hiện tại
         mode="inline"
         items={items}
       />

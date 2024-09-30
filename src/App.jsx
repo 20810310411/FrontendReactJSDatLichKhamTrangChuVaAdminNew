@@ -4,6 +4,7 @@ import Login from "./pages/Admin/Login";
 import Register from "./pages/Admin/Register";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
 import PageViewDoctor from "./pages/TrangChu/ViewDoctor/pageViewDoctor";
+import QuanLyDoctor from "./components/Admin/BodyAdmin/QuanLyDoctor";
 
 const App = () => {
 
@@ -21,6 +22,8 @@ const App = () => {
         <Route path="/admin/login-admin" element={<Login/>} />  
         {/* Register admin */}
         <Route path="/admin/register-admin" element={<Register />} />  
+        {/* quan ly doctor */}
+        <Route path="/admin/quan-ly-doctor" element={<QuanLyDoctor />} />  
 
 
       </Routes>

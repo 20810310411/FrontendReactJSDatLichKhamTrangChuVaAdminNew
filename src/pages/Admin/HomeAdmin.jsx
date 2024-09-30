@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { AppstoreOutlined, HomeOutlined, HomeTwoTone, LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import {  Switch } from 'antd';
+import {  Col, Row, Switch } from 'antd';
 import { FaUserDoctor } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuNav from '../../components/Admin/Menu/Menu';
 import Login from './Login';
+import BodyAdmin from '../../components/Admin/BodyAdmin/BodyAdmin';
+import AdminLayout from '../../components/Admin/AdminLayout';
 
 const HomeAdmin = () => {
 
@@ -19,19 +21,11 @@ const HomeAdmin = () => {
     }, [navigate]);
 
     return (
-        <>
-            <div style={{ height: 250, 
-                    textAlign: 'center', 
-                    borderBottom: "1px solid #ebebeb", 
-                    fontWeight: "bold", color: "black", backgroundColor: "#baf3d6",
-                    marginTop: 0, padding: 0, 
-                    }}>
-                
-            </div>
-            
-            <MenuNav />
-            
-        </>
+        <AdminLayout pageTitle="Trang chủ">
+            {/* Nội dung của BodyAdmin cho HomeAdmin */}
+            <h1>Trang quản trị chính</h1>
+            <p>Đây là nội dung của trang chủ.</p>
+        </AdminLayout>
     );
 };
 export default HomeAdmin;
