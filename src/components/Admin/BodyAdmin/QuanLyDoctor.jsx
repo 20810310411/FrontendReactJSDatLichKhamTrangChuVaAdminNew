@@ -1,8 +1,12 @@
-import { Col, Popconfirm, Row, Space, Table, Tag } from "antd"
+import { Button, Col, Pagination, Popconfirm, Row, Space, Table, Tag } from "antd"
 import BodyAdmin from "./BodyAdmin"
 import MenuNav from "../Menu/Menu"
 import AdminLayout from "../AdminLayout"
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { fetchAllDoctor } from "../../../services/apiDoctor";
+import { IoAddOutline } from "react-icons/io5";
+import { FaFileExport } from "react-icons/fa";
 const { Column, ColumnGroup } = Table;
 const data = [
     {
@@ -18,6 +22,32 @@ const data = [
   ];
 
 const QuanLyDoctor = (props) => {
+    const [loadingTable, setLoadingTable] = useState(false)
+    const [dataDoctor, setDataDoctor] = useState([])
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalDoctors, setTotalDoctors] = useState(0);
+    const [pageSize, setPageSize] = useState(5);
+
+    useEffect(() => {
+        fetchListDoctor()
+    }, [currentPage, pageSize])
+
+    const fetchListDoctor = async () => {
+        setLoadingTable(true)
+        let query = `page=${currentPage}&limit=${pageSize}`
+        const res = await fetchAllDoctor(query)
+        console.log("res doctor: ", res);
+        if (res && res.data) {
+            setDataDoctor(res.data)
+            setTotalDoctors(res.totalDoctors); // Lưu tổng số bác sĩ
+        }
+        setLoadingTable(false)
+    }
+
+    const onChangePagination = (page, pageSize) => {
+        setCurrentPage(page);
+        setPageSize(pageSize); // Cập nhật pageSize nếu cần
+    };
 
     const cancelXoa = (e) => {
         console.log(e);
@@ -43,51 +73,112 @@ const QuanLyDoctor = (props) => {
     return (
         <>
             <AdminLayout pageTitle="quản lý bác sĩ">
+
                 {/* Nội dung của BodyAdmin cho quản lý bác sĩ */}
-                <h1>Thông tin bác sĩ</h1>
-                <Table  dataSource={data} 
-                        pagination={false} // Tắt phân trang mặc định của Table
-                >
-                    <Column title="STT" dataIndex="stt" key="stt" />
-                    <Column title="Image" dataIndex="image" key="image" />
-                    <Column title="Email" dataIndex="email" key="email" />
-                    <ColumnGroup title="Tên đầy đủ">
-                        <Column title="Họ" dataIndex="lastName" key="lastName" />
-                        <Column title="Tên" dataIndex="firstName" key="firstName" />
-                    </ColumnGroup>
-                    <Column title="Địa chỉ" dataIndex="address" key="address" />                
-                    <Column
-                        title="Action"
-                        key="action"
-                        render={(_, record) => (
-                            <Space size="middle">
-                                <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
-                                    onClick={() => {
-                                        // setOpenDetailBook(true)
-                                        // setDataDetailBook(record)
-                                    }} 
-                                />
+                <Row>
+                    <Col span={24} style={{padding: "20px", fontSize: "18px"}}>
+                        <span>THÔNG TIN BÁC SĨ</span>
+                        <Space size={10} style={{ float: "right" }}>
+                            <Button type="primary" icon={<IoAddOutline />}>Thêm bác sĩ</Button>
+                            <Button type="primary" icon={<FaFileExport />}>Export</Button>
+                        </Space>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={24} sm={12} md={24} span={24}>
+                        <Table  dataSource={dataDoctor} 
+                                loading={loadingTable}
+                                pagination={false} // Tắt phân trang mặc định của Table
+                                scroll={{ x: 'max-content' }}
+                                
+                        >
+                            <Column title="STT" 
+                            dataIndex="stt" 
+                            key="stt" 
+                            render={(_, record, index) => {
+                                //   console.log("index: ", index+1);
+                                  return (
+                                    <>
+                                      {(index+1) + (currentPage - 1) * pageSize}
+                                    </>
+                                  )
+                                }
+                            }/>
+                            <Column
+                                title="Image"
+                                dataIndex="image"
+                                key="image"
+                                render={(text) => (
+                                    <img
+                                        src={text} // sử dụng text làm đường dẫn hình ảnh
+                                        alt={`doctor ${text}`}
+                                        style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: "50%", border: "1px solid navy" }}
+                                    />
+                                )}
+                            />                    
+                            <Column title="Email" dataIndex="email" key="email" />
+                            <ColumnGroup title="Tên đầy đủ">
+                                <Column title="Họ" dataIndex="lastName" key="lastName" />
+                                <Column title="Tên" dataIndex="firstName" key="firstName" />
+                            </ColumnGroup>
+                            <Column title="Địa chỉ" dataIndex="address" key="address" />                
+                            <Column
+                                title="Chức năng"
+                                key="action"
+                                render={(_, record) => (
+                                    <Space size="middle">
+                                        <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
+                                            onClick={() => {
+                                                // setOpenDetailBook(true)
+                                                // setDataDetailBook(record)
+                                            }} 
+                                        />
 
-                                <EditOutlined style={{color: "orange"}} onClick={() => {
-                                    console.log("record update: ", record);
-                                    // setOpenUpdateBook(true)
-                                    // setDataUpdateBook(record)
-                                }} /> 
+                                        <EditOutlined style={{color: "orange"}} onClick={() => {
+                                            console.log("record update: ", record);
+                                            // setOpenUpdateBook(true)
+                                            // setDataUpdateBook(record)
+                                        }} /> 
 
-                                <Popconfirm
-                                    title="Xoá book"
-                                    description="Bạn có chắc chắn muốn xoá?"
-                                    onConfirm={() => handleDeleteDoctor(record._id)}
-                                    onCancel={cancelXoa}
-                                    okText="Xác nhận xoá"
-                                    cancelText="Không Xoá"
-                                >
-                                    <DeleteOutlined style={{color: "red"}} />
-                                </Popconfirm>
-                            </Space>
-                        )}
-                    />
-                </Table>
+                                        <Popconfirm
+                                            title="Xoá book"
+                                            description="Bạn có chắc chắn muốn xoá?"
+                                            onConfirm={() => handleDeleteDoctor(record._id)}
+                                            onCancel={cancelXoa}
+                                            okText="Xác nhận xoá"
+                                            cancelText="Không Xoá"
+                                        >
+                                            <DeleteOutlined style={{color: "red"}} />
+                                        </Popconfirm>
+                                    </Space>
+                                )}
+                            />
+                        </Table>
+
+                        <Pagination 
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",
+                                margin: "10px 0 20px 0"
+                            }}
+                            current={currentPage}
+                            pageSize={pageSize}
+                            total={totalDoctors}
+                            onChange={(page, pageSize) => onChangePagination(page, pageSize)}  // Gọi hàm onChangePagination khi thay đổi trang
+                            showSizeChanger={true}
+                            showQuickJumper={true}
+                            showTotal={(total, range) => (
+                                <div>{range[0]}-{range[1]} trên {total} tài khoản</div>
+                            )}
+                            locale={{
+                                items_per_page: 'dòng / trang',  // Điều chỉnh "items per page"
+                                jump_to: 'Đến trang số',  // Điều chỉnh "Go to"
+                                jump_to_confirm: 'Xác nhận',  // Điều chỉnh "Go"
+                                page: '',  // Bỏ hoặc thay đổi chữ "Page" nếu cần
+                            }}
+                        />                
+                    </Col>
+                </Row>
                 
             </AdminLayout>
         </>
