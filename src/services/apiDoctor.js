@@ -29,3 +29,8 @@ export const callUploadDoctorImg = (file) => {
         },
     });
 }
+export const callCreateDoctor = (email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota) => {
+    return axios.post('/api/doctor/create-doctor', {
+        email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
+    })
+}

@@ -143,7 +143,7 @@ const BodyHomePage = () => {
     ];
 
     const items_BacSiNoiBat = dataDoctor ? dataDoctor.map(doctor => ({
-        src: doctor.image, 
+        src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${doctor.image}`, 
         txtP: `${doctor.chucVuId.map(chucVu => chucVu.name).join(', ')}
                 , ${doctor.lastName} ${doctor.firstName}`,
         txtB: `${doctor.chuyenKhoaId.map(chuyenKhoa => chuyenKhoa.name).join(', ')}`

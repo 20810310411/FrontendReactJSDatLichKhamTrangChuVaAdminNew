@@ -1,6 +1,6 @@
-import { Checkbox, Col, Divider, Form, Input, message, Modal, Radio, Row, Select, Upload } from "antd"
+import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd"
 import { useEffect, useState } from "react";
-import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
+import { callCreateDoctor, callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -10,7 +10,7 @@ import axios from "axios";
 const CreateDoctor = (props) => {
 
     const {
-        openCreateDoctor, setOpenCreateDoctor
+        openCreateDoctor, setOpenCreateDoctor, fetchListDoctor
     } = props
 
     const [form] = Form.useForm()
@@ -22,6 +22,7 @@ const CreateDoctor = (props) => {
  
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
+    const [dataImage, setDataImage] = useState([]);
 
     useEffect(() => {
         fetchAllChucVuDoctor()
@@ -53,6 +54,34 @@ const CreateDoctor = (props) => {
         console.log('Chức vụ ID đã chọn:', values.chucVuId); // In ra chucVuId
         const { email, password, firstName, lastName, address, phoneNumber, 
             chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
+
+        if (!imageUrl) {
+            notification.error({
+                message: 'Lỗi validate',
+                description: 'Vui lòng upload hình ảnh'
+            })
+            return;
+        }
+
+        const hinhAnh = imageUrl.split('/').pop(); // Lấy tên file từ URL
+        console.log("hinhanh: ", hinhAnh);
+        
+        setIsSubmit(true)
+        const res = await callCreateDoctor(email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, mota)
+        console.log("res create: ", res);
+        if(res && res.data){
+            message.success('Tạo mới thông tin bác sĩ thành công');
+            form.resetFields();
+            setImageUrl('');
+            setOpenCreateDoctor(false);
+            await fetchListDoctor()
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
+        setIsSubmit(false)
     };
 
 
@@ -71,7 +100,8 @@ const CreateDoctor = (props) => {
             if (res) {
                 setImageUrl(res.url); // URL của hình ảnh từ server
                 onSuccess(file);
-                message.success('Upload thành công');
+                // setDataImage()
+                // message.success('Upload thành công');
             } else {
                 onError('Đã có lỗi khi upload file');
             }            
@@ -94,15 +124,15 @@ const CreateDoctor = (props) => {
 
     const handleChange = (info) => {
         if (info.file.status === 'done') {
-            message.success(`${info.file.name} file uploaded successfully`);
+            message.success(`upload file ${info.file.name} thành công`);
         } else if (info.file.status === 'error') {
-            message.error(`${info.file.name} file upload failed.`);
+            message.error(`${info.file.name} upload file thất bại!`);
         }
     };
 
     const handleRemoveFile = (file) => {
         setImageUrl(''); // Reset URL khi xóa file
-        message.success(`${file.name} file removed successfully`);
+        message.success(`${file.name} đã được xóa`);
     };
 
     return (
@@ -137,7 +167,7 @@ const CreateDoctor = (props) => {
                         autoComplete="off"
                     >
                         <Row gutter={[20,5]}>
-                            <Col span={6} md={6} sm={6} xs={24}>
+                            <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
                                     label="Họ"
@@ -158,7 +188,7 @@ const CreateDoctor = (props) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={6} md={6} sm={6} xs={24}>
+                            <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
                                     label="Tên"
@@ -179,7 +209,7 @@ const CreateDoctor = (props) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={6} md={6} sm={6} xs={24}>
+                            <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
                                     label="Địa chỉ"
@@ -195,7 +225,7 @@ const CreateDoctor = (props) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={6} md={6} sm={6} xs={24}>
+                            <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
                                     label="Số điện thoại"
@@ -212,6 +242,31 @@ const CreateDoctor = (props) => {
                                     ]}
                                 >
                                 <Input />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={4} md={4} sm={4} xs={24}>
+                                <Form.Item
+                                    layout="vertical"
+                                    label="Giới tính"
+                                    name="gender"    
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng chọn giới tính!',
+                                        },                                        
+                                    ]}                                
+                                >
+                                    <Radio.Group 
+                                        onChange={(e) => {
+                                            const genderValue = e.target.value; // true hoặc false
+                                            setGenderDoctor(genderValue); // Cập nhật trạng thái
+                                            form.setFieldsValue({ gender: genderValue }); // Cập nhật giá trị trong form
+                                        }} value={genderDoctor}
+                                    >
+                                        <Radio value={true}>Nam</Radio>
+                                        <Radio value={false}>Nữ</Radio>                                        
+                                    </Radio.Group>                       
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -260,7 +315,7 @@ const CreateDoctor = (props) => {
                         </Row>
 
                         <Row gutter={[30,5]}>
-                            <Col span={12} md={12} sm={12} xs={24} >
+                            <Col span={6} md={6} sm={6} xs={24} >
                                 <Form.Item
                                     label="Hình ảnh"
                                     name="image"                            
@@ -284,33 +339,6 @@ const CreateDoctor = (props) => {
                                 </Form.Item>
                             </Col>
 
-                            <Col span={12} md={12} sm={12} xs={24}>
-                                <Form.Item
-                                    layout="vertical"
-                                    label="Giới tính"
-                                    name="gender"    
-                                    rules={[
-                                        {
-                                            required: true,
-                                            message: 'Vui lòng chọn giới tính!',
-                                        },                                        
-                                    ]}                                
-                                >
-                                    <Radio.Group 
-                                        onChange={(e) => {
-                                            const genderValue = e.target.value; // true hoặc false
-                                            setGenderDoctor(genderValue); // Cập nhật trạng thái
-                                            form.setFieldsValue({ gender: genderValue }); // Cập nhật giá trị trong form
-                                        }} value={genderDoctor}
-                                    >
-                                        <Radio value={true}>Nam</Radio>
-                                        <Radio value={false}>Nữ</Radio>                                        
-                                    </Radio.Group>                       
-                                </Form.Item>
-                            </Col>
-                        </Row>
-
-                        <Row gutter={[30,5]} style={{justifyContent: "center"}}>
                             <Col span={18} md={18} sm={18} xs={24} >
                                 <Form.Item
                                     layout="vertical"
@@ -337,7 +365,7 @@ const CreateDoctor = (props) => {
                                         }))}
                                     />                               
                                 </Form.Item>
-                            </Col>                                        
+                            </Col>  
                         </Row>
 
                         <Row gutter={[20,5]}>

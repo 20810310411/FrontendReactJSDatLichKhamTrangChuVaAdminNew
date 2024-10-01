@@ -30,7 +30,7 @@ const QuanLyDoctor = (props) => {
     const [dataDoctor, setDataDoctor] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
     const [totalDoctors, setTotalDoctors] = useState(0);
-    const [pageSize, setPageSize] = useState(5);
+    const [pageSize, setPageSize] = useState(8);
 
     const [openViewDoctor, setOpenViewDoctor] = useState(false);
     const [dataDetailDoctor, setDataDetailDoctor] = useState(null);
@@ -125,13 +125,17 @@ const QuanLyDoctor = (props) => {
                                 title={<p className="title-col-style">Image</p>}
                                 dataIndex="image"
                                 key="image"
-                                render={(text) => (
-                                    <img
-                                        src={text} // sử dụng text làm đường dẫn hình ảnh
-                                        alt={`doctor ${text}`}
-                                        style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: "50%", border: "1px solid navy" }}
-                                    />
-                                )}
+                                render={(text) => {
+                                    const imageUrl = `${import.meta.env.VITE_BACKEND_URL}/uploads/${text}`;
+                                    console.log("Image URL:", imageUrl); // In ra URL để kiểm tra
+                                    return (
+                                        <img
+                                            src={imageUrl}
+                                            alt={`doctor ${text}`}
+                                            style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: "50%", border: "1px solid navy" }}
+                                        />
+                                    );
+                                }}
                             />                    
                             <Column title={<p className="title-col-style">Email</p>} dataIndex="email" key="email" />
                             <ColumnGroup title={<p className="title-col-style">Họ và Tên</p>}>
@@ -207,6 +211,7 @@ const QuanLyDoctor = (props) => {
                         <CreateDoctor
                             openCreateDoctor={openCreateDoctor}
                             setOpenCreateDoctor={setOpenCreateDoctor}
+                            fetchListDoctor={fetchListDoctor}
                         />    
                     </Col>
                 </Row>
