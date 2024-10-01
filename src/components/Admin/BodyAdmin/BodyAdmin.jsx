@@ -1,14 +1,18 @@
 import { Col, Row } from "antd"
-
+import { Input, Space } from 'antd';
+const { Search } = Input;
 const BodyAdmin = ({ content, pageTitle }) => {
+
+    const onSearch = (value, _e, info) => console.log(info?.source, value);
+
     return (
         <>
             <Row>
-                    <Col span={6} offset={5} style={{backgroundColor: "yellow", marginTop: "5vh", textAlign: "start"}}>
-                        <p>Page / {pageTitle}</p>
+                    <Col span={6} offset={5} style={{ marginTop: "5vh", textAlign: "start"}}>
+                        <p style={{fontSize: "18px"}}>Home / {pageTitle}</p>
                     </Col>
-                    <Col span={6} offset={7} style={{backgroundColor: "greenyellow", marginTop: "5vh"}}>
-                        col-6 col-offset-7
+                    <Col span={5} offset={7} style={{ marginTop: "8vh"}}>
+                        <Search placeholder="Tìm kiếm ở đây..." onSearch={onSearch} enterButton />
                     </Col>
                 </Row>
 
@@ -21,6 +25,7 @@ const BodyAdmin = ({ content, pageTitle }) => {
                         boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Thêm viền mờ
                         backdropFilter: "blur(10px)", // Thêm hiệu ứng mờ
                         // height: 500
+                        
                     }}>
                     {content} {/* Hiển thị nội dung từ props */}
                     </Col>

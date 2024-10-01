@@ -4,7 +4,7 @@ import Login from "./pages/Admin/Login";
 import Register from "./pages/Admin/Register";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
 import PageViewDoctor from "./pages/TrangChu/ViewDoctor/pageViewDoctor";
-import QuanLyDoctor from "./components/Admin/BodyAdmin/QuanLyDoctor";
+import QuanLyDoctor from "./components/Admin/Doctor/QuanLyDoctor";
 
 const App = () => {
 

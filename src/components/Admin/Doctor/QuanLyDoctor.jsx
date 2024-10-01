@@ -1,5 +1,5 @@
-import { Button, Col, Pagination, Popconfirm, Row, Space, Table, Tag } from "antd"
-import BodyAdmin from "./BodyAdmin"
+import { Button, Col, Pagination, Popconfirm, Row, Space, Table, Input } from "antd"
+import BodyAdmin from "../BodyAdmin/BodyAdmin"
 import MenuNav from "../Menu/Menu"
 import AdminLayout from "../AdminLayout"
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { fetchAllDoctor } from "../../../services/apiDoctor";
 import { IoAddOutline } from "react-icons/io5";
 import { FaFileExport } from "react-icons/fa";
+import ViewDoctor from "./ViewDoctor";
+const { Search } = Input;
 const { Column, ColumnGroup } = Table;
 const data = [
     {
@@ -20,6 +22,8 @@ const data = [
     //   tags: ['nice', 'developer'],
     },    
   ];
+import './css.scss'
+import CreateDoctor from "./CreateDoctor";
 
 const QuanLyDoctor = (props) => {
     const [loadingTable, setLoadingTable] = useState(false)
@@ -27,6 +31,10 @@ const QuanLyDoctor = (props) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalDoctors, setTotalDoctors] = useState(0);
     const [pageSize, setPageSize] = useState(5);
+
+    const [openViewDoctor, setOpenViewDoctor] = useState(false);
+    const [dataDetailDoctor, setDataDetailDoctor] = useState(null);
+    const [openCreateDoctor, setOpenCreateDoctor] = useState(false);
 
     useEffect(() => {
         fetchListDoctor()
@@ -70,17 +78,25 @@ const QuanLyDoctor = (props) => {
         //     })
         // }
     }
+
     return (
         <>
-            <AdminLayout pageTitle="quản lý bác sĩ">
+            <AdminLayout pageTitle="Quản lý bác sĩ" >
 
                 {/* Nội dung của BodyAdmin cho quản lý bác sĩ */}
                 <Row>
                     <Col span={24} style={{padding: "20px", fontSize: "18px"}}>
                         <span>THÔNG TIN BÁC SĨ</span>
                         <Space size={10} style={{ float: "right" }}>
-                            <Button type="primary" icon={<IoAddOutline />}>Thêm bác sĩ</Button>
-                            <Button type="primary" icon={<FaFileExport />}>Export</Button>
+                            <Button 
+                            type="primary" 
+                            icon={<IoAddOutline />} 
+                            className="custom-row"
+                            onClick={() => {
+                                setOpenCreateDoctor(true)
+                            }}
+                            >Thêm bác sĩ</Button>
+                            <Button type="primary" icon={<FaFileExport />} className="custom-row">Export</Button>
                         </Space>
                     </Col>
                 </Row>
@@ -90,9 +106,10 @@ const QuanLyDoctor = (props) => {
                                 loading={loadingTable}
                                 pagination={false} // Tắt phân trang mặc định của Table
                                 scroll={{ x: 'max-content' }}
-                                
+                                rowClassName="custom-row" // Thêm lớp cho hàng    
+                                headerClassName="custom-header" // Lớp cho tiêu đề                            
                         >
-                            <Column title="STT" 
+                            <Column title={<p className="title-col-style">STT</p>}
                             dataIndex="stt" 
                             key="stt" 
                             render={(_, record, index) => {
@@ -105,7 +122,7 @@ const QuanLyDoctor = (props) => {
                                 }
                             }/>
                             <Column
-                                title="Image"
+                                title={<p className="title-col-style">Image</p>}
                                 dataIndex="image"
                                 key="image"
                                 render={(text) => (
@@ -116,21 +133,22 @@ const QuanLyDoctor = (props) => {
                                     />
                                 )}
                             />                    
-                            <Column title="Email" dataIndex="email" key="email" />
-                            <ColumnGroup title="Tên đầy đủ">
-                                <Column title="Họ" dataIndex="lastName" key="lastName" />
-                                <Column title="Tên" dataIndex="firstName" key="firstName" />
+                            <Column title={<p className="title-col-style">Email</p>} dataIndex="email" key="email" />
+                            <ColumnGroup title={<p className="title-col-style">Họ và Tên</p>}>
+                                <Column title={<p className="title-col-style">Họ</p>} dataIndex="lastName" key="lastName" />
+                                <Column title={<p className="title-col-style">Tên</p>} dataIndex="firstName" key="firstName" />
                             </ColumnGroup>
-                            <Column title="Địa chỉ" dataIndex="address" key="address" />                
+                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" />                
                             <Column
-                                title="Chức năng"
+                                title={<p className="title-col-style">Chức năng</p>}
                                 key="action"
                                 render={(_, record) => (
                                     <Space size="middle">
                                         <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
                                             onClick={() => {
-                                                // setOpenDetailBook(true)
-                                                // setDataDetailBook(record)
+                                                console.log("record: ", record);                                                
+                                                setOpenViewDoctor(true)
+                                                setDataDetailDoctor(record)
                                             }} 
                                         />
 
@@ -157,6 +175,7 @@ const QuanLyDoctor = (props) => {
 
                         <Pagination 
                             style={{
+                                fontSize: "17px",
                                 display: "flex",
                                 justifyContent: "center",
                                 margin: "10px 0 20px 0"
@@ -176,7 +195,19 @@ const QuanLyDoctor = (props) => {
                                 jump_to_confirm: 'Xác nhận',  // Điều chỉnh "Go"
                                 page: '',  // Bỏ hoặc thay đổi chữ "Page" nếu cần
                             }}
-                        />                
+                        />     
+
+                        <ViewDoctor 
+                        openViewDoctor={openViewDoctor}
+                        setOpenViewDoctor={setOpenViewDoctor}
+                        dataDetailDoctor={dataDetailDoctor}
+
+                        />       
+
+                        <CreateDoctor
+                            openCreateDoctor={openCreateDoctor}
+                            setOpenCreateDoctor={setOpenCreateDoctor}
+                        />    
                     </Col>
                 </Row>
                 

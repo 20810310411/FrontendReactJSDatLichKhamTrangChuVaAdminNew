@@ -53,22 +53,22 @@ const MenuNav = (props) => {
         },
         {
             key: '/admin/home-page-admin',
-            label: <Link to={"/admin/home-page-admin"}>Trang chủ</Link>,
+            label: <Link style={{fontSize: "17px"}} to={"/admin/home-page-admin"}>Trang chủ</Link>,
             icon: <HomeOutlined />,    
         },
         {
             key: 'doctor',
-            label: 'Quản lý bác sĩ',
+            label: <label style={{fontSize: "17px"}}>Quản lý bác sĩ</label>,
             icon: <FaUserDoctor />,
             children: [
                 {
                     key: '/admin/quan-ly-doctor',
-                    label: <Link to="/admin/quan-ly-doctor">Thông tin bác sĩ</Link>,
+                    label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-doctor">Thông tin bác sĩ</Link>,
                     icon: <FaCircleInfo />
                 },
                 {
                     key: '/admin/ke-hoach-doctor',
-                    label: <Link to="/admin/ke-hoach-doctor">Kế hoạch khám bệnh của bác sĩ</Link>,
+                    label: <Link style={{fontSize: "17px"}} to="/admin/ke-hoach-doctor">Kế hoạch khám bệnh của bác sĩ</Link>,
                     icon: <IoIosPaperPlane />
                 },
                 {
@@ -95,7 +95,7 @@ const MenuNav = (props) => {
         {
             key: 'acc-ad',
             label: (
-                <p>
+                <p style={{fontSize: "17px"}}>
                     Xin chào <span style={{color: "red", fontWeight: "500", marginLeft: "5px"}}>{userLastName} {userFirstName}</span>
                 </p>
             ),
@@ -104,12 +104,12 @@ const MenuNav = (props) => {
         },
         {
             key: 'logout',
-            label: <Link onClick={() => handleLogout()}>Đăng xuất</Link>,     
+            label: <Link style={{fontSize: "17px"}} onClick={() => handleLogout()}>Đăng xuất</Link>,     
             icon: <LogoutOutlined />,    
         },
         {
             key: 'home-web',
-            label: <Link to={"/"}>Về trang chủ chính</Link>,     
+            label: <Link style={{fontSize: "17px"}} to={"/"}>Về trang chủ chính</Link>,     
             icon: <HomeTwoTone />,    
         },
     ];
