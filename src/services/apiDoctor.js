@@ -39,3 +39,6 @@ export const updateDoctor = (_id, email, firstName, lastName, address, phoneNumb
         _id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
     })
 }
+export const deleteDoctor = (_id) => {
+    return axios.delete(`/api/doctor/delete-doctor/${_id}`)
+}

@@ -1,10 +1,10 @@
-import { Button, Col, Pagination, Popconfirm, Row, Space, Table, Input } from "antd"
+import { Button, Col, Pagination, Popconfirm, Row, Space, Table, Input, notification, message } from "antd"
 import BodyAdmin from "../BodyAdmin/BodyAdmin"
 import MenuNav from "../Menu/Menu"
 import AdminLayout from "../AdminLayout"
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
-import { fetchAllDoctor } from "../../../services/apiDoctor";
+import { deleteDoctor, fetchAllDoctor } from "../../../services/apiDoctor";
 import { IoAddOutline } from "react-icons/io5";
 import { FaFileExport } from "react-icons/fa";
 import ViewDoctor from "./ViewDoctor";
@@ -55,6 +55,24 @@ const QuanLyDoctor = (props) => {
         setLoadingTable(false)
     }
 
+    const handleDeleteDoctor = async (id) => {
+
+        const res = await deleteDoctor(id)
+        if(res){
+            notification.success({
+                message: "Xóa thông tin bác sĩ",
+                description: "Bạn đã xoá thành công"
+            })
+            await fetchListDoctor()
+        } else {
+            notification.error({
+                message: "Xoá tài khoản user",
+                description: JSON.stringify(res.message)
+            })
+        }
+    }
+
+
     const onChangePagination = (page, pageSize) => {
         setCurrentPage(page);
         setPageSize(pageSize); // Cập nhật pageSize nếu cần
@@ -65,22 +83,8 @@ const QuanLyDoctor = (props) => {
         message.error('Huỷ xoá');
     };
 
-    const handleDeleteDoctor = async (id) => {
-
-        // const res = await deleteBookAPI(id)
-        // if(res.data){
-        //     notification.success({
-        //         message: "Xóa sản phẩm book",
-        //         description: "Bạn đã xoá thành công"
-        //     })
-        //     await fetchListBook()
-        // } else {
-        //     notification.error({
-        //         message: "Xoá tài khoản user",
-        //         description: JSON.stringify(res.message)
-        //     })
-        // }
-    }
+    console.log("dataDoctor: ", dataDoctor);
+    
 
     return (
         <>
@@ -169,7 +173,7 @@ const QuanLyDoctor = (props) => {
                                         }} /> 
 
                                         <Popconfirm
-                                            title="Xoá book"
+                                            title={`xóa tài khoản`}
                                             description="Bạn có chắc chắn muốn xoá?"
                                             onConfirm={() => handleDeleteDoctor(record._id)}
                                             onCancel={cancelXoa}
