@@ -1,8 +1,8 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { Checkbox, Col, Divider, Form, Input, message, Modal, Radio, Row, Select, Upload } from "antd";
+import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd";
 import { useEffect, useState } from "react";
-import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
+import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham, updateDoctor } from "../../../services/apiDoctor";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
@@ -17,7 +17,6 @@ const UpdateDoctor = (props) => {
     const [form] = Form.useForm()
     const [isSubmit, setIsSubmit] = useState(false);
     const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
     const [dataChucVu, setDataChucVu] = useState([])
     const [dataPhongKham, setDataPhongKham] = useState([])
     const [dataChuyenKhoa, setDataChuyenKhoa] = useState([])   
@@ -25,7 +24,9 @@ const UpdateDoctor = (props) => {
     const [initForm, setInitForm] = useState(null);
     const [fileList, setFileList] = useState([]);
 
-
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
+    
     useEffect(() => {
         fetchAllChucVuDoctor()
         fetchAllPhongKhamDoctor()
@@ -75,7 +76,8 @@ const UpdateDoctor = (props) => {
             }
             console.log("init: ", init);
             
-            setInitForm(init);            
+            setInitForm(init);  
+            setImageUrl(dataUpdateDoctor.image)          
             form.setFieldsValue(init);
         }
         return () => {
@@ -84,8 +86,8 @@ const UpdateDoctor = (props) => {
     },[dataUpdateDoctor])
 
     console.log("dataUpdateDoctor: ", dataUpdateDoctor);
-    console.log("chucVuId từ dataUpdateDoctor:", dataUpdateDoctor?.chucVuId);
-
+    console.log("imageUrl: ", imageUrl);
+   
 
     const fetchAllChucVuDoctor = async () => {
         let res = await fetchAllChucVu()
@@ -172,8 +174,40 @@ const UpdateDoctor = (props) => {
         message.success(`${file.name} đã được xóa`);
     };
 
-    const handleUpdateDoctor = async () => {
+    const handleUpdateDoctor = async (values) => {
 
+        const { _id, email, password, firstName, lastName, address, phoneNumber, 
+            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
+
+        if (!imageUrl) {
+            notification.error({
+                message: 'Lỗi validate',
+                description: 'Vui lòng upload hình ảnh'
+            })
+            return;
+        }
+
+        const hinhAnh = imageUrl.split('/').pop(); // Lấy tên file từ URL
+        console.log("hinhanh: ", hinhAnh);
+        console.log("_id: ", _id);
+        
+        setIsSubmit(true)
+        const res = await updateDoctor( _id, email, firstName, lastName, address, phoneNumber, 
+        chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId)
+
+        if(res){
+            message.success(res.message);
+            handleCancel()
+            setImageUrl('')
+            await fetchListDoctor()
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
+        
+        setIsSubmit(false)
     }
 
     const handleCancel = () => {
@@ -181,9 +215,14 @@ const UpdateDoctor = (props) => {
         form.resetFields()
     };
 
+    const handlePreview = async (file) => {
+        setImageUrl(fileList[0].url); // Lấy URL của hình ảnh
+        setIsModalVisible(true); // Mở modal
+    };
+
     return (
         <Modal
-            title={`Sửa thông tin bác sĩ `}
+            title={`Sửa thông tin bác sĩ có email là ${dataUpdateDoctor?.email}`}
             style={{
                 top: 20,
             }}
@@ -345,7 +384,7 @@ const UpdateDoctor = (props) => {
                                         },
                                     ]}
                                 >
-                                <Input />
+                                <Input disabled />
                                 </Form.Item>
                             </Col>
 
@@ -366,7 +405,7 @@ const UpdateDoctor = (props) => {
                                         },
                                     ]}
                                 >
-                                <Input.Password />
+                                <Input.Password disabled />
                                 </Form.Item>
                             </Col>
                         </Row>
@@ -404,12 +443,35 @@ const UpdateDoctor = (props) => {
                                         onChange={handleChange}
                                         onRemove={handleRemoveFile}
                                         fileList={fileList} // Gán danh sách file
+                                        onPreview={handlePreview}
                                     >
                                         <div>
                                             {loading ? <LoadingOutlined /> : <PlusOutlined />}
                                             <div style={{ marginTop: 8 }}>Upload</div>
                                         </div>
                                     </Upload>
+
+                                    {/* {fileList.length > 0 && (
+                                        <div onClick={() => {
+                                            setImageUrl(fileList[0].url); // Lấy URL của hình ảnh
+                                            setIsModalVisible(true); // Mở modal
+                                        }}>
+                                            <img
+                                                src={fileList[0].url}
+                                                alt={fileList[0].name}
+                                                style={{ width: '100px', cursor: 'pointer' }} // Style cho ảnh
+                                            />
+                                        </div>
+                                    )} */}
+
+                                    <Modal
+                                        visible={isModalVisible}
+                                        footer={null}
+                                        onCancel={() => setIsModalVisible(false)}
+                                    >
+                                        <img alt="Uploaded" style={{ width: '100%' }} src={imageUrl} />
+                                    </Modal>
+
                                 </Form.Item>
                             </Col>
 
@@ -526,7 +588,7 @@ const UpdateDoctor = (props) => {
                                             ],
                                             // Other configurations
                                             ckfinder: {
-                                                uploadUrl: `/api/doctor/upload`, // Đường dẫn đến handler upload  -- van dang loi
+                                                uploadUrl: `${import.meta.env.VITE_BACKEND_URL}/api/doctor/upload/`, // Đường dẫn đến handler upload  -- van dang loi
                                             },
                                         }}
                                         data={form.getFieldValue('mota')} // Thiết lập giá trị từ form
