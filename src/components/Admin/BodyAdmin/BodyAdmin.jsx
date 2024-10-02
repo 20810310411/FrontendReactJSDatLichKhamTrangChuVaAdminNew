@@ -1,9 +1,15 @@
 import { Col, Row } from "antd"
 import { Input, Space } from 'antd';
+import SearchComponent from "./SearchComponent";
 const { Search } = Input;
-const BodyAdmin = ({ content, pageTitle }) => {
+const BodyAdmin = ({ content, pageTitle, setFirstName, setLastName }) => {
 
-    const onSearch = (value, _e, info) => console.log(info?.source, value);
+    const onSearch = (value) => {
+        // Tách giá trị tìm kiếm thành firstName và lastName nếu cần
+        const [firstName, lastName] = value.split(' ');
+        setFirstName(firstName || '');
+        setLastName(lastName || '');
+    };
 
     return (
         <>
@@ -12,7 +18,8 @@ const BodyAdmin = ({ content, pageTitle }) => {
                         <p style={{fontSize: "18px"}}>Home / {pageTitle}</p>
                     </Col>
                     <Col span={5} offset={7} style={{ marginTop: "8vh"}}>
-                        <Search placeholder="Tìm kiếm ở đây..." onSearch={onSearch} enterButton />
+                        {/* <Search placeholder="Tìm kiếm ở đây..." onSearch={onSearch} enterButton /> */}
+                        <SearchComponent onSearch={onSearch} /> {/* Sử dụng component tìm kiếm */}
                     </Col>
                 </Row>
 

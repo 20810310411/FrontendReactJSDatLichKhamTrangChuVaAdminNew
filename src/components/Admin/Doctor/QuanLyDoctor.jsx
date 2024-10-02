@@ -38,14 +38,28 @@ const QuanLyDoctor = (props) => {
     const [openCreateDoctor, setOpenCreateDoctor] = useState(false);
     const [dataUpdateDoctor, setDataUpdateDoctor] = useState(null);
     const [openUpdateDoctor, setOpenUpdateDoctor] = useState(false);
+    // dùng để search doctor
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [filter, setFilter] = useState("");
 
+    
     useEffect(() => {
         fetchListDoctor()
-    }, [currentPage, pageSize])
+    }, [currentPage, pageSize, firstName, lastName])
 
     const fetchListDoctor = async () => {
         setLoadingTable(true)
         let query = `page=${currentPage}&limit=${pageSize}`
+
+        // Thêm tham số tìm kiếm vào query nếu có
+        if (firstName) {
+            query += `&firstName=${encodeURIComponent(firstName)}`;
+        }
+        if (lastName) {
+            query += `&lastName=${encodeURIComponent(lastName)}`;
+        }
+    
         const res = await fetchAllDoctor(query)
         console.log("res doctor: ", res);
         if (res && res.data) {
@@ -81,14 +95,15 @@ const QuanLyDoctor = (props) => {
     const cancelXoa = (e) => {
         console.log(e);
         message.error('Huỷ xoá');
-    };
-
-    console.log("dataDoctor: ", dataDoctor);
-    
+    };    
 
     return (
         <>
-            <AdminLayout pageTitle="Quản lý bác sĩ" >
+            <AdminLayout 
+                pageTitle="Quản lý bác sĩ" 
+                setFirstName={setFirstName} 
+                setLastName={setLastName}
+            >
 
                 {/* Nội dung của BodyAdmin cho quản lý bác sĩ */}
                 <Row>
