@@ -1,34 +1,91 @@
-import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd"
-import { useEffect, useState } from "react";
-import { callCreateDoctor, callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
-import axios from "axios";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import { Checkbox, Col, Divider, Form, Input, message, Modal, Radio, Row, Select, Upload } from "antd";
+import { useEffect, useState } from "react";
+import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 
-const CreateDoctor = (props) => {
+const UpdateDoctor = (props) => {
 
     const {
-        openCreateDoctor, setOpenCreateDoctor, fetchListDoctor
+        dataUpdateDoctor, setDataUpdateDoctor,
+        openUpdateDoctor, setOpenUpdateDoctor,
+        fetchListDoctor
     } = props
 
     const [form] = Form.useForm()
     const [isSubmit, setIsSubmit] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [imageUrl, setImageUrl] = useState('');
     const [dataChucVu, setDataChucVu] = useState([])
     const [dataPhongKham, setDataPhongKham] = useState([])
     const [dataChuyenKhoa, setDataChuyenKhoa] = useState([])   
     const [genderDoctor, setGenderDoctor] = useState(true);
- 
-    const [loading, setLoading] = useState(false);
-    const [imageUrl, setImageUrl] = useState('');
-    const [dataImage, setDataImage] = useState([]);
+    const [initForm, setInitForm] = useState(null);
+    const [fileList, setFileList] = useState([]);
+
 
     useEffect(() => {
         fetchAllChucVuDoctor()
         fetchAllPhongKhamDoctor()
         fetchAllChuyenKhoaDoctor()
     }, [])
+
+    useEffect(() => {
+        if (dataUpdateDoctor?._id) {       
+            const chucVuId = Array.isArray(dataUpdateDoctor.chucVuId) 
+                            ? dataUpdateDoctor.chucVuId.map(item => item._id) // Nếu là mảng, lấy tất cả _id
+                            : [dataUpdateDoctor.chucVuId._id]; // Nếu không, lấy _id từ đối tượng
+
+            const chuyenKhoaId = Array.isArray(dataUpdateDoctor.chuyenKhoaId) 
+                            ? dataUpdateDoctor.chuyenKhoaId.map(item => item._id) // Nếu là mảng, lấy tất cả _id
+                            : [dataUpdateDoctor.chuyenKhoaId._id]; // Nếu không, lấy _id từ đối tượng
+
+            // Tạo danh sách file cho Upload
+            if (dataUpdateDoctor.image) {
+
+                console.log(`ảnh: ${import.meta.env.VITE_BACKEND_URL}/api/doctor/upload/${dataUpdateDoctor.image}`);
+                
+                
+                setFileList([
+                    {
+                        uid: '-1', // uid phải là một chuỗi duy nhất
+                        name: dataUpdateDoctor.image, // Tên file
+                        status: 'done', // Trạng thái
+                        url: `${import.meta.env.VITE_BACKEND_URL}/uploads/${dataUpdateDoctor.image}`, // Đường dẫn đến hình ảnh
+                    },
+                ]);
+            }
+
+            const init = {
+                _id: dataUpdateDoctor._id,
+                firstName: dataUpdateDoctor.firstName,
+                lastName: dataUpdateDoctor.lastName,
+                address: dataUpdateDoctor.address,
+                email: dataUpdateDoctor.email,
+                password: dataUpdateDoctor.password,
+                phoneNumber: dataUpdateDoctor.phoneNumber,
+                gender: dataUpdateDoctor.gender,
+                mota: dataUpdateDoctor.mota,
+                chucVuId: chucVuId,
+                chuyenKhoaId: chuyenKhoaId,
+                phongKhamId: dataUpdateDoctor.phongKhamId._id, 
+                image: dataUpdateDoctor.image                        
+            }
+            console.log("init: ", init);
+            
+            setInitForm(init);            
+            form.setFieldsValue(init);
+        }
+        return () => {
+            form.resetFields();
+        }
+    },[dataUpdateDoctor])
+
+    console.log("dataUpdateDoctor: ", dataUpdateDoctor);
+    console.log("chucVuId từ dataUpdateDoctor:", dataUpdateDoctor?.chucVuId);
+
 
     const fetchAllChucVuDoctor = async () => {
         let res = await fetchAllChucVu()
@@ -49,46 +106,6 @@ const CreateDoctor = (props) => {
         }
     }
 
-    const handleCreateDoctor = async (values) => {
-        console.log('Success:', values);
-        console.log('Chức vụ ID đã chọn:', values.chucVuId); // In ra chucVuId
-        const { email, password, firstName, lastName, address, phoneNumber, 
-            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
-
-        if (!imageUrl) {
-            notification.error({
-                message: 'Lỗi validate',
-                description: 'Vui lòng upload hình ảnh'
-            })
-            return;
-        }
-
-        const hinhAnh = imageUrl.split('/').pop(); // Lấy tên file từ URL
-        console.log("hinhanh: ", hinhAnh);
-        
-        setIsSubmit(true)
-        const res = await callCreateDoctor(email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, mota)
-        console.log("res create: ", res);
-        if(res && res.data){
-            message.success('Tạo mới thông tin bác sĩ thành công');
-            form.resetFields();
-            setImageUrl('');
-            setOpenCreateDoctor(false);
-            await fetchListDoctor()
-        } else {
-            notification.error({
-                message: 'Đã có lỗi xảy ra',
-                description: res.message
-            })
-        }
-        setIsSubmit(false)
-    };
-
-    const handleCancel = () => {
-        setOpenCreateDoctor(false);
-        form.resetFields()
-    };
-
     // upload ảnh    
     const handleUploadFileImage = async ({ file, onSuccess, onError }) => {
 
@@ -98,9 +115,28 @@ const CreateDoctor = (props) => {
             console.log("res upload: ", res);            
             if (res) {
                 setImageUrl(res.url); // URL của hình ảnh từ server
+                // // Thêm file mới vào fileList
+                // setFileList(prevFileList => [
+                //     ...prevFileList,
+                //     {
+                //         uid: file.uid, // Duy trì uid
+                //         name: file.name,
+                //         status: 'done',
+                //         url: res.url, // URL của hình ảnh từ server
+                //     },
+                // ]);
+                // Cập nhật fileList với file mới 
+                setFileList([ // Đặt lại fileList chỉ chứa file mới
+                    {
+                        uid: file.uid,
+                        name: file.name,
+                        status: 'done',
+                        url: res.url, // URL của hình ảnh từ server
+                    },
+                ]);
                 onSuccess(file);
                 // setDataImage()
-                // message.success('Upload thành công');
+                message.success('Upload thành công');
             } else {
                 onError('Đã có lỗi khi upload file');
             }            
@@ -130,23 +166,34 @@ const CreateDoctor = (props) => {
     };
 
     const handleRemoveFile = (file) => {
+        // setFileList(prevFileList => prevFileList.filter(item => item.uid !== file.uid)); // Loại bỏ file
+        setFileList([]); // Reset fileList khi xóa file
         setImageUrl(''); // Reset URL khi xóa file
         message.success(`${file.name} đã được xóa`);
     };
 
+    const handleUpdateDoctor = async () => {
+
+    }
+
+    const handleCancel = () => {
+        setOpenUpdateDoctor(false);
+        form.resetFields()
+    };
+
     return (
         <Modal
-            title="Tạo mới thông tin bác sĩ"
+            title={`Sửa thông tin bác sĩ `}
             style={{
                 top: 20,
             }}
-            open={openCreateDoctor}
+            open={openUpdateDoctor}
             onOk={() => form.submit()} 
             onCancel={() => handleCancel()}
             width={1100}
             maskClosable={false}
             confirmLoading={isSubmit}
-            okText={"Xác nhận tạo mới"}
+            okText={"Lưu"}
             cancelText="Huỷ"
         >
             <Divider />
@@ -162,10 +209,21 @@ const CreateDoctor = (props) => {
                         initialValues={{
                             remember: true,
                         }}
-                        onFinish={handleCreateDoctor}
+                        onFinish={handleUpdateDoctor}
                         autoComplete="off"
                     >
                         <Row gutter={[20,5]}>
+                            <Col hidden>
+                                <Form.Item
+                                    hidden
+                                    labelCol={{ span: 24 }}
+                                    label="ID"
+                                    name="_id"
+                                >
+                                    <Input />
+                                </Form.Item>
+                            </Col>
+
                             <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
@@ -319,7 +377,7 @@ const CreateDoctor = (props) => {
                                     label="Hình ảnh"
                                     name="image"                            
                                 >
-                                    <Upload
+                                    {/* <Upload
                                             name="file" // Tên trùng với multer
                                             listType="picture-card"
                                             className="avatar-uploader"
@@ -334,6 +392,23 @@ const CreateDoctor = (props) => {
                                                 {loading ? <LoadingOutlined /> : <PlusOutlined />}
                                                 <div style={{ marginTop: 8 }}>Upload</div>
                                             </div>
+                                    </Upload> */}
+                                    <Upload
+                                        name="file"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        maxCount={1}
+                                        multiple={false}
+                                        customRequest={handleUploadFileImage}
+                                        beforeUpload={beforeUpload}
+                                        onChange={handleChange}
+                                        onRemove={handleRemoveFile}
+                                        fileList={fileList} // Gán danh sách file
+                                    >
+                                        <div>
+                                            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                            <div style={{ marginTop: 8 }}>Upload</div>
+                                        </div>
                                     </Upload>
                                 </Form.Item>
                             </Col>
@@ -451,9 +526,10 @@ const CreateDoctor = (props) => {
                                             ],
                                             // Other configurations
                                             ckfinder: {
-                                                uploadUrl: '/path/to/your/upload/handler', // Đường dẫn đến handler upload
+                                                uploadUrl: `/api/doctor/upload`, // Đường dẫn đến handler upload  -- van dang loi
                                             },
                                         }}
+                                        data={form.getFieldValue('mota')} // Thiết lập giá trị từ form
                                         onChange={(event, editor) => {
                                             const data = editor.getData();
                                             form.setFieldsValue({ mota: data }); // Cập nhật giá trị cho form
@@ -474,4 +550,4 @@ const CreateDoctor = (props) => {
         </Modal>
     )
 }
-export default CreateDoctor
+export default UpdateDoctor

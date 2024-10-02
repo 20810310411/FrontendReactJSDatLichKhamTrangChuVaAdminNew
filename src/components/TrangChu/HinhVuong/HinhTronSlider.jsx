@@ -45,7 +45,7 @@ const HinhTronSlider = ({ items, urlDoctor }) => {
                     border: "none",
                     // border: "1px solid black",
                     margin: "0 8px",
-                    height: 400,
+                    height: 500,
                     borderRadius: "15px",
                     backgroundColor: "transparent", // Make card background transparent
                   }}
@@ -54,7 +54,7 @@ const HinhTronSlider = ({ items, urlDoctor }) => {
                   {/* <img src={item.src} alt={item.txtP} width={250} height={200} /> */}
                   <Avatar size={210} src={item.src} icon={<UserOutlined />} />
                   <p style={{ fontWeight: "500", fontSize: "19px", textAlign: "center" }}>{item.txtP}</p>
-                  <p style={{ fontSize: "17px", textAlign: "center", color: "gray" }}>{item.txtB}</p>
+                  <p style={{ fontSize: "17px", textAlign: "center", color: "gray",  }}>{item.txtB}</p>
                 </Card>
               ))}
             </div>

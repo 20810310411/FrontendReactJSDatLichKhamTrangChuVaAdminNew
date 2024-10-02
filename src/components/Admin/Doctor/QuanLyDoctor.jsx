@@ -24,6 +24,7 @@ const data = [
   ];
 import './css.scss'
 import CreateDoctor from "./CreateDoctor";
+import UpdateDoctor from "./UpdateDoctor";
 
 const QuanLyDoctor = (props) => {
     const [loadingTable, setLoadingTable] = useState(false)
@@ -35,6 +36,8 @@ const QuanLyDoctor = (props) => {
     const [openViewDoctor, setOpenViewDoctor] = useState(false);
     const [dataDetailDoctor, setDataDetailDoctor] = useState(null);
     const [openCreateDoctor, setOpenCreateDoctor] = useState(false);
+    const [dataUpdateDoctor, setDataUpdateDoctor] = useState(null);
+    const [openUpdateDoctor, setOpenUpdateDoctor] = useState(false);
 
     useEffect(() => {
         fetchListDoctor()
@@ -90,13 +93,16 @@ const QuanLyDoctor = (props) => {
                         <Space size={10} style={{ float: "right" }}>
                             <Button 
                             type="primary" 
-                            icon={<IoAddOutline />} 
+                            style={{
+                                lineHeight: "15px"
+                            }}
+                            icon={<IoAddOutline size={20} />} 
                             className="custom-row"
                             onClick={() => {
                                 setOpenCreateDoctor(true)
                             }}
                             >Thêm bác sĩ</Button>
-                            <Button type="primary" icon={<FaFileExport />} className="custom-row">Export</Button>
+                            <Button type="primary" icon={<FaFileExport size={15} />} className="custom-row">Export</Button>
                         </Space>
                     </Col>
                 </Row>
@@ -142,7 +148,7 @@ const QuanLyDoctor = (props) => {
                                 <Column title={<p className="title-col-style">Họ</p>} dataIndex="lastName" key="lastName" />
                                 <Column title={<p className="title-col-style">Tên</p>} dataIndex="firstName" key="firstName" />
                             </ColumnGroup>
-                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" />                
+                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={200}  />                
                             <Column
                                 title={<p className="title-col-style">Chức năng</p>}
                                 key="action"
@@ -158,8 +164,8 @@ const QuanLyDoctor = (props) => {
 
                                         <EditOutlined style={{color: "orange"}} onClick={() => {
                                             console.log("record update: ", record);
-                                            // setOpenUpdateBook(true)
-                                            // setDataUpdateBook(record)
+                                            setOpenUpdateDoctor(true)
+                                            setDataUpdateDoctor(record)
                                         }} /> 
 
                                         <Popconfirm
@@ -213,6 +219,14 @@ const QuanLyDoctor = (props) => {
                             setOpenCreateDoctor={setOpenCreateDoctor}
                             fetchListDoctor={fetchListDoctor}
                         />    
+
+                        <UpdateDoctor 
+                            dataUpdateDoctor={dataUpdateDoctor}
+                            setDataUpdateDoctor={setDataUpdateDoctor}
+                            openUpdateDoctor={openUpdateDoctor}
+                            setOpenUpdateDoctor={setOpenUpdateDoctor}
+                            fetchListDoctor={fetchListDoctor}
+                        />
                     </Col>
                 </Row>
                 

@@ -250,7 +250,6 @@ const BodyHomePage = () => {
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",
                     marginBottom: "20px",
-                    // height: "80vh"
                 }}>
                     <div style={{display: "flex", width: "100%", justifyContent: "space-between" }}>
                         <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 22vh"}}>Bác sĩ nổi bật</span>                    
@@ -271,7 +270,7 @@ const BodyHomePage = () => {
                     <div 
                         style={{
                             backgroundColor: "transparent", 
-                            width: "77%", height: "80%",                        
+                            width: "77%", height: "100%",                        
                             position: "relative",
                             left: "24vh",
                             
