@@ -120,15 +120,15 @@ const MenuNav = (props) => {
         theme={theme}
         onClick={onClick}
         style={{
-            width: 256,
+            width: 270,
             // height: 1000,
             height: 'calc(100vh - 64px)', // Chiều cao menu bằng chiều cao viewport trừ chiều cao tiêu đề
             borderRadius: "20px", 
-            marginLeft: "20px",
+            marginLeft: "30px",
             boxShadow: "0 4px 30px rgba(0, 0, 0, 0.1)", // Thêm viền mờ
             backdropFilter: "blur(10px)", // Thêm hiệu ứng mờ
             position: "fixed", // Dán menu ở vị trí cố định
-            top: '20px', // Đặt menu ngay dưới tiêu đề
+            top: '30px', // Đặt menu ngay dưới tiêu đề
             
         }}
         defaultOpenKeys={['sub1']}

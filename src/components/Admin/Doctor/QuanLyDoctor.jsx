@@ -25,6 +25,7 @@ const data = [
 import './css.scss'
 import CreateDoctor from "./CreateDoctor";
 import UpdateDoctor from "./UpdateDoctor";
+import moment from "moment";
 
 const QuanLyDoctor = (props) => {
     const [loadingTable, setLoadingTable] = useState(false)
@@ -41,12 +42,13 @@ const QuanLyDoctor = (props) => {
     // dùng để search doctor
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [address, setAddress] = useState('');
     const [filter, setFilter] = useState("");
 
     
     useEffect(() => {
         fetchListDoctor()
-    }, [currentPage, pageSize, firstName, lastName])
+    }, [currentPage, pageSize, firstName, lastName, address])
 
     const fetchListDoctor = async () => {
         setLoadingTable(true)
@@ -58,6 +60,9 @@ const QuanLyDoctor = (props) => {
         }
         if (lastName) {
             query += `&lastName=${encodeURIComponent(lastName)}`;
+        }
+        if (address) {
+            query += `&address=${encodeURIComponent(address)}`;
         }
     
         const res = await fetchAllDoctor(query)
@@ -103,12 +108,14 @@ const QuanLyDoctor = (props) => {
                 pageTitle="Quản lý bác sĩ" 
                 setFirstName={setFirstName} 
                 setLastName={setLastName}
+                setAddress={setAddress}
+                placeholder={'Tìm kiếm doctor ở đây...'}
             >
 
                 {/* Nội dung của BodyAdmin cho quản lý bác sĩ */}
                 <Row>
-                    <Col span={24} style={{padding: "20px", fontSize: "18px"}}>
-                        <span>THÔNG TIN BÁC SĨ</span>
+                    <Col span={24} style={{padding: "0 0 20px", fontSize: "18px"}}>
+                        <span style={{fontWeight: "500", color: "navy"}}>THÔNG TIN BÁC SĨ</span>
                         <Space size={10} style={{ float: "right" }}>
                             <Button 
                             type="primary" 
@@ -132,7 +139,8 @@ const QuanLyDoctor = (props) => {
                                 pagination={false} // Tắt phân trang mặc định của Table
                                 scroll={{ x: 'max-content' }}
                                 rowClassName="custom-row" // Thêm lớp cho hàng    
-                                headerClassName="custom-header" // Lớp cho tiêu đề                            
+                                headerClassName="custom-header" // Lớp cho tiêu đề 
+                                rowKey="_id" // Hoặc key tương ứng                           
                         >
                             <Column title={<p className="title-col-style">STT</p>}
                             dataIndex="stt" 
@@ -167,7 +175,31 @@ const QuanLyDoctor = (props) => {
                                 <Column title={<p className="title-col-style">Họ</p>} dataIndex="lastName" key="lastName" />
                                 <Column title={<p className="title-col-style">Tên</p>} dataIndex="firstName" key="firstName" />
                             </ColumnGroup>
-                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={200}  />                
+                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={200}  />  
+                            {/* <Column 
+                            title={<p className="title-col-style">Ngày tạo</p>} 
+                            dataIndex="createdAt" 
+                            key="createdAt"
+                            render={(text) => (
+                                <>
+                                    {moment(text).format('DD/MM/YYYY')}
+                                    <br />
+                                    {moment(text).format('HH:mm:ss')}
+                                </>
+                            )}
+                            width={200}  />                */}
+                            <Column 
+                            title={<p className="title-col-style">Ngày chỉnh sửa</p>} 
+                            dataIndex="updatedAt" 
+                            key="updatedAt"
+                            render={(text) => (
+                                <>
+                                    {moment(text).format('DD/MM/YYYY')}
+                                    <br />
+                                    {moment(text).format('HH:mm:ss')}
+                                </>
+                            )}
+                            width={200}  />                
                             <Column
                                 title={<p className="title-col-style">Chức năng</p>}
                                 key="action"
@@ -230,6 +262,7 @@ const QuanLyDoctor = (props) => {
                         openViewDoctor={openViewDoctor}
                         setOpenViewDoctor={setOpenViewDoctor}
                         dataDetailDoctor={dataDetailDoctor}
+                        setDataDetailDoctor={setDataDetailDoctor}
 
                         />       
 

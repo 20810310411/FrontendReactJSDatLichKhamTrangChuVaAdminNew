@@ -1,10 +1,10 @@
 // SearchComponent.js
 import React, { useState } from 'react';
-import { Input, Col, Row } from 'antd';
+import { Input } from 'antd';
 
 const { Search } = Input;
 
-const SearchComponent = ({ onSearch }) => {
+const SearchComponent = ({ onSearch, placeholder }) => {
 
     const [searchValue, setSearchValue] = useState('');
     let searchTimeout; // Định nghĩa biến bên ngoài
@@ -26,8 +26,9 @@ const SearchComponent = ({ onSearch }) => {
 
 
     return (
-        <Search 
-            placeholder="Tìm kiếm ở đây..." 
+        <Search
+            style={{height: "50px"}}
+            placeholder={placeholder} 
             onSearch={onSearch} 
             enterButton 
             onChange={(e) => handleSearchChange(e.target.value)} // Gọi hàm xử lý thay đổi
