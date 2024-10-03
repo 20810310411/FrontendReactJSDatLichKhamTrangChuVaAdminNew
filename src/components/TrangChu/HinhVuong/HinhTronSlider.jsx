@@ -45,7 +45,7 @@ const HinhTronSlider = ({ items, urlDoctor }) => {
                     border: "none",
                     // border: "1px solid black",
                     margin: "0 8px",
-                    height: 500,
+                    // height: 500,
                     borderRadius: "15px",
                     backgroundColor: "transparent", // Make card background transparent
                   }}

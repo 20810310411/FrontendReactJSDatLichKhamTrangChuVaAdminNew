@@ -50,3 +50,8 @@ export const deleteDoctor = (_id) => {
 export const deleteChucVu = (_id) => {
     return axios.delete(`/api/doctor/delete-chuc-vu/${_id}`)
 }
+export const updateChucVu = (_id, name, description) => {
+    return axios.put('/api/doctor/update-chuc-vu', {
+        _id, name, description
+    })
+}

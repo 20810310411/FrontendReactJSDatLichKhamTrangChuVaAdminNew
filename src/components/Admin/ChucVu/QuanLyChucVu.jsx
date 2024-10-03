@@ -9,6 +9,7 @@ import './css.scss';
 import moment from "moment";
 import { deleteChucVu, fetchAllChucVu } from "../../../services/apiDoctor";
 import CreateChucVu from "./CreateChucVu";
+import UpdateChucVu from "./UpdateChucVu";
 
 const QuanLyChucVu = () => {
     
@@ -16,6 +17,8 @@ const QuanLyChucVu = () => {
     const [dataChucVu, setDataChucVu] = useState([])
 
     const [opentCreateChucVu, setOpenCreateChucVu] = useState(false)
+    const [openUpdateChucVu, setOpenUpdateChucVu] = useState(false)
+    const [dataUpdateChucVu, setDataUpdateChucVu] = useState(null)
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalChucVu, setTotalChucVu] = useState(0);
@@ -156,8 +159,8 @@ const QuanLyChucVu = () => {
                                         <Space size="middle">                                        
                                             <EditOutlined style={{color: "orange"}} onClick={() => {
                                                 console.log("record update: ", record);
-                                                // setOpenUpdateDoctor(true)
-                                                // setDataUpdateDoctor(record)
+                                                setOpenUpdateChucVu(true)
+                                                setDataUpdateChucVu(record)
                                             }} /> 
 
                                             <Popconfirm
@@ -203,6 +206,14 @@ const QuanLyChucVu = () => {
                             setOpenCreateChucVu={setOpenCreateChucVu}
                             fetchListChucVu={fetchListChucVu}
                         />            
+
+                        <UpdateChucVu 
+                            openUpdateChucVu={openUpdateChucVu}
+                            setOpenUpdateChucVu={setOpenUpdateChucVu}
+                            dataUpdateChucVu={dataUpdateChucVu}
+                            setDataUpdateChucVu={setDataUpdateChucVu}
+                            fetchListChucVu={fetchListChucVu}
+                        />
                     </Col>
                 </Row>
             </AdminLayout>
