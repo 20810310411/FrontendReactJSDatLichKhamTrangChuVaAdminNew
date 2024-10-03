@@ -2,15 +2,26 @@ import { Col, Row } from "antd"
 import { Input, Space } from 'antd';
 import SearchComponent from "./SearchComponent";
 const { Search } = Input;
-const BodyAdmin = ({ content, pageTitle, setFirstName, setLastName, placeholder, setAddress }) => {
+const BodyAdmin = ({ content, pageTitle, placeholder,
+                    setFirstName, setLastName, setAddress,
+                    setTenChucVu }) => {
 
     const onSearch = (value) => {
-        // Tách giá trị tìm kiếm thành firstName và lastName nếu cần
-        const [firstName, lastName, address] = value.split(' ');
-        setFirstName(firstName || '');
-        setLastName(lastName || '');
-        setAddress(address || '');
+        console.log("Giá trị tìm kiếm:", value); // Thêm log này
+        const [firstName, lastName, address, tenChucVu] = value.split(' ');
+    
+        // Log các giá trị đã tách ra
+        console.log("firstName:", firstName);
+        console.log("lastName:", lastName);
+        console.log("address:", address);
+        console.log("tenChucVu:", tenChucVu);
+    
+        setFirstName(value || '');
+        setLastName(value || '');
+        setAddress(value || '');
+        setTenChucVu(value || '');
     };
+    
 
     return (
         <>

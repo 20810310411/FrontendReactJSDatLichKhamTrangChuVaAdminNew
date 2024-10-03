@@ -8,8 +8,8 @@ export const fetchAllChuyenKhoa = () => {
     const URL_BACKEND = '/api/doctor/fetch-all-chuyen-khoa'    
     return axios.get(URL_BACKEND)
 }
-export const fetchAllChucVu = () => {
-    const URL_BACKEND = '/api/doctor/fetch-all-chuc-vu'    
+export const fetchAllChucVu = (query) => {
+    const URL_BACKEND = `/api/doctor/fetch-all-chuc-vu?${query}`    
     return axios.get(URL_BACKEND)
 }
 export const fetchAllPhongKham = () => {
@@ -34,6 +34,11 @@ export const callCreateDoctor = (email, password, firstName, lastName, address, 
         email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
     })
 }
+export const createDoctor = (name, description) => {
+    return axios.post('/api/doctor/create-chuc-vu', {
+        name, description
+    })
+}
 export const updateDoctor = (_id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota) => {
     return axios.put('/api/doctor/update-doctor', {
         _id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
@@ -41,4 +46,7 @@ export const updateDoctor = (_id, email, firstName, lastName, address, phoneNumb
 }
 export const deleteDoctor = (_id) => {
     return axios.delete(`/api/doctor/delete-doctor/${_id}`)
+}
+export const deleteChucVu = (_id) => {
+    return axios.delete(`/api/doctor/delete-chuc-vu/${_id}`)
 }

@@ -30,9 +30,10 @@ import moment from "moment";
 const QuanLyDoctor = (props) => {
     const [loadingTable, setLoadingTable] = useState(false)
     const [dataDoctor, setDataDoctor] = useState([])
+
     const [currentPage, setCurrentPage] = useState(1);
     const [totalDoctors, setTotalDoctors] = useState(0);
-    const [pageSize, setPageSize] = useState(8);
+    const [pageSize, setPageSize] = useState(10);
 
     const [openViewDoctor, setOpenViewDoctor] = useState(false);
     const [dataDetailDoctor, setDataDetailDoctor] = useState(null);
@@ -43,8 +44,6 @@ const QuanLyDoctor = (props) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
-    const [filter, setFilter] = useState("");
-
     
     useEffect(() => {
         fetchListDoctor()

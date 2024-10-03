@@ -5,6 +5,7 @@ import Register from "./pages/Admin/Register";
 import HomeAdmin from "./pages/Admin/HomeAdmin";
 import PageViewDoctor from "./pages/TrangChu/ViewDoctor/pageViewDoctor";
 import QuanLyDoctor from "./components/Admin/Doctor/QuanLyDoctor";
+import QuanLyChucVu from "./components/Admin/ChucVu/QuanLyChucVu";
 
 const App = () => {
 
@@ -24,6 +25,8 @@ const App = () => {
         <Route path="/admin/register-admin" element={<Register />} />  
         {/* quan ly doctor */}
         <Route path="/admin/quan-ly-doctor" element={<QuanLyDoctor />} />  
+        {/* quan ly chuc vu */}
+        <Route path="/admin/quan-ly-chuc-vu" element={<QuanLyChucVu />} />  
 
 
       </Routes>

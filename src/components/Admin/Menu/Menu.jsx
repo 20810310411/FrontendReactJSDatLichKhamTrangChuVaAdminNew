@@ -1,10 +1,11 @@
 import { HomeOutlined, HomeTwoTone, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, message } from 'antd';
 import { useEffect, useState } from 'react';
-import { FaCircleInfo, FaUserDoctor } from 'react-icons/fa6';
+import { FaCircleInfo, FaRankingStar, FaUserDoctor } from 'react-icons/fa6';
 import { Link, useNavigate } from 'react-router-dom';
 import { callLogout } from '../../../services/api';
 import { IoIosPaperPlane } from 'react-icons/io';
+import { MdOutlineLocalFireDepartment, MdOutlineMeetingRoom, MdOutlineRoom } from 'react-icons/md';
 
 const MenuNav = (props) => {
 
@@ -70,21 +71,29 @@ const MenuNav = (props) => {
                     key: '/admin/ke-hoach-doctor',
                     label: <Link style={{fontSize: "17px"}} to="/admin/ke-hoach-doctor">Kế hoạch khám bệnh của bác sĩ</Link>,
                     icon: <IoIosPaperPlane />
+                },                
+            ],
+        },
+        {
+            key: 'pk',
+            label: <label style={{fontSize: "17px"}}>Quản lý Phòng khám</label>,
+            icon: <MdOutlineMeetingRoom size={18} />            ,
+            children: [
+                {
+                    key: '/admin/quan-ly-phong-kham',
+                    label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-phong-kham">Phòng khám</Link>,
+                    icon: <MdOutlineRoom size={20} />
                 },
                 {
-                    key: 'sub3',
-                    label: 'Submenu',
-                    children: [
-                        {
-                            key: '7',
-                            label: 'Option 7',
-                        },
-                        {
-                            key: '8',
-                            label: 'Option 8',
-                        },
-                    ],
-                },
+                    key: '/admin/quan-ly-chuc-vu',
+                    label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-chuc-vu">Chức vụ</Link>,
+                    icon: <FaRankingStar size={20} />
+                }, 
+                {
+                    key: '/admin/quan-ly-chuyen-khoa',
+                    label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-chuyen-khoa">Chuyên khoa</Link>,
+                    icon: <MdOutlineLocalFireDepartment size={20} />
+                },                
             ],
         },
         {
