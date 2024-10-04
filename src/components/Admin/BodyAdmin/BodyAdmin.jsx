@@ -4,7 +4,10 @@ import SearchComponent from "./SearchComponent";
 const { Search } = Input;
 const BodyAdmin = ({ content, pageTitle, placeholder,
                     setFirstName, setLastName, setAddress,
-                    setTenChucVu }) => {
+                    setTenChucVu,
+                    setTenPK, setAddressPK,
+
+                 }) => {
 
     const onSearch = (value) => {
         console.log("Giá trị tìm kiếm:", value); // Thêm log này
@@ -20,6 +23,8 @@ const BodyAdmin = ({ content, pageTitle, placeholder,
         setLastName(value || '');
         setAddress(value || '');
         setTenChucVu(value || '');
+        setTenPK(value || '');
+        setAddressPK(value || '');
     };
     
 

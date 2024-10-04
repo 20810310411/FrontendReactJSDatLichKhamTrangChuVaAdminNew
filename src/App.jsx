@@ -6,6 +6,7 @@ import HomeAdmin from "./pages/Admin/HomeAdmin";
 import PageViewDoctor from "./pages/TrangChu/ViewDoctor/pageViewDoctor";
 import QuanLyDoctor from "./components/Admin/Doctor/QuanLyDoctor";
 import QuanLyChucVu from "./components/Admin/ChucVu/QuanLyChucVu";
+import QuanLyPhongKham from "./components/Admin/PhongKham/QuanLyPhongKham";
 
 const App = () => {
 
@@ -27,6 +28,8 @@ const App = () => {
         <Route path="/admin/quan-ly-doctor" element={<QuanLyDoctor />} />  
         {/* quan ly chuc vu */}
         <Route path="/admin/quan-ly-chuc-vu" element={<QuanLyChucVu />} />  
+        {/* quan ly phong kham */}
+        <Route path="/admin/quan-ly-phong-kham" element={<QuanLyPhongKham />} />  
 
 
       </Routes>

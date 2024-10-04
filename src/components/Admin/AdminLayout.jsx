@@ -2,7 +2,12 @@ import MenuNav from "./Menu/Menu";
 import BodyAdmin from "./BodyAdmin/BodyAdmin";
 
 
-const AdminLayout = ({ children, pageTitle, setFirstName, setLastName, placeholder, setAddress, setTenChucVu  }) => {
+const AdminLayout = ({ children, pageTitle, placeholder,
+                setFirstName, setLastName, setAddress, 
+                setTenChucVu,
+                setTenPK, setAddressPK
+            
+            }) => {
     return (
         <div style={{ height: 250, 
             // textAlign: 'center', 
@@ -18,6 +23,8 @@ const AdminLayout = ({ children, pageTitle, setFirstName, setLastName, placehold
                 setLastName={setLastName || (() => {})}
                 setAddress={setAddress || (() => {})}
                 setTenChucVu={setTenChucVu || (() => {})}
+                setTenPK={setTenPK || (() => {})}
+                setAddressPK={setAddressPK || (() => {})}
                 placeholder={placeholder}
             /> {/* Truyền nội dung vào BodyAdmin */}
         </div>

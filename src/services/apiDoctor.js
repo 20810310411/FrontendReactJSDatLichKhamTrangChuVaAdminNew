@@ -12,8 +12,8 @@ export const fetchAllChucVu = (query) => {
     const URL_BACKEND = `/api/doctor/fetch-all-chuc-vu?${query}`    
     return axios.get(URL_BACKEND)
 }
-export const fetchAllPhongKham = () => {
-    const URL_BACKEND = '/api/doctor/fetch-all-phong-kham'    
+export const fetchAllPhongKham = (query) => {
+    const URL_BACKEND = `/api/doctor/fetch-all-phong-kham?${query}`    
     return axios.get(URL_BACKEND)
 }
 export const callUploadDoctorImg = (file) => {
