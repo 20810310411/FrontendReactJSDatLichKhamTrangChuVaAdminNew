@@ -40,13 +40,15 @@ const HinhVuong = ({ items, width, height, loadingCard }) => {
                     width: 350,
                     border: "1px solid rgb(187, 187, 187)",
                     margin: "0 8px",
-                    height: 370,
+                    // height: 370,
                     borderRadius: "15px",
                   }}
                   loading={loadingCard}
                 >
                   <img src={item.src} alt={item.txtP} width={width} height={height} />
                   <p style={{ fontWeight: "500", fontSize: "20px", textAlign: "center" }}>{item.txtP}</p>
+                  <p style={{ fontWeight: "300", fontSize: "17px", textAlign: "center", color: "gray" }}>{item.txtAddress}</p>
+
                 </Card>
               ))}
             </div>

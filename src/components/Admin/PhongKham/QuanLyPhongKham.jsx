@@ -21,7 +21,7 @@ const QuanLyPhongKham = () => {
 
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPKs, setTotalPKs] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
+    const [pageSize, setPageSize] = useState(5);
 
     const [openCreatePK, setOpenCreatePK] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
@@ -149,7 +149,7 @@ const QuanLyPhongKham = () => {
                                 }}
                             /> */}
                             <Column title={<p className="title-col-style">Tên phòng khám</p>} dataIndex="name" key="name" />
-                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={400}  />
+                            <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={550}  />
                             {/* <Column 
                                 title={<p className="title-col-style">Mô tả</p>} 
                                 dataIndex="description" 

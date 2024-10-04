@@ -5,13 +5,14 @@ import HinhChuNhat from "../../../components/TrangChu/HinhChuNhat/HinhChuNhat";
 import HinhVuong from "../../../components/TrangChu/HinhVuong/Slider";
 import HinhTronSlider from "../../../components/TrangChu/HinhVuong/HinhTronSlider";
 import { useEffect, useState } from "react";
-import { fetchAllChuyenKhoa, fetchAllDoctor } from "../../../services/apiDoctor";
+import { fetchAllChuyenKhoa, fetchAllDoctor, fetchAllPhongKham } from "../../../services/apiDoctor";
 
 
 
 const BodyHomePage = () => {
 
     const [dataDoctor, setDataDoctor] = useState(null)
+    const [dataPhongKham, setDataPhongKham] = useState(null)
     const [dataChuyenKhoa, setDataChuyenKhoa] = useState(null)
     const [loadingCard, setLoadingCard] = useState(true)
 
@@ -19,6 +20,7 @@ const BodyHomePage = () => {
         const fetchData = async () => {
             await listChuyenKhoa();
             await listDoctor();
+            await listPhongKham();
         };
     
         fetchData();
@@ -28,6 +30,13 @@ const BodyHomePage = () => {
         const res = await fetchAllDoctor()
         if(res && res.data){
             setDataDoctor(res.data)
+        }
+    }
+
+    const listPhongKham = async () => {
+        const res = await fetchAllPhongKham()
+        if(res && res.data){
+            setDataPhongKham(res.data)
         }
     }
 
@@ -99,54 +108,22 @@ const BodyHomePage = () => {
     ];
 
     const items_ChuyenKhoa = dataChuyenKhoa ? dataChuyenKhoa.map(chuyenKhoa => ({
-        src: chuyenKhoa.image, 
-        txtP: `${chuyenKhoa.name}`,
+        src: chuyenKhoa?.image, 
+        txtP: `${chuyenKhoa?.name}`,
+        txtAddress: ``
     })) : [];
 
-    const items_CoSoYTe = [
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2018/06/18/083122lo-go-viet-duc.jpg',
-            txtP: 'Bệnh viện Hữu nghị Việt Đức'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2019/03/11/152704logo-bvcr-moi.jpg',
-            txtP: 'Bệnh viện Chợ Rẫy'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2022/08/26/092249-doctor-check.jpg',
-            txtP: 'Doctor Check - Tầm Soát Bệnh Để Sống Thọ Hơn'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2022/07/14/155206-logo-y-duoc-1.jpg',
-            txtP: 'Phòng khám Bệnh viện Đại Học Y Dược 1'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2019/07/31/085056logobenhvien108.jpg',
-            txtP: 'Trung tâm Khám sức khỏe định kỳ, Bệnh vện Trung ương Quân đội 108'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2023/05/16/153236-logo-hung-viet.jpg',
-            txtP: 'Bệnh viện Ung bướu Hưng Việt'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2022/08/29/104922-logo-med-tai-ha-noi--01.png',
-            txtP: 'Hệ thống y tế MEDLATEC'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2022/06/23/160340-logo-diag.png',
-            txtP: 'Trung tâm xét nghiệm Diag Laboratories'
-        },
-        {
-            src: 'https://cdn.bookingcare.vn/fo/w640/2021/04/07/103904-logo-thucuc.png',
-            txtP: 'Hệ thống Y tế Thu Cúc TCI'
-        },
-    ];
+    const items_PhongKham = dataPhongKham ? dataPhongKham.map(phongKham => ({
+        src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${phongKham?.image}`, 
+        txtP: `${phongKham?.name}`,
+        txtAddress: `${phongKham?.address}`
+    })) : [];
 
     const items_BacSiNoiBat = dataDoctor ? dataDoctor.map(doctor => ({
-        src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${doctor.image}`, 
-        txtP: `${doctor.chucVuId.map(chucVu => chucVu.name).join(', ')}
-                , ${doctor.lastName} ${doctor.firstName}`,
-        txtB: `${doctor.chuyenKhoaId.map(chuyenKhoa => chuyenKhoa.name).join(', ')}`
+        src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${doctor?.image}`, 
+        txtP: `${doctor?.chucVuId.map(chucVu => chucVu?.name).join(', ')}
+                , ${doctor?.lastName} ${doctor?.firstName}`,
+        txtB: `${doctor?.chuyenKhoaId.map(chuyenKhoa => chuyenKhoa.name).join(', ')}`
     })) : [];
     
 
@@ -223,7 +200,7 @@ const BodyHomePage = () => {
             <div className="danh-cho-ban" style={{margin: "30px 0"}}>                
                 <Row  className="ben-trong" >
                     <div style={{display: "flex", width: "100%", justifyContent: "space-between" }}>
-                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 0"}}>Cơ sở y tế</span>                    
+                        <span style={{fontWeight: "500", fontSize: "4vh", padding: "4vh 0"}}>Phòng khám</span>                    
                         <span style={{
                             fontWeight: "500", 
                             fontSize: "3vh", 
@@ -238,7 +215,7 @@ const BodyHomePage = () => {
                             padding: "3px 10px"}}
                         >Xem thêm</span>    
                     </div> 
-                    <HinhVuong items={items_CoSoYTe} width={300} height={200} loadingCard={loadingCard}  />              
+                    <HinhVuong items={items_PhongKham} width={300} height={200} loadingCard={loadingCard}  />              
                 </Row>                        
             </div>
 
@@ -297,7 +274,7 @@ const BodyHomePage = () => {
                             padding: "3px 10px"}}
                         >Xem thêm</span>    
                     </div> 
-                    <HinhVuong items={items_CoSoYTe}  width={300} height={200} loadingCard={loadingCard} />              
+                    <HinhVuong items={items_PhongKham}  width={300} height={200} loadingCard={loadingCard} />              
                 </Row>                        
             </div>
 
