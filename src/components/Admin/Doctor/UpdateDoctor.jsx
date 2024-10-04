@@ -467,6 +467,7 @@ const UpdateDoctor = (props) => {
                                     <Modal
                                         visible={isModalVisible}
                                         footer={null}
+                                        title="Xem Hình Ảnh"
                                         onCancel={() => setIsModalVisible(false)}
                                     >
                                         <img alt="Uploaded" style={{ width: '100%' }} src={imageUrl} />

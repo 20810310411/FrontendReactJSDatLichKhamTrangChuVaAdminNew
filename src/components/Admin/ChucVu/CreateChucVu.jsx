@@ -1,6 +1,6 @@
 import { Col, Divider, Form, Input, message, Modal, notification, Row } from "antd";
 import { useState } from "react";
-import { createDoctor } from "../../../services/apiDoctor";
+import { createChucVu } from "../../../services/apiDoctor";
 
 
 const CreateChucVu = (props) => {
@@ -21,7 +21,7 @@ const CreateChucVu = (props) => {
 
         const {name, description} = values
         setIsSubmit(true)
-        const res = await createDoctor(name, description)
+        const res = await createChucVu(name, description)
         console.log("res chucvu: ", res);
 
         if(res && res.data) {

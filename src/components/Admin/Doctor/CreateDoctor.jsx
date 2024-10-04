@@ -22,7 +22,8 @@ const CreateDoctor = (props) => {
  
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
-    const [dataImage, setDataImage] = useState([]);
+    // hiển thị hình ảnh dạng modal khi upload muốn xem lại
+    const [isImagePreviewVisible, setIsImagePreviewVisible] = useState(false);
 
     useEffect(() => {
         fetchAllChucVuDoctor()
@@ -132,6 +133,13 @@ const CreateDoctor = (props) => {
     const handleRemoveFile = (file) => {
         setImageUrl(''); // Reset URL khi xóa file
         message.success(`${file.name} đã được xóa`);
+    };
+
+    // mở đóng modal hình ảnh
+    const handlePreview = async () => {
+        if (imageUrl) {
+            setIsImagePreviewVisible(true);
+        }
     };
 
     return (
@@ -329,12 +337,22 @@ const CreateDoctor = (props) => {
                                             beforeUpload={beforeUpload}
                                             onChange={handleChange}
                                             onRemove={handleRemoveFile}
+                                            onPreview={handlePreview} // Sử dụng onPreview
                                         >
                                             <div>
                                                 {loading ? <LoadingOutlined /> : <PlusOutlined />}
                                                 <div style={{ marginTop: 8 }}>Upload</div>
                                             </div>
                                     </Upload>
+
+                                    <Modal
+                                        visible={isImagePreviewVisible}
+                                        title="Xem Hình Ảnh"
+                                        footer={null}
+                                        onCancel={() => setIsImagePreviewVisible(false)}
+                                    >
+                                        <img height={550} alt="image" style={{ width: '100%' }} src={imageUrl} />
+                                    </Modal>
                                 </Form.Item>
                             </Col>
 

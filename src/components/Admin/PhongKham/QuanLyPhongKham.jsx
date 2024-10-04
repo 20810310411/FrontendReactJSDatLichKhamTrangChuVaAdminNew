@@ -6,7 +6,8 @@ import { FaFileExport } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
 import moment from 'moment'
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons'
-import { fetchAllPhongKham } from '../../../services/apiDoctor'
+import { deletePhongKham, fetchAllPhongKham } from '../../../services/apiDoctor'
+import CreatePhongKham from './CreatePhongKham'
 const { Search } = Input;
 const { Column, ColumnGroup } = Table;
 
@@ -52,19 +53,19 @@ const QuanLyPhongKham = () => {
 
     const handleDeletePK = async (id) => {
 
-        // const res = await deleteDoctor(id)
-        // if(res){
-        //     notification.success({
-        //         message: "Xóa thông tin bác sĩ",
-        //         description: "Bạn đã xoá thành công"
-        //     })
-        //     await fetchListDoctor()
-        // } else {
-        //     notification.error({
-        //         message: "Xoá tài khoản user",
-        //         description: JSON.stringify(res.message)
-        //     })
-        // }
+        const res = await deletePhongKham(id)
+        if(res){
+            notification.success({
+                message: "Xóa thông tin phòng khám",
+                description: "Bạn đã xoá thành công"
+            })
+            await fetchListPK()
+        } else {
+            notification.error({
+                message: "Xoá phòng khám",
+                description: JSON.stringify(res.message)
+            })
+        }
     }
 
     const onChangePagination = (page, pageSize) => {
@@ -199,6 +200,12 @@ const QuanLyPhongKham = () => {
                                 jump_to_confirm: 'Xác nhận',  // Điều chỉnh "Go"
                                 page: '',  // Bỏ hoặc thay đổi chữ "Page" nếu cần
                             }}
+                        />
+
+                        <CreatePhongKham 
+                            openCreatePK={openCreatePK}
+                            setOpenCreatePK={setOpenCreatePK}
+                            fetchListPK={fetchListPK}
                         />
 
                     </Col>
