@@ -1,4 +1,4 @@
-import { Badge, Descriptions, Drawer } from "antd";
+import { Badge, Collapse, Descriptions, Drawer } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import './css.scss'
@@ -123,6 +123,7 @@ const ViewDoctor = (props) => {
         
       ];
 
+      const text = `${dataDetailDoctor?.mota}`
     return (
         <Drawer
             title={dataDetailDoctor ? `Thông tin chi tiết của Bác sĩ ${dataDetailDoctor.lastName} ${dataDetailDoctor.firstName}` : "Thông tin bác sĩ"}
@@ -132,6 +133,18 @@ const ViewDoctor = (props) => {
             open={openViewDoctor}        
         >
             <Descriptions title="Chi tiết" bordered items={items} />
+
+            <Collapse
+                style={{marginTop: "30px"}}
+                size="large"
+                items={[
+                    {
+                    key: 'mota',
+                    label: 'Xem mô tả chi tiết',
+                    children: <div className="truncate"  dangerouslySetInnerHTML={{ __html: text }} />,
+                    },
+                ]}
+            />
         </Drawer>
     )
 }

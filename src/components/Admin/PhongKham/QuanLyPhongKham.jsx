@@ -12,6 +12,7 @@ const { Search } = Input;
 const { Column, ColumnGroup } = Table;
 import parse from 'html-react-parser';
 import UpdatePhongKham from './UpdatePhongKham'
+import ViewPhongKham from './ViewPhongKham'
 
 const QuanLyPhongKham = () => {
 
@@ -25,6 +26,8 @@ const QuanLyPhongKham = () => {
     const [openCreatePK, setOpenCreatePK] = useState(false);
     const [openModalUpdate, setOpenModalUpdate] = useState(false);
     const [dataUpdate, setDataUpdate] = useState('');
+    const [openDrawerDetail, setOpenDrawerDetail] = useState(false);
+    const [dataDetail, setDataDetail] = useState('');
 
     // dùng để search doctor
     const [tenPK, setTenPK] = useState('');
@@ -147,7 +150,7 @@ const QuanLyPhongKham = () => {
                             /> */}
                             <Column title={<p className="title-col-style">Tên phòng khám</p>} dataIndex="name" key="name" />
                             <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={400}  />
-                            <Column 
+                            {/* <Column 
                                 title={<p className="title-col-style">Mô tả</p>} 
                                 dataIndex="description" 
                                 key="description" 
@@ -161,7 +164,7 @@ const QuanLyPhongKham = () => {
                                         <div className="truncate"  dangerouslySetInnerHTML={{ __html: text }} />
                                     ); // Hiển thị nội dung HTML
                                 }}
-                            />                            
+                            />                             */}
                             <Column
                                 title={<p className="title-col-style">Chức năng</p>}
                                 key="action"
@@ -170,8 +173,8 @@ const QuanLyPhongKham = () => {
                                         <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
                                             onClick={() => {
                                                 console.log("record: ", record);                                                
-                                                // setOpenViewDoctor(true)
-                                                // setDataDetailDoctor(record)
+                                                setOpenDrawerDetail(true)
+                                                setDataDetail(record)
                                             }} 
                                         />
 
@@ -233,6 +236,12 @@ const QuanLyPhongKham = () => {
                             dataUpdate={dataUpdate}
                         />
 
+                        <ViewPhongKham 
+                            openDrawerDetail={openDrawerDetail}
+                            setOpenDrawerDetail={setOpenDrawerDetail}
+                            dataDetail={dataDetail}
+                            setDataDetail={setDataDetail}
+                        />
                     </Col>
                 </Row>
             </AdminLayout>
