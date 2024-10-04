@@ -10,6 +10,8 @@ import { deletePhongKham, fetchAllPhongKham } from '../../../services/apiDoctor'
 import CreatePhongKham from './CreatePhongKham'
 const { Search } = Input;
 const { Column, ColumnGroup } = Table;
+import parse from 'html-react-parser';
+import UpdatePhongKham from './UpdatePhongKham'
 
 const QuanLyPhongKham = () => {
 
@@ -21,6 +23,8 @@ const QuanLyPhongKham = () => {
     const [pageSize, setPageSize] = useState(10);
 
     const [openCreatePK, setOpenCreatePK] = useState(false);
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState('');
 
     // dùng để search doctor
     const [tenPK, setTenPK] = useState('');
@@ -143,7 +147,21 @@ const QuanLyPhongKham = () => {
                             /> */}
                             <Column title={<p className="title-col-style">Tên phòng khám</p>} dataIndex="name" key="name" />
                             <Column title={<p className="title-col-style">Địa chỉ</p>} dataIndex="address" key="address" width={400}  />
-                            <Column title={<p className="title-col-style">Mô tả</p>} dataIndex="description" key="description" width={200}  />                            
+                            <Column 
+                                title={<p className="title-col-style">Mô tả</p>} 
+                                dataIndex="description" 
+                                key="description" 
+                                width={100}  
+                                render={(text) => {
+                                    if (!text) {
+                                        return <div></div>; // Trả về một div trống nếu text là undefined hoặc falsy
+                                    }
+
+                                    return (
+                                        <div className="truncate"  dangerouslySetInnerHTML={{ __html: text }} />
+                                    ); // Hiển thị nội dung HTML
+                                }}
+                            />                            
                             <Column
                                 title={<p className="title-col-style">Chức năng</p>}
                                 key="action"
@@ -159,8 +177,8 @@ const QuanLyPhongKham = () => {
 
                                         <EditOutlined style={{color: "orange"}} onClick={() => {
                                             console.log("record update: ", record);
-                                            // setOpenUpdateDoctor(true)
-                                            // setDataUpdateDoctor(record)
+                                            setOpenModalUpdate(true)
+                                            setDataUpdate(record)
                                         }} /> 
 
                                         <Popconfirm
@@ -206,6 +224,13 @@ const QuanLyPhongKham = () => {
                             openCreatePK={openCreatePK}
                             setOpenCreatePK={setOpenCreatePK}
                             fetchListPK={fetchListPK}
+                        />
+
+                        <UpdatePhongKham 
+                            fetchListPK={fetchListPK}
+                            openModalUpdate={openModalUpdate}
+                            setOpenModalUpdate={setOpenModalUpdate}
+                            dataUpdate={dataUpdate}
                         />
 
                     </Col>

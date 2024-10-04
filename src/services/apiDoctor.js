@@ -52,14 +52,20 @@ export const fetchAllPhongKham = (query) => {
     const URL_BACKEND = `/api/doctor/fetch-all-phong-kham?${query}`    
     return axios.get(URL_BACKEND)
 }
-export const createPhongKham = (name, address, description , hinhAnh) => {
+export const createPhongKham = (name, address, description , image) => {
     return axios.post('/api/doctor/create-phong-kham', {
-        name, address, description , hinhAnh
+        name, address, description , image
     })
 }
 export const deletePhongKham = (_id) => {
     return axios.delete(`/api/doctor/delete-phong-kham/${_id}`)
 }
+export const updatePhongKham = (_id, name, address, description , image) => {
+    return axios.put('/api/doctor/update-phong-kham', {
+        _id, name, address, description , image
+    })
+}
+
 
 // upload hình ảnh
 export const callUploadDoctorImg = (file) => {

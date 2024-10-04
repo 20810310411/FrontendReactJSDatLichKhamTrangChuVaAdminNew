@@ -1,7 +1,7 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham, updateDoctor } from "../../../services/apiDoctor";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
@@ -15,6 +15,7 @@ const UpdateDoctor = (props) => {
     } = props
 
     const [form] = Form.useForm()
+    const editorRef = useRef(null);
     const [isSubmit, setIsSubmit] = useState(false);
     const [loading, setLoading] = useState(false);
     const [dataChucVu, setDataChucVu] = useState([])
@@ -34,7 +35,7 @@ const UpdateDoctor = (props) => {
     }, [])
 
     useEffect(() => {
-        if (dataUpdateDoctor?._id) {       
+        if (openUpdateDoctor && dataUpdateDoctor?._id) {       
             const chucVuId = Array.isArray(dataUpdateDoctor.chucVuId) 
                             ? dataUpdateDoctor.chucVuId.map(item => item._id) // Nếu là mảng, lấy tất cả _id
                             : [dataUpdateDoctor.chucVuId._id]; // Nếu không, lấy _id từ đối tượng
@@ -68,7 +69,7 @@ const UpdateDoctor = (props) => {
                 password: dataUpdateDoctor.password,
                 phoneNumber: dataUpdateDoctor.phoneNumber,
                 gender: dataUpdateDoctor.gender,
-                mota: dataUpdateDoctor.mota,
+                mota: dataUpdateDoctor.mota || '',
                 chucVuId: chucVuId,
                 chuyenKhoaId: chuyenKhoaId,
                 phongKhamId: dataUpdateDoctor.phongKhamId._id, 
@@ -79,11 +80,14 @@ const UpdateDoctor = (props) => {
             setInitForm(init);  
             setImageUrl(dataUpdateDoctor.image)          
             form.setFieldsValue(init);
+            if (editorRef.current) {
+                editorRef.current.setData(dataUpdateDoctor.mota || ''); // Set giá trị cho CKEditor
+            }
         }
         return () => {
             form.resetFields();
         }
-    },[dataUpdateDoctor])
+    },[dataUpdateDoctor, openUpdateDoctor])
 
     console.log("dataUpdateDoctor: ", dataUpdateDoctor);
     console.log("imageUrl: ", imageUrl);
@@ -592,7 +596,10 @@ const UpdateDoctor = (props) => {
                                                 uploadUrl: `${import.meta.env.VITE_BACKEND_URL}/api/doctor/upload/`, // Đường dẫn đến handler upload  -- van dang loi
                                             },
                                         }}
-                                        data={form.getFieldValue('mota')} // Thiết lập giá trị từ form
+                                        data={form.getFieldValue('mota') || ''} // Thiết lập giá trị từ form
+                                        onInit={(editor) => {
+                                            editorRef.current = editor; // Gán ref khi CKEditor khởi tạo
+                                        }}
                                         onChange={(event, editor) => {
                                             const data = editor.getData();
                                             form.setFieldsValue({ mota: data }); // Cập nhật giá trị cho form

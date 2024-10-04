@@ -1,64 +1,77 @@
-import { Col, Divider, Form, Input, message, Modal, notification, Row, Upload } from "antd"
-import { useState } from "react";
-import { callUploadDoctorImg, createPhongKham } from "../../../services/apiDoctor";
+import { Col, Divider, Form, Input, message, Modal, notification, Row, Upload } from "antd";
+import { useEffect, useRef, useState } from "react";
+import { callUploadDoctorImg, updatePhongKham } from "../../../services/apiDoctor";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
-const CreatePhongKham = (props) => {
+const UpdatePhongKham = (props) => {
     const {
-        openCreatePK, setOpenCreatePK, fetchListPK
+        fetchListPK, openModalUpdate, setOpenModalUpdate, dataUpdate
     } = props
+
+    const editorRef = useRef(null);
 
     const [form] = Form.useForm()
     const [isSubmit, setIsSubmit] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState('');
+    const [fileList, setFileList] = useState([]);    
+
     // hiển thị hình ảnh dạng modal khi upload muốn xem lại
-    const [isImagePreviewVisible, setIsImagePreviewVisible] = useState(false);
+    const [isModalVisible, setIsModalVisible] = useState(false);
+
+    useEffect(() => {
+        if(openModalUpdate && dataUpdate?._id){
+
+            // Tạo danh sách file cho Upload
+            if (dataUpdate.image) {
+
+                console.log(`ảnh: ${import.meta.env.VITE_BACKEND_URL}/api/doctor/upload/${dataUpdate.image}`);
+                
+                
+                setFileList([
+                    {
+                        uid: '-1', // uid phải là một chuỗi duy nhất
+                        name: dataUpdate.image, // Tên file
+                        status: 'done', // Trạng thái
+                        url: `${import.meta.env.VITE_BACKEND_URL}/uploads/${dataUpdate.image}`, // Đường dẫn đến hình ảnh
+                    },
+                ]);                
+            }
+            const init = {
+                _id: dataUpdate._id,
+                name: dataUpdate.name,                    
+                address: dataUpdate.address,
+                description: dataUpdate.description || '',                    
+                image: dataUpdate.image                        
+            }
+            console.log("init: ", init);
+
+            setImageUrl(dataUpdate.image)          
+            form.setFieldsValue(init);
+            if (editorRef.current) {
+                editorRef.current.setData(dataUpdate.description || ''); // Set giá trị cho CKEditor
+            }
+        }
+        return () => {
+            form.resetFields();
+        }
+    },[dataUpdate, openModalUpdate])
 
     const handleCancel = () => {
-        setOpenCreatePK(false);
+        setOpenModalUpdate(false);
         setImageUrl('')
         form.resetFields()
     };
 
-    const handleCreatePK = async (values) => {
-        const {name, address, description} = values              
-
-        if (!imageUrl) {
-            notification.error({
-                message: 'Lỗi validate',
-                description: 'Vui lòng upload hình ảnh'
-            })
-            return;
-        }
-        
-        const hinhAnh = imageUrl.split('/').pop(); // Lấy tên file từ URL
-        console.log("hinhanh: ", hinhAnh);
-
-        setIsSubmit(true)
-        const res = await createPhongKham(name, address, description , hinhAnh)
-        console.log("Data sent to API:", { name, address, description, hinhAnh });
-        console.log("res create: ", res);
-        if(res && res.data){
-            message.success('Tạo mới thông tin phòng khám thành công');
-            form.resetFields();
-            setImageUrl('');
-            setOpenCreatePK(false);
-            await fetchListPK()
-        } else {
-            notification.error({
-                message: 'Đã có lỗi xảy ra',
-                description: res.message
-            })
-        }
-        setIsSubmit(false)
+    // / upload ảnh   
+    const handlePreview = async (file) => {
+        setImageUrl(fileList[0].url); // Lấy URL của hình ảnh
+        setIsModalVisible(true); // Mở modal
     };
 
-
-    // upload ảnh    
     const handleUploadFileImage = async ({ file, onSuccess, onError }) => {
 
         setLoading(true);
@@ -67,9 +80,17 @@ const CreatePhongKham = (props) => {
             console.log("res upload: ", res);            
             if (res) {
                 setImageUrl(res.url); // URL của hình ảnh từ server
+                // Cập nhật fileList với file mới 
+                setFileList([ // Đặt lại fileList chỉ chứa file mới
+                    {
+                        uid: file.uid,
+                        name: file.name,
+                        status: 'done',
+                        url: res.url, // URL của hình ảnh từ server
+                    },
+                ]);
                 onSuccess(file);
-                // setDataImage()
-                // message.success('Upload thành công');
+                message.success('Upload thành công');
             } else {
                 onError('Đã có lỗi khi upload file');
             }            
@@ -99,27 +120,53 @@ const CreatePhongKham = (props) => {
     };
 
     const handleRemoveFile = (file) => {
+        // setFileList(prevFileList => prevFileList.filter(item => item.uid !== file.uid)); // Loại bỏ file
+        setFileList([]); // Reset fileList khi xóa file
         setImageUrl(''); // Reset URL khi xóa file
         message.success(`${file.name} đã được xóa`);
     };
 
-    // mở đóng modal hình ảnh
-    const handlePreview = async () => {
-        if (imageUrl) {
-            setIsImagePreviewVisible(true);
+    const handleUpdatePK  = async (values) => {
+
+        const {_id, name, address, description , image} = values
+        if (!imageUrl) {
+            notification.error({
+                message: 'Lỗi validate',
+                description: 'Vui lòng upload hình ảnh'
+            })
+            return;
         }
-    };
-    
+
+        const hinhAnh = imageUrl.split('/').pop(); // Lấy tên file từ URL
+        console.log("hinhanh: ", hinhAnh);
+
+        setIsSubmit(true)
+        const res = await updatePhongKham( _id, name, address, description , hinhAnh)
+
+        if(res){
+            message.success(res.message);
+            handleCancel()
+            setImageUrl('')
+            await fetchListPK()
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }        
+        setIsSubmit(false)
+    }
+
     return (
         <Modal
-            title="Tạo mới thông tin phòng khám"
-            open={openCreatePK}
+            title="Chỉnh sửa thông tin phòng khám"
+            open={openModalUpdate}
             onOk={() => form.submit()} 
             onCancel={() => handleCancel()}
             width={600}
             maskClosable={false}
             confirmLoading={isSubmit}
-            okText={"Xác nhận tạo mới"}
+            okText={"Lưu"}
             cancelText="Huỷ"
         >
             <Divider />
@@ -135,10 +182,21 @@ const CreatePhongKham = (props) => {
                         initialValues={{
                             remember: true,
                         }}
-                        onFinish={handleCreatePK}
+                        onFinish={handleUpdatePK}
                         autoComplete="off"
                     >
                         <Row gutter={[20,5]}>
+                            <Col span={24} md={24} sm={24} xs={24}>
+                                <Form.Item
+                                    hidden
+                                    labelCol={{ span: 24 }}
+                                    layout="vertical"
+                                    label="ID"
+                                    name="_id"                                    
+                                >
+                                <Input />
+                                </Form.Item>
+                            </Col>
                             <Col span={24} md={24} sm={24} xs={24}>
                                 <Form.Item
                                     layout="vertical"
@@ -177,30 +235,31 @@ const CreatePhongKham = (props) => {
                                     name="image"                            
                                 >
                                     <Upload
-                                            name="file" // Tên trùng với multer
-                                            listType="picture-card"
-                                            className="avatar-uploader"
-                                            maxCount={1}
-                                            multiple={false}
-                                            customRequest={handleUploadFileImage}
-                                            beforeUpload={beforeUpload}
-                                            onChange={handleChange}
-                                            onRemove={handleRemoveFile}
-                                            onPreview={handlePreview} // Sử dụng onPreview
-                                        >
-                                            <div>
-                                                {loading ? <LoadingOutlined /> : <PlusOutlined />}
-                                                <div style={{ marginTop: 8 }}>Upload</div>
-                                            </div>
+                                        name="file"
+                                        listType="picture-card"
+                                        className="avatar-uploader"
+                                        maxCount={1}
+                                        multiple={false}
+                                        customRequest={handleUploadFileImage}
+                                        beforeUpload={beforeUpload}
+                                        onChange={handleChange}
+                                        onRemove={handleRemoveFile}
+                                        fileList={fileList} // Gán danh sách file
+                                        onPreview={handlePreview}
+                                    >
+                                        <div>
+                                            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+                                            <div style={{ marginTop: 8 }}>Upload</div>
+                                        </div>
                                     </Upload>
 
                                     <Modal
-                                        visible={isImagePreviewVisible}
-                                        title="Xem Hình Ảnh"
+                                        visible={isModalVisible}
                                         footer={null}
-                                        onCancel={() => setIsImagePreviewVisible(false)}
+                                        title="Xem Hình Ảnh"
+                                        onCancel={() => setIsModalVisible(false)}
                                     >
-                                        <img height={500} alt="image" style={{ width: '100%' }} src={imageUrl} />
+                                        <img alt="Uploaded" style={{ width: '100%' }} src={imageUrl} />
                                     </Modal>
                                 </Form.Item>
                             </Col>
@@ -227,6 +286,10 @@ const CreatePhongKham = (props) => {
                                                 uploadUrl: '/path/to/your/upload/handler', // Đường dẫn đến handler upload
                                             },
                                         }}
+                                        data={form.getFieldValue('description') || ''} // Thiết lập giá trị mặc định
+                                        onInit={(editor) => {
+                                            editorRef.current = editor; // Gán ref khi CKEditor khởi tạo
+                                        }}
                                         onChange={(event, editor) => {
                                             const data = editor.getData();
                                             form.setFieldsValue({ description: data }); // Cập nhật giá trị cho form
@@ -246,4 +309,4 @@ const CreatePhongKham = (props) => {
         </Modal>
     )
 }
-export default CreatePhongKham
+export default UpdatePhongKham
