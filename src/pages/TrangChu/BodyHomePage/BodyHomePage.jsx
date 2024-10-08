@@ -108,7 +108,7 @@ const BodyHomePage = () => {
     ];
 
     const items_ChuyenKhoa = dataChuyenKhoa ? dataChuyenKhoa.map(chuyenKhoa => ({
-        src: chuyenKhoa?.image, 
+        src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${chuyenKhoa?.image}`, 
         txtP: `${chuyenKhoa?.name}`,
         txtAddress: ``
     })) : [];

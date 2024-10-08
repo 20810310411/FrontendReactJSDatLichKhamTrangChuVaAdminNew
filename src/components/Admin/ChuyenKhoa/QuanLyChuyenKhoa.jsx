@@ -131,13 +131,27 @@ const QuanLyChuyenKhoa = () => {
                                     <img
                                         src={imageUrl}
                                         alt={`chuyen khoa ${text}`}
-                                        style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: "10px", border: "1px solid navy" }}
+                                        style={{ width: 100, height: 100, objectFit: 'cover', borderRadius: "10px", border: "1px solid red" }}
                                     />
                                 );
                             }}
                         />
                         <Column title={<p className="title-col-style">Tên chuyên khoa</p>} dataIndex="name" key="name" />
+                        <Column 
+                                title={<p className="title-col-style">Mô tả</p>} 
+                                dataIndex="description" 
+                                key="description" 
+                                // width={200}  
+                                render={(text) => {
+                                    if (!text) {
+                                        return <div></div>; // Trả về một div trống nếu text là undefined hoặc falsy
+                                    }
 
+                                    return (
+                                        <div className="truncate"  dangerouslySetInnerHTML={{ __html: text }} />
+                                    ); // Hiển thị nội dung HTML
+                                }}
+                            />
                         <Column
                             title={<p className="title-col-style">Chức năng</p>}
                             key="action"
@@ -186,7 +200,7 @@ const QuanLyChuyenKhoa = () => {
                         showSizeChanger={true}
                         showQuickJumper={true}
                         showTotal={(total, range) => (
-                            <div>{range[0]}-{range[1]} trên {total} tài khoản</div>
+                            <div>{range[0]}-{range[1]} trên {total} chuyên khoa</div>
                         )}
                         locale={{
                             items_per_page: 'dòng / trang',  // Điều chỉnh "items per page"

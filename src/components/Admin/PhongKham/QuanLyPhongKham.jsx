@@ -213,7 +213,7 @@ const QuanLyPhongKham = () => {
                             showSizeChanger={true}
                             showQuickJumper={true}
                             showTotal={(total, range) => (
-                                <div>{range[0]}-{range[1]} trên {total} tài khoản</div>
+                                <div>{range[0]}-{range[1]} trên {total} phòng khám</div>
                             )}
                             locale={{
                                 items_per_page: 'dòng / trang',  // Điều chỉnh "items per page"
