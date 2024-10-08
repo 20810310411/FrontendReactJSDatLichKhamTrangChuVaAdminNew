@@ -5,6 +5,7 @@ import { IoAddOutline } from "react-icons/io5";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { deleteChuyenKhoa, fetchAllChuyenKhoa } from "../../../services/apiDoctor";
 import CreateCK from "./CreateChuyenKhoa";
+import UpdateCK from "./UpdateChuyenKhoa";
 const { Search } = Input;
 const { Column, ColumnGroup } = Table;
 
@@ -18,6 +19,8 @@ const QuanLyChuyenKhoa = () => {
     const [pageSize, setPageSize] = useState(5);
 
     const [openCreateChuyenKhoa, setOpenCreateChuyenKhoa] = useState(false)
+    const [openModalUpdate, setOpenModalUpdate] = useState(false);
+    const [dataUpdate, setDataUpdate] = useState('');
 
     // dùng để search 
     const [tenCK, setTenCK] = useState('');
@@ -133,7 +136,7 @@ const QuanLyChuyenKhoa = () => {
                                 );
                             }}
                         />
-                        <Column title={<p className="title-col-style">Tên phòng khám</p>} dataIndex="name" key="name" />
+                        <Column title={<p className="title-col-style">Tên chuyên khoa</p>} dataIndex="name" key="name" />
 
                         <Column
                             title={<p className="title-col-style">Chức năng</p>}
@@ -150,8 +153,8 @@ const QuanLyChuyenKhoa = () => {
 
                                     <EditOutlined style={{color: "orange"}} onClick={() => {
                                         console.log("record update: ", record);
-                                        // setOpenModalUpdate(true)
-                                        // setDataUpdate(record)
+                                        setOpenModalUpdate(true)
+                                        setDataUpdate(record)
                                     }} /> 
 
                                     <Popconfirm
@@ -197,6 +200,13 @@ const QuanLyChuyenKhoa = () => {
                         openCreateChuyenKhoa={openCreateChuyenKhoa}
                         setOpenCreateChuyenKhoa={setOpenCreateChuyenKhoa}
                         fetchListCK={fetchListCK}
+                    />
+
+                    <UpdateCK 
+                        fetchListCK={fetchListCK}
+                        setOpenModalUpdate={setOpenModalUpdate}
+                        dataUpdate={dataUpdate}
+                        openModalUpdate={openModalUpdate}
                     />
                 </Col>
             </Row>

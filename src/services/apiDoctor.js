@@ -33,6 +33,11 @@ export const createChuyenKhoa = (name, description, image) => {
 export const deleteChuyenKhoa = (_id) => {
     return axios.delete(`/api/doctor/delete-chuyen-khoa/${_id}`)
 }
+export const updateChuyenKhoa = (_id, name, description , image) => {
+    return axios.put('/api/doctor/update-chuyen-khoa', {
+        _id, name, description , image
+    })
+}
 
 
 //  chuc vu
