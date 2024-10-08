@@ -21,9 +21,17 @@ export const deleteDoctor = (_id) => {
 
 
 // chuyen khoa
-export const fetchAllChuyenKhoa = () => {
-    const URL_BACKEND = '/api/doctor/fetch-all-chuyen-khoa'    
+export const fetchAllChuyenKhoa = (query) => {
+    const URL_BACKEND = `/api/doctor/fetch-all-chuyen-khoa?${query}`    
     return axios.get(URL_BACKEND)
+}
+export const createChuyenKhoa = (name, description, image) => {
+    return axios.post('/api/doctor/create-chuyen-khoa', {
+        name, description, image
+    })
+}
+export const deleteChuyenKhoa = (_id) => {
+    return axios.delete(`/api/doctor/delete-chuyen-khoa/${_id}`)
 }
 
 

@@ -185,7 +185,7 @@ const QuanLyPhongKham = () => {
                                         }} /> 
 
                                         <Popconfirm
-                                            title={`xóa tài khoản`}
+                                            title={`xóa phòng khám`}
                                             description="Bạn có chắc chắn muốn xoá?"
                                             onConfirm={() => handleDeletePK(record._id)}
                                             onCancel={cancelXoa}

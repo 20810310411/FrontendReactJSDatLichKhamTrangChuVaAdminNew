@@ -5,7 +5,8 @@ import BodyAdmin from "./BodyAdmin/BodyAdmin";
 const AdminLayout = ({ children, pageTitle, placeholder,
                 setFirstName, setLastName, setAddress, 
                 setTenChucVu,
-                setTenPK, setAddressPK
+                setTenPK, setAddressPK,
+                setTenCK
             
             }) => {
     return (
@@ -25,6 +26,7 @@ const AdminLayout = ({ children, pageTitle, placeholder,
                 setTenChucVu={setTenChucVu || (() => {})}
                 setTenPK={setTenPK || (() => {})}
                 setAddressPK={setAddressPK || (() => {})}
+                setTenCK={setTenCK || (() => {})}
                 placeholder={placeholder}
             /> {/* Truyền nội dung vào BodyAdmin */}
         </div>
