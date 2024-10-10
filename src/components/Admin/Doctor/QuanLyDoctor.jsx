@@ -164,7 +164,7 @@ const QuanLyDoctor = (props) => {
                                         <img
                                             src={imageUrl}
                                             alt={`doctor ${text}`}
-                                            style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: "50%", border: "1px solid navy" }}
+                                            style={{ width: 70, height: 70, objectFit: 'cover', borderRadius: "50%", border: "1px solid navy" }}                                            
                                         />
                                     );
                                 }}

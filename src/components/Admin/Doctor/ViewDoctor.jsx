@@ -1,4 +1,4 @@
-import { Badge, Collapse, Descriptions, Drawer } from "antd";
+import { Badge, Col, Collapse, Descriptions, Divider, Drawer, Row } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import './css.scss'
@@ -15,6 +15,13 @@ const ViewDoctor = (props) => {
     const onClose = () => {
         setOpenViewDoctor(false);
         setDataDetailDoctor(null)
+    };
+
+    const style = {
+      background: '#d3ffa9',
+      padding: '8px',
+      textAlign: 'center',
+      borderRadius: "8px"
     };
 
     const items = [
@@ -89,10 +96,26 @@ const ViewDoctor = (props) => {
           },
           {
             key: 'thoiGianKhamId',
-            label: 'Lịch khám bệnh',
+            label: 'Lịch trình khám bệnh',
             children: (
               <>
-                  
+                  {dataDetailDoctor?.thoiGianKham.map((value, index) => (
+                        <div key={value._id}>                        
+                          <span style={{fontWeight: "bold", fontSize: "18px", color: 'navy'}}>{moment(value.date).format('DD/MM/YYYY')}</span> 
+                          <br/><br/>
+                          {/* Lặp qua các thoiGianId để hiển thị tên giờ */}
+                          <Row gutter={[10,10]}>
+                            {value.thoiGianId.map((timeSlot) => (
+                              <>
+                                <Col className="gutter-row" span={6}>
+                                  <div key={timeSlot._id} style={style}>{timeSlot.tenGio}</div>
+                                </Col>                                
+                              </>
+                            ))}
+                          </Row>
+                          <Divider />                        
+                        </div>
+                    ))}
               </>
             ),
             span: 3
@@ -128,7 +151,7 @@ const ViewDoctor = (props) => {
         <Drawer
             title={dataDetailDoctor ? `Thông tin chi tiết của Bác sĩ ${dataDetailDoctor.lastName} ${dataDetailDoctor.firstName}` : "Thông tin bác sĩ"}
             placement={placement}
-            width={800}
+            width={900}
             onClose={onClose}
             open={openViewDoctor}        
         >
