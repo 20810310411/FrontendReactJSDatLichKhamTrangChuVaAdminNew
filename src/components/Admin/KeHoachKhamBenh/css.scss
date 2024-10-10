@@ -8,11 +8,12 @@
     // Hiệu ứng khi hover
     &:hover {
         cursor: pointer;
-        background-color: #f0f0f0; // Màu nền khi hover
+        background-color: #d3ffa9; // Màu nền khi hover
     }
 }
 
 // Thêm lớp cho trạng thái đã chọn
 .active {
-    background-color: #e6f7ff; // Màu nền khi được chọn
+    // background-color: #e6f7ff; // Màu nền khi được chọn
+    background-color: #d3ffa9; // Màu nền khi được chọn
 }

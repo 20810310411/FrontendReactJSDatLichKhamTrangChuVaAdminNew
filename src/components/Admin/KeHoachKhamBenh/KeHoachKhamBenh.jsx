@@ -24,29 +24,29 @@ const KeHoachKhamBenh = () => {
         fetchAllTimes()
     }, [])
 
-    // useEffect(() => {
-    //     const fetchDoctorTimes = async () => {
-    //         if (form.getFieldValue('id') && form.getFieldValue('date')) {
-    //             const doctorId = form.getFieldValue('id');
-    //             const appointmentDate = form.getFieldValue('date').format('YYYY-MM-DD'); // Đảm bảo định dạng đúng
+    useEffect(() => {
+        const fetchDoctorTimes = async () => {
+            if (form.getFieldValue('id') && form.getFieldValue('date')) {
+                const doctorId = form.getFieldValue('id');
+                const appointmentDate = form.getFieldValue('date').format('YYYY-MM-DD'); // Đảm bảo định dạng đúng
     
-    //             let query = `doctorId=${doctorId}&date=${appointmentDate}`
-    //             const res = await getTimeSlotsByDoctorAndDate(query);
-    //             console.log("res: ", res);
+                let query = `doctorId=${doctorId}&date=${appointmentDate}`
+                const res = await getTimeSlotsByDoctorAndDate(query);
+                console.log("res: ", res);
                 
-    //             if (res) {                    
-    //                 if (res.timeSlots) {
-    //                     setSelectedTimes(res.timeSlots); // Cập nhật selectedTimes với thời gian có sẵn
-    //                 }
-    //             } else {
-    //                 // Xử lý lỗi nếu cần
-    //                 console.error('Error fetching time slots:', await res.json());
-    //             }
-    //         }
-    //     };
+                if (res) {                    
+                    if (res.timeSlots) {
+                        setSelectedTimes(res.timeSlots); // Cập nhật selectedTimes với thời gian có sẵn
+                    }
+                } else {
+                    // Xử lý lỗi nếu cần
+                    console.error('Error fetching time slots:', await res.json());
+                }
+            }
+        };
     
-    //     fetchDoctorTimes();
-    // }, [form.getFieldValue('_id'), form.getFieldValue('date')]);
+        fetchDoctorTimes();
+    }, [form.getFieldValue('_id'), form.getFieldValue('date')]);
     
     useEffect(() => {
         // Reset selected times khi thay đổi bác sĩ hoặc ngày khám
@@ -95,18 +95,19 @@ const KeHoachKhamBenh = () => {
     const handleSubmit = async (values) => {
 
         const {id, date} = values
-
+        const appointmentDate = date.format('DD-MM-YYYY'); // Giữ định dạng mà không chuyển đổi
         console.log("Bác sĩ ID: ", id);
         console.log("Ngày khám: ", date);
+        console.log("Ngày khám appointmentDate: ", appointmentDate);
         console.log("Thời gian đã chọn:", selectedTimes); 
 
 
-        if (selectedTimes.length === 0) {
-            message.error('Vui lòng chọn ít nhất một thời gian!');
-            return;
-        }
+        // if (selectedTimes.length === 0) {
+        //     message.error('Vui lòng chọn ít nhất một thời gian!');
+        //     return;
+        // }
 
-        const res = await addTimeKhamBenh(date, selectedTimes, id )
+        const res = await addTimeKhamBenh(appointmentDate, selectedTimes, id )
         console.log("res thêm time: ", res);
         if(res && res.data){
             message.success(res.message);            
@@ -149,10 +150,10 @@ const KeHoachKhamBenh = () => {
                         autoComplete="off"
                     >
                         <Row gutter={[20,5]}>
-                            <Col span={17} md={17} sm={17} xs={24}>
+                            <Col span={19} md={19} sm={19} xs={24}>
                                 <Form.Item
                                     layout="vertical"
-                                    label="Họ và Tên bác sĩ"
+                                    label="Họ và Tên bác sĩ - Phòng khám ( địa chỉ )"
                                     name="id"    
                                     rules={[
                                         {
@@ -169,17 +170,17 @@ const KeHoachKhamBenh = () => {
                                         filterSort={(optionA, optionB) =>
                                             (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
                                         }
-                                        // onChange={handleDoctorChange} // thêm cái này
+                                        onChange={handleDoctorChange} // thêm cái này
                                         options={dataDoctor.length > 0 ? dataDoctor.map(doctor => ({
                                             value: doctor._id, // Sử dụng _id làm giá trị
-                                            label: `Bác sĩ: ${doctor.lastName} ${doctor.firstName} - 
+                                            label: `${doctor.lastName} ${doctor.firstName} - 
                                             Phòng khám: ${doctor.phongKhamId.name} (${doctor.phongKhamId.address})
                                             `, 
                                         })) : [{ value: '', label: 'Không có bác sĩ nào' }]} // Hiển thị thông báo nếu rỗng
                                     />     
                                 </Form.Item>                                
                             </Col>
-                            <Col span={7} md={7} sm={7} xs={24}>
+                            <Col span={5} md={5} sm={5} xs={24}>
                                 <Form.Item
                                     layout="vertical"
                                     label="Chọn ngày"
@@ -195,14 +196,11 @@ const KeHoachKhamBenh = () => {
                                     placeholder="Chọn ngày khám" 
                                     style={{width: "100%"}} 
                                     format="DD/MM/YYYY" // Định dạng ngày/tháng/năm
-                                    // onChange={handleDateChange} 
-                                    onChange={onChange} 
+                                    onChange={handleDateChange} // thêm cái này
+                                    // onChange={onChange} 
                                     disabledDate={current => current < moment().startOf('day')} // Không cho chọn ngày quá khứ
                                     />
                                  </Form.Item>         
-                            </Col>
-                            <Col span={24} md={24} sm={24} xs={24}>
-                                    
                             </Col>
                         </Row>
                         {/* <Row gutter={[16, 16]}>
@@ -276,9 +274,9 @@ const KeHoachKhamBenh = () => {
                             <Col span={24}>
                                 <Form.Item>
                                     <br/>
-                                    <Button type="primary" htmlType="submit">
-                                        Lưu lại
-                                    </Button>
+                                    <div style={{textAlign: "center"}}>
+                                        <Button type="primary" htmlType="submit">Lưu lại</Button>
+                                    </div>                                    
                                 </Form.Item>
                             </Col>
                         </Row>
