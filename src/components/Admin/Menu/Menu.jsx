@@ -76,8 +76,8 @@ const MenuNav = (props) => {
         },
         {
             key: 'pk',
-            label: <label style={{fontSize: "17px"}}>Quản lý Phòng khám</label>,
-            icon: <MdOutlineMeetingRoom size={18} />            ,
+            label: <label style={{fontSize: "17px"}}>Quản lý Y Tế</label>,
+            icon: <MdOutlineMeetingRoom size={18} /> ,
             children: [
                 {
                     key: '/admin/quan-ly-phong-kham',

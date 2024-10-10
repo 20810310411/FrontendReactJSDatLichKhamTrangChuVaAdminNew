@@ -8,6 +8,7 @@ import QuanLyDoctor from "./components/Admin/Doctor/QuanLyDoctor";
 import QuanLyChucVu from "./components/Admin/ChucVu/QuanLyChucVu";
 import QuanLyPhongKham from "./components/Admin/PhongKham/QuanLyPhongKham";
 import QuanLyChuyenKhoa from "./components/Admin/ChuyenKhoa/QuanLyChuyenKhoa";
+import KeHoachKhamBenh from "./components/Admin/KeHoachKhamBenh/KeHoachKhamBenh";
 
 const App = () => {
 
@@ -33,6 +34,8 @@ const App = () => {
         <Route path="/admin/quan-ly-phong-kham" element={<QuanLyPhongKham />} />  
         {/* quan ly chuyen khoa */}
         <Route path="/admin/quan-ly-chuyen-khoa" element={<QuanLyChuyenKhoa />} />  
+        {/* ke hoach kham benh */}
+        <Route path="/admin/ke-hoach-doctor" element={<KeHoachKhamBenh />} />  
 
 
       </Routes>

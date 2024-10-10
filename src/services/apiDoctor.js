@@ -79,6 +79,27 @@ export const updatePhongKham = (_id, name, address, description , image) => {
     })
 }
 
+// fetch time
+export const fetchAllTime = () => {
+    const URL_BACKEND = `/api/doctor/fetch-all-time-gio`    
+    return axios.get(URL_BACKEND)
+}
+export const fetchAllTime2 = (doctorId, date) => {
+    const URL_BACKEND = `/api/doctor/fetch-all-time-gio?doctorId=${doctorId}&date=${date}`;
+    return axios.get(URL_BACKEND);
+}
+export const getTimeSlotsByDoctorAndDate = (query) => {
+    const URL_BACKEND = `/api/doctor/get-time-slots?${query}`    
+    return axios.get(URL_BACKEND)
+}
+
+// them thoi gian kham benh
+export const addTimeKhamBenh = (date, time, _id) => {
+    return axios.post('/api/doctor/add-time', {
+        date, time, _id
+    })
+}
+
 
 // upload hình ảnh
 export const callUploadDoctorImg = (file) => {
