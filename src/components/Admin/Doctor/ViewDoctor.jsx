@@ -1,4 +1,4 @@
-import { Badge, Col, Collapse, Descriptions, Divider, Drawer, Row } from "antd";
+import { Badge, Button, Col, Collapse, Descriptions, Divider, Drawer, Row } from "antd";
 import moment from "moment";
 import { useState } from "react";
 import './css.scss'
@@ -9,6 +9,8 @@ const ViewDoctor = (props) => {
         openViewDoctor, setOpenViewDoctor, dataDetailDoctor, setDataDetailDoctor
     } = props
     const [placement, setPlacement] = useState('right');
+    const [visibleCount, setVisibleCount] = useState(2); // Số lượng lịch hiển thị ban đầu
+    const [isExpanded, setIsExpanded] = useState(false); // Trạng thái hiển thị tất cả lịch
 
     console.log("dataDetailDoctor: ", dataDetailDoctor);
     
@@ -22,6 +24,77 @@ const ViewDoctor = (props) => {
       padding: '8px',
       textAlign: 'center',
       borderRadius: "8px"
+    };
+
+    //  hiển thị lịch trình từ mới về cũ
+    const sortedSchedules = dataDetailDoctor?.thoiGianKham
+    .sort((a, b) => new Date(b.date) - new Date(a.date)); // Sắp xếp theo thứ tự giảm dần
+
+    if (!sortedSchedules || sortedSchedules.length === 0) {
+        return null; // Nếu không có lịch trình, không hiển thị gì
+    }
+
+    const scheduleItems = sortedSchedules.map((schedule) => (
+        <div key={schedule._id}>
+            <span style={{ fontWeight: "bold", fontSize: "18px", color: 'navy' }}>
+                {moment(schedule.date).format('DD/MM/YYYY')}
+            </span>
+            <br /><br />
+            <Row gutter={[10, 10]}>
+                {schedule.thoiGianId
+                    .sort((a, b) => {
+                        const [startA] = a.tenGio.split(' - ');
+                        const [startB] = b.tenGio.split(' - ');
+                        return moment(startA, 'HH:mm').diff(moment(startB, 'HH:mm'));
+                    })
+                    .map((timeSlot) => (
+                        <Col className="gutter-row" span={6} key={timeSlot._id}>
+                            <div style={style}>{timeSlot.tenGio}</div>
+                        </Col>
+                    ))}
+            </Row>
+            <Divider />
+        </div>
+    ));
+    // 
+
+    // hiển thị tất cả lịch theo cũ đến mới
+    const scheduleItems1 = dataDetailDoctor?.thoiGianKham
+        .sort((a, b) => new Date(a.date) - new Date(b.date))
+        .slice(0, isExpanded ? dataDetailDoctor.thoiGianKham.length : visibleCount) // Lấy số lượng lịch theo trạng thái hiển thị
+        .map((value) => (
+            <div key={value._id}>
+                <span style={{ fontWeight: "bold", fontSize: "18px", color: 'navy' }}>
+                    {moment(value.date).format('DD/MM/YYYY')}
+                </span>
+                <br /><br />
+                <Row gutter={[10, 10]}>
+                    {value.thoiGianId
+                        .sort((a, b) => {
+                            const [startA] = a.tenGio.split(' - ');
+                            const [startB] = b.tenGio.split(' - ');
+                            return moment(startA, 'HH:mm').diff(moment(startB, 'HH:mm'));
+                        })
+                        .map((timeSlot) => (
+                            <Col className="gutter-row" span={6} key={timeSlot._id}>
+                                <div style={style}>{timeSlot.tenGio}</div>
+                            </Col>
+                        ))}
+                </Row>
+                <Divider />
+            </div>
+    ));
+
+    const handleShowMore = () => {
+        setVisibleCount(prevCount => prevCount + 2); // Tăng số lượng lịch hiển thị thêm 3
+    };
+    const handleToggleExpand = () => {
+      setIsExpanded(prev => !prev); // Chuyển đổi trạng thái hiển thị
+      if (!isExpanded) {
+          setVisibleCount(dataDetailDoctor.thoiGianKham.length); // Đặt visibleCount bằng tổng số lịch khi mở rộng
+      } else {
+          setVisibleCount(2); // Đặt lại về 3 khi thu hẹp
+      }
     };
 
     const items = [
@@ -66,22 +139,6 @@ const ViewDoctor = (props) => {
             ),
         },
         
-                
-        // {
-        //   key: '7',
-        //   label: 'Negotiated Amount',
-        //   children: '$80.00',
-        // },
-        // {
-        //   key: '8',
-        //   label: 'Discount',
-        //   children: '$20.00',
-        // },
-        // {
-        //   key: '9',
-        //   label: 'Official Receipts',
-        //   children: '$60.00',
-        // },
         {
             key: 'phongKhamId',
             label: 'Phòng khám',
@@ -99,23 +156,24 @@ const ViewDoctor = (props) => {
             label: 'Lịch trình khám bệnh',
             children: (
               <>
-                  {dataDetailDoctor?.thoiGianKham.map((value, index) => (
-                        <div key={value._id}>                        
-                          <span style={{fontWeight: "bold", fontSize: "18px", color: 'navy'}}>{moment(value.date).format('DD/MM/YYYY')}</span> 
-                          <br/><br/>
-                          {/* Lặp qua các thoiGianId để hiển thị tên giờ */}
-                          <Row gutter={[10,10]}>
-                            {value.thoiGianId.map((timeSlot) => (
-                              <>
-                                <Col className="gutter-row" span={6}>
-                                  <div key={timeSlot._id} style={style}>{timeSlot.tenGio}</div>
-                                </Col>                                
-                              </>
-                            ))}
-                          </Row>
-                          <Divider />                        
-                        </div>
-                    ))}
+                  <div>
+                      {scheduleItems}
+                      {dataDetailDoctor?.thoiGianKham.length > visibleCount && !isExpanded && ( // Hiển thị nút "Xem thêm" nếu còn lịch và chưa mở rộng
+                          <Button type="link" onClick={handleShowMore}>
+                              Xem thêm
+                          </Button>
+                      )}
+                      {isExpanded && (
+                          <Button type="link" onClick={handleToggleExpand}>
+                              Ẩn
+                          </Button>
+                      )}
+                      {!isExpanded && dataDetailDoctor?.thoiGianKham.length > 3 && (
+                          <Button type="link" onClick={handleToggleExpand}>
+                              Xem tất cả
+                          </Button>
+                      )}
+                  </div>        
               </>
             ),
             span: 3
@@ -156,7 +214,7 @@ const ViewDoctor = (props) => {
             open={openViewDoctor}        
         >
             <Descriptions title="Chi tiết" bordered items={items} />
-
+            
             <Collapse
                 style={{marginTop: "30px"}}
                 size="large"
