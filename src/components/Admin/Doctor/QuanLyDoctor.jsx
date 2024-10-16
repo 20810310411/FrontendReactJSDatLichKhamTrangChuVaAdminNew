@@ -26,6 +26,7 @@ import './css.scss'
 import CreateDoctor from "./CreateDoctor";
 import UpdateDoctor from "./UpdateDoctor";
 import moment from "moment";
+import { useNavigate } from "react-router-dom";
 
 const QuanLyDoctor = (props) => {
     const [loadingTable, setLoadingTable] = useState(false)
@@ -44,6 +45,8 @@ const QuanLyDoctor = (props) => {
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [address, setAddress] = useState('');
+
+    const navigator = useNavigate()
     
     useEffect(() => {
         fetchListDoctor()
@@ -100,6 +103,25 @@ const QuanLyDoctor = (props) => {
         console.log(e);
         message.error('Huỷ xoá');
     };    
+
+    const notificationContent = () => (
+        <div>
+            <span>
+                Lịch trình khám bệnh của bác sĩ hiện chưa có! Bấm vào đây để
+            </span>
+            <Button 
+                type="link" 
+                style={{ marginLeft: '8px' }} 
+                onClick={() => {
+                    navigator('/admin/ke-hoach-doctor')
+                    console.log("Thêm lịch trình!");
+                }}
+            >
+                Thêm lịch trình
+            </Button>
+        </div>
+    );
+    
 
     return (
         <>
@@ -206,9 +228,16 @@ const QuanLyDoctor = (props) => {
                                     <Space size="middle">
                                         <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
                                             onClick={() => {
-                                                console.log("record: ", record);                                                
-                                                setOpenViewDoctor(true)
-                                                setDataDetailDoctor(record)
+                                                console.log("record: ", record);    
+                                                if(record.thoiGianKham.length > 0){
+                                                    setOpenViewDoctor(true)
+                                                    setDataDetailDoctor(record)
+                                                } else {
+                                                    notification.error({
+                                                        message: `Không thể xem thông tin chi tiết của bác sĩ: ${record.lastName} ${record.firstName}`,
+                                                        description: notificationContent(),
+                                                    });
+                                                }                                       
                                             }} 
                                         />
 
@@ -262,7 +291,7 @@ const QuanLyDoctor = (props) => {
                         setOpenViewDoctor={setOpenViewDoctor}
                         dataDetailDoctor={dataDetailDoctor}
                         setDataDetailDoctor={setDataDetailDoctor}
-
+                        fetchListDoctor={fetchListDoctor}
                         />       
 
                         <CreateDoctor

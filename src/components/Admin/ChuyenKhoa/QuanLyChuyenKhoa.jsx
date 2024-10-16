@@ -159,7 +159,8 @@ const QuanLyChuyenKhoa = () => {
                                 <Space size="middle">
                                     <EyeOutlined style={{color: "green", fontWeight: "bold", cursor: "pointer"}} 
                                         onClick={() => {
-                                            console.log("record: ", record);                                                
+                                            console.log("record: ", record);   
+                                            message.info("xem tạm bên ngoài đi")                                             
                                             // setOpenDrawerDetail(true)
                                             // setDataDetail(record)
                                         }} 

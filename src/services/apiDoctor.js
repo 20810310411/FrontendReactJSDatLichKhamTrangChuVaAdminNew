@@ -99,7 +99,10 @@ export const addTimeKhamBenh = (date, time, _id) => {
         date, time, _id
     })
 }
-
+// xoa lich cu
+export const xoaLichCu = (_id) => { 
+    return axios.post('/api/doctor/delete-old-time-slots', { _id: _id }) 
+}
 
 // upload hình ảnh
 export const callUploadDoctorImg = (file) => {

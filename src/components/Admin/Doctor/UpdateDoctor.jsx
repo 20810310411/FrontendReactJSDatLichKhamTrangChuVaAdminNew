@@ -236,8 +236,9 @@ const UpdateDoctor = (props) => {
             width={1100}
             maskClosable={false}
             confirmLoading={isSubmit}
-            okText={"Lưu"}
+            okText={"Lưu lại"}
             cancelText="Huỷ"
+            // loading={true}
         >
             <Divider />
             <Row>
@@ -254,6 +255,7 @@ const UpdateDoctor = (props) => {
                         }}
                         onFinish={handleUpdateDoctor}
                         autoComplete="off"
+                        loading={isSubmit}
                     >
                         <Row gutter={[20,5]}>
                             <Col hidden>

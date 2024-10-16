@@ -184,6 +184,7 @@ const UpdatePhongKham = (props) => {
                         }}
                         onFinish={handleUpdatePK}
                         autoComplete="off"
+                        loading={isSubmit}
                     >
                         <Row gutter={[20,5]}>
                             <Col span={24} md={24} sm={24} xs={24}>

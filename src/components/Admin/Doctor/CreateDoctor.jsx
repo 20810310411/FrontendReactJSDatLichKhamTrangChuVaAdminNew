@@ -172,6 +172,7 @@ const CreateDoctor = (props) => {
                         }}
                         onFinish={handleCreateDoctor}
                         autoComplete="off"
+                        loading={isSubmit}
                     >
                         <Row gutter={[20,5]}>
                             <Col span={5} md={5} sm={5} xs={24}>

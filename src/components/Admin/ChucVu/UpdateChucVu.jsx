@@ -80,6 +80,7 @@ const UpdateChucVu = (props) => {
                     }}
                     onFinish={handleUpdateChucVu}
                     autoComplete="off"
+                    loading={isSubmit}
                 >
                     <Row gutter={[20,5]}>
                         <Col hidden>
