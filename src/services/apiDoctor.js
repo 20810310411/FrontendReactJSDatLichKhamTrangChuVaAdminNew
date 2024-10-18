@@ -10,9 +10,9 @@ export const callCreateDoctor = (email, password, firstName, lastName, address, 
         email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
     })
 }
-export const updateDoctor = (_id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota) => {
+export const updateDoctor = (_id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId,roleId, mota) => {
     return axios.put('/api/doctor/update-doctor', {
-        _id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId, mota
+        _id, email, firstName, lastName, address, phoneNumber, chucVuId, gender, image, chuyenKhoaId, phongKhamId,roleId, mota
     })
 }
 export const deleteDoctor = (_id) => {

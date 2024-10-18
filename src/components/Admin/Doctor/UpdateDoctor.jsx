@@ -183,6 +183,8 @@ const UpdateDoctor = (props) => {
         const { _id, email, password, firstName, lastName, address, phoneNumber, 
             chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
 
+            console.log("mota: ", mota);
+            
         if (!imageUrl) {
             notification.error({
                 message: 'Lỗi validate',
@@ -197,7 +199,7 @@ const UpdateDoctor = (props) => {
         
         setIsSubmit(true)
         const res = await updateDoctor( _id, email, firstName, lastName, address, phoneNumber, 
-        chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId)
+        chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, roleId, mota)
 
         if(res){
             message.success(res.message);
