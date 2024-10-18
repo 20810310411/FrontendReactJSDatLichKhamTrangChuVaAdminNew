@@ -6,6 +6,7 @@ import HinhVuong from "../../../components/TrangChu/HinhVuong/Slider";
 import HinhTronSlider from "../../../components/TrangChu/HinhVuong/HinhTronSlider";
 import { useEffect, useState } from "react";
 import { fetchAllChuyenKhoa, fetchAllDoctor, fetchAllPhongKham } from "../../../services/apiDoctor";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -15,6 +16,7 @@ const BodyHomePage = () => {
     const [dataPhongKham, setDataPhongKham] = useState(null)
     const [dataChuyenKhoa, setDataChuyenKhoa] = useState(null)
     const [loadingCard, setLoadingCard] = useState(true)
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
@@ -120,13 +122,17 @@ const BodyHomePage = () => {
     })) : [];
 
     const items_BacSiNoiBat = dataDoctor ? dataDoctor.map(doctor => ({
+        id: doctor._id, // Thêm _id vào đây
         src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${doctor?.image}`, 
         txtP: `${doctor?.chucVuId.map(chucVu => chucVu?.name).join(', ')}
                 , ${doctor?.lastName} ${doctor?.firstName}`,
         txtB: `${doctor?.chuyenKhoaId.map(chuyenKhoa => chuyenKhoa.name).join(', ')}`
     })) : [];
     
-
+    
+    const handleRedirectDoctor = (item) => {
+        navigate(`/view-doctor?id=${item}`)
+    }
 
     return (
         <>
@@ -252,7 +258,7 @@ const BodyHomePage = () => {
                             left: "24vh",
                             
                         }}>
-                        <HinhTronSlider items={items_BacSiNoiBat} urlDoctor={"/view-doctor"} />              
+                        <HinhTronSlider items={items_BacSiNoiBat} urlDoctor={handleRedirectDoctor} />              
                     </div>                    
             </Row> 
 

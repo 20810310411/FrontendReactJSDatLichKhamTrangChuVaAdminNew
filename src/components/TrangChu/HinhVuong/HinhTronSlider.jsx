@@ -36,7 +36,7 @@ const HinhTronSlider = ({ items, urlDoctor }) => {
         {chunkedItems.map((chunk, chunkIndex) => (
           <div key={chunkIndex}>
             <div className="slider-wrapper" style={{ display: 'flex', justifyContent: 'space-between', textAlign: "center" }}>
-              {chunk.map((item, index) => (
+              {chunk.map((item, index) => (                
                 <Card
                   key={index}
                   style={{
@@ -49,7 +49,7 @@ const HinhTronSlider = ({ items, urlDoctor }) => {
                     borderRadius: "15px",
                     backgroundColor: "transparent", // Make card background transparent
                   }}
-                  onClick={() => navigate(urlDoctor)}
+                  onClick={() => urlDoctor(item.id)}
                 >
                   {/* <img src={item.src} alt={item.txtP} width={250} height={200} /> */}
                   <Avatar size={210} src={item.src} icon={<UserOutlined />} />

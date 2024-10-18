@@ -17,6 +17,7 @@ const App = () => {
       <Routes>
         {/* trang chu */}
         <Route path="/" element={<Home/>} />  
+        {/* xem chi tiet bac si */}
         <Route path="/view-doctor" element={<PageViewDoctor/>} />  
 
 

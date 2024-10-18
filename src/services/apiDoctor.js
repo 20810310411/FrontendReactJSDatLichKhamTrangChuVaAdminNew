@@ -119,6 +119,12 @@ export const callUploadDoctorImg = (file) => {
     });
 }
 
+// tim ra doctor thong qua id
+export const fetchDoctorById = (id) => {
+    const URL_BACKEND = `/api/doctor/view-doctor?id=${id}`    
+    return axios.get(URL_BACKEND)
+}
+
 
 
 
