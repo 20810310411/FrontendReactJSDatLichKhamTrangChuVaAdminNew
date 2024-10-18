@@ -1,4 +1,4 @@
-import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd"
+import { Checkbox, Col, Divider, Form, Input, InputNumber, message, Modal, notification, Radio, Row, Select, Upload } from "antd"
 import { useEffect, useState } from "react";
 import { callCreateDoctor, callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham } from "../../../services/apiDoctor";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
@@ -54,7 +54,7 @@ const CreateDoctor = (props) => {
         console.log('Success:', values);
         console.log('Chức vụ ID đã chọn:', values.chucVuId); // In ra chucVuId
         const { email, password, firstName, lastName, address, phoneNumber, 
-            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
+            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId, giaKhamVN, giaKhamNuocNgoai } = values
 
         if (!imageUrl) {
             notification.error({
@@ -68,7 +68,9 @@ const CreateDoctor = (props) => {
         console.log("hinhanh: ", hinhAnh);
         
         setIsSubmit(true)
-        const res = await callCreateDoctor(email, password, firstName, lastName, address, phoneNumber, chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, mota)
+        const res = await callCreateDoctor(email, password, firstName, lastName, address, 
+            phoneNumber, chucVuId, gender, hinhAnh, chuyenKhoaId, 
+            phongKhamId, mota, giaKhamVN, giaKhamNuocNgoai)
         console.log("res create: ", res);
         if(res && res.data){
             message.success('Tạo mới thông tin bác sĩ thành công');
@@ -384,6 +386,48 @@ const CreateDoctor = (props) => {
                                     />                               
                                 </Form.Item>
                             </Col>  
+
+                            <Col span={12} md={12} sm={12} xs={24}>
+                                <Form.Item
+                                    label="Giá khám cho người Việt"
+                                    name="giaKhamVN"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập Giá khám cho người Việt!',
+                                        },
+                                    ]}
+                                >
+                                   <InputNumber 
+                                   style={{width: "100%"}}
+                                    formatter={value => 
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    addonAfter={"VNĐ"} 
+                                    min={1} />
+                                </Form.Item>       
+                            </Col>
+
+                            <Col span={12} md={12} sm={12} xs={24}>
+                                <Form.Item
+                                    label="Giá khám cho người Nước Ngoài"
+                                    name="giaKhamNuocNgoai"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập Giá khám cho người Nước Ngoài!',
+                                        },
+                                    ]}
+                                >
+                                   <InputNumber 
+                                   style={{width: "100%"}}
+                                    formatter={value => 
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    addonAfter={"VNĐ"} 
+                                    min={1} />
+                                </Form.Item>
+                            </Col>
                         </Row>
 
                         <Row gutter={[20,5]}>

@@ -1,6 +1,6 @@
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
-import { Checkbox, Col, Divider, Form, Input, message, Modal, notification, Radio, Row, Select, Upload } from "antd";
+import { Checkbox, Col, Divider, Form, Input, InputNumber, message, Modal, notification, Radio, Row, Select, Upload } from "antd";
 import { useEffect, useRef, useState } from "react";
 import { callUploadDoctorImg, fetchAllChucVu, fetchAllChuyenKhoa, fetchAllPhongKham, updateDoctor } from "../../../services/apiDoctor";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
@@ -71,6 +71,8 @@ const UpdateDoctor = (props) => {
                 gender: dataUpdateDoctor.gender,
                 mota: dataUpdateDoctor.mota || '',
                 chucVuId: chucVuId,
+                giaKhamNuocNgoai: dataUpdateDoctor.giaKhamNuocNgoai,
+                giaKhamVN: dataUpdateDoctor.giaKhamVN,
                 chuyenKhoaId: chuyenKhoaId,
                 phongKhamId: dataUpdateDoctor.phongKhamId._id, 
                 image: dataUpdateDoctor.image                        
@@ -181,7 +183,7 @@ const UpdateDoctor = (props) => {
     const handleUpdateDoctor = async (values) => {
 
         const { _id, email, password, firstName, lastName, address, phoneNumber, 
-            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId } = values
+            chucVuId, gender, image, chuyenKhoaId, phongKhamId, roleId, mota, thoiGianKhamId, giaKhamVN, giaKhamNuocNgoai, } = values
 
             console.log("mota: ", mota);
             
@@ -199,7 +201,7 @@ const UpdateDoctor = (props) => {
         
         setIsSubmit(true)
         const res = await updateDoctor( _id, email, firstName, lastName, address, phoneNumber, 
-        chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, roleId, mota)
+        chucVuId, gender, hinhAnh, chuyenKhoaId, phongKhamId, roleId, mota, giaKhamVN, giaKhamNuocNgoai)
 
         if(res){
             message.success(res.message);
@@ -511,6 +513,48 @@ const UpdateDoctor = (props) => {
                                     />                               
                                 </Form.Item>
                             </Col>  
+
+                            <Col span={12} md={12} sm={12} xs={24}>
+                                <Form.Item
+                                    label="Giá khám cho người Việt"
+                                    name="giaKhamVN"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập Giá khám cho người Việt!',
+                                        },
+                                    ]}
+                                >
+                                   <InputNumber 
+                                   style={{width: "100%"}}
+                                    formatter={value => 
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    addonAfter={"VNĐ"} 
+                                    min={1} />
+                                </Form.Item>       
+                            </Col>
+
+                            <Col span={12} md={12} sm={12} xs={24}>
+                                <Form.Item
+                                    label="Giá khám cho người Nước Ngoài"
+                                    name="giaKhamNuocNgoai"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập Giá khám cho người Nước Ngoài!',
+                                        },
+                                    ]}
+                                >
+                                   <InputNumber 
+                                   style={{width: "100%"}}
+                                    formatter={value => 
+                                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                                    }
+                                    addonAfter={"VNĐ"} 
+                                    min={1} />
+                                </Form.Item>
+                            </Col>
                         </Row>
 
                         <Row gutter={[20,5]}>

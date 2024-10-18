@@ -159,6 +159,11 @@ const ViewDoctor = (props) => {
             });
         }
     }
+
+    const formatCurrency = (value) => {
+        if (value === null || value === undefined) return '';
+        return `${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`;
+    };
  
     const items = [
         {
@@ -214,6 +219,26 @@ const ViewDoctor = (props) => {
             ),
             span: 3
           },
+
+            {
+                key: 'giaKhamVN', 
+                label: 'Giá khám Người Việt',
+                children: (
+                <div style={{color: "red"}}>
+                    {formatCurrency(dataDetailDoctor?.giaKhamVN)}
+                </div>
+                ),
+            },
+            {
+                key: 'giaKhamNuocNgoai', span: 2,
+                label: 'Giá khám Người Nước Ngoài',
+                children: (
+                    <div style={{color: "red"}}>
+                        {formatCurrency(dataDetailDoctor?.giaKhamNuocNgoai)}
+                    </div>
+                ),
+            },
+
           {
             key: 'thoiGianKhamId',
             label: 'Lịch trình khám bệnh',
