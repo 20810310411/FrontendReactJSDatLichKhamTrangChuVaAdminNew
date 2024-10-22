@@ -2,7 +2,7 @@ const Footer = () => {
 
     return (
         <>
-        <div className="footer"></div>
+        <div className="footer" style={{height: "50px"}}></div>
         </>
     )
 }
