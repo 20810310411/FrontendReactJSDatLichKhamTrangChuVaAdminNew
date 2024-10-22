@@ -1,0 +1,15 @@
+.txtTile {
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 10px;
+    margin-left: 15px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.sticky-col {
+    position: sticky;
+    top: 0; /* Đặt vị trí dính trên cùng */
+    z-index: 100; /* Đảm bảo nó nằm trên các phần tử khác nếu cần */
+    background-color: #f6f6f6;
+    border-top: 1px solid rgba(228, 228, 221, 0.637);
+    border-bottom: 2px solid #eee;
+}

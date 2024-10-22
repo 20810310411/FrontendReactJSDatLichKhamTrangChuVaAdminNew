@@ -125,6 +125,16 @@ export const fetchDoctorById = (id) => {
     return axios.get(URL_BACKEND)
 }
 
+// hiển thị info doctor kèm theo thgian khám cho page đặt lịch khám
+export const fetchDoctorByNgayGio1 = (id, idGioKhamBenh, ngayKham) => {
+    const URL_BACKEND = `/api/doctor/page-dat-lich-kham?id=${id}&idGioKhamBenh=${idGioKhamBenh}&ngayKham=${ngayKham}`    
+    return axios.get(URL_BACKEND)
+}
+export const fetchDoctorByNgayGio = (query) => {
+    const URL_BACKEND = `/api/doctor/page-dat-lich-kham${query}`    
+    return axios.get(URL_BACKEND)
+}
+
 
 
 

@@ -7,8 +7,8 @@ import { FaLocationDot, FaRegHandPointUp } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
 import { FaChevronRight, FaRegCalendarAlt } from 'react-icons/fa'
 import { IoIosShareAlt } from 'react-icons/io'
-import { useLocation } from 'react-router-dom'
-import { fetchDoctorById, getTimeSlotsByDoctorAndDate } from '../../../services/apiDoctor'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { fetchDoctorById, fetchDoctorByNgayGio, getTimeSlotsByDoctorAndDate } from '../../../services/apiDoctor'
 import moment from 'moment'
 
  
@@ -23,10 +23,14 @@ const PageViewDoctor = () => {
     const [hienThiTime, setHienThiTime] = useState('Bấm vào đây để xem lịch khám!'); // State để lưu ngày đã chọn  
     console.log("hienThiTime: ",hienThiTime);
       
+    const navigate = useNavigate()
 
-    const [selectedTimes, setSelectedTimes] = useState([]);    
     const [selectedTimeId, setSelectedTimeId] = useState(null); 
 
+    const [timeGioList, setTimeGioList] = useState([]);    
+
+    console.log("timeGioList: ", timeGioList);
+    
 
     let location = useLocation();
     const [dataDoctor, setDataDoctor] = useState();    
@@ -52,8 +56,8 @@ const PageViewDoctor = () => {
             const res = await getTimeSlotsByDoctorAndDate(query);
             console.log("res fetch: ", res);
             
-            if (res && res.tenGioArray) {                    
-                setSelectedTimes(res.tenGioArray);                
+            if (res && res.timeGioList) {                    
+                setTimeGioList(res.timeGioList)         
             } else {
                 // Xử lý lỗi nếu cần
                 console.error('Error fetching time slots:', await res.json());
@@ -63,7 +67,6 @@ const PageViewDoctor = () => {
         fetchDoctorTimes();
     }, [selectedTimeId]);
     console.log("selectedTimeId date: ",selectedTimeId);
-    console.log("selectedTimes tenGio: ",selectedTimes);
     
 
     const fetchADoctorById = async (id) => {
@@ -76,7 +79,10 @@ const PageViewDoctor = () => {
     }
     console.log("data doctor: ", dataDoctor);
     
-
+    const formatCurrency = (value) => {
+        if (value === null || value === undefined) return '';
+        return `${value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.')} VNĐ`;
+    };
 
     const showDrawer = () => {
         setOpen(true);
@@ -109,6 +115,10 @@ const PageViewDoctor = () => {
         color: hoveredIndex === index ? 'red' : 'black', // Đổi màu chữ khi hover
     });
     
+    
+    const handleRedirectDoctor = (item, thoiGianKhamBenh, listTime) => {
+        navigate(`/page-dat-lich-kham?id=${item._id}&idGioKhamBenh=${thoiGianKhamBenh}&ngayKham=${listTime}`)
+    }    
 
     return (
         <>
@@ -291,10 +301,10 @@ const PageViewDoctor = () => {
                                     </p>
                                     <Row justify="start" style={{marginTop: "-10px"}}>
                                         {hienThiTime !== 'Bấm vào đây để xem lịch khám!' ? (
-                                            selectedTimes.map((item, index) => (
-                                                <Col span={4} className='cach-deu'>
+                                            timeGioList.map((item, index) => (
+                                                <Col span={4} className='cach-deu' onClick={() => handleRedirectDoctor(dataDoctor, item._id, selectedDate)}>
                                                     <div className='lich-kham' key={index}>
-                                                    {item}
+                                                    {item.tenGio}
                                                     </div>
                                                 </Col>
                                             ))
@@ -329,8 +339,8 @@ const PageViewDoctor = () => {
                                                 <p style={{ fontWeight: "500" }}>Giá khám cho người Việt</p>
                                                 <p>Giá khám chưa bao gồm chi phí chụp chiếu, xét nghiệm</p>
                                             </span>
-                                            <span style={{ lineHeight: "70px", marginRight: "5px" }} className='span-gia-kham'>
-                                                300.000đ
+                                            <span style={{ lineHeight: "70px", marginRight: "5px", color: "red", fontWeight: "500" }} className='span-gia-kham'>
+                                            {formatCurrency(dataDoctor?.giaKhamVN)}
                                             </span>
                                         </div>
 
@@ -342,15 +352,16 @@ const PageViewDoctor = () => {
                                                 <p style={{ fontWeight: "500" }}>Giá khám cho người nước ngoài</p>
                                                 <p>Giá khám chưa bao gồm chi phí chụp chiếu, xét nghiệm</p>
                                             </span>
-                                            <span style={{ lineHeight: "70px", marginRight: "5px" }} className='span-gia-kham'>
-                                                400.000đ
+                                            <span style={{ lineHeight: "70px", marginRight: "5px", color: "red", fontWeight: "500" }} className='span-gia-kham'>
+                                            {formatCurrency(dataDoctor?.giaKhamNuocNgoai)}
                                             </span>
                                         </div>
                                         <a href="#" onClick={toggleDetails} style={{ float: "right", marginTop: "5px" }}>Ẩn bảng giá</a>
                                     </div>
                                 ) : (
                                     <p>
-                                        <span style={{ fontWeight: "500", color: "gray" }}>GIÁ KHÁM:</span> 300.000đ - 400.000đ 
+                                        <span style={{ fontWeight: "500", color: "gray" }}>GIÁ KHÁM:</span> &nbsp;
+                                        <span style={{color: "red", fontWeight: "500"}}>{formatCurrency(dataDoctor?.giaKhamVN)}</span> đến <span style={{color: "red", fontWeight: "500"}}>{formatCurrency(dataDoctor?.giaKhamNuocNgoai)}</span>
                                         <a href='#' onClick={toggleDetails} style={{ marginLeft: "10px" }}>Xem chi tiết</a>
                                     </p>
                                 )}                                

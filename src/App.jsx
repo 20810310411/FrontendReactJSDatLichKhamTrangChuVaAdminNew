@@ -9,6 +9,7 @@ import QuanLyChucVu from "./components/Admin/ChucVu/QuanLyChucVu";
 import QuanLyPhongKham from "./components/Admin/PhongKham/QuanLyPhongKham";
 import QuanLyChuyenKhoa from "./components/Admin/ChuyenKhoa/QuanLyChuyenKhoa";
 import KeHoachKhamBenh from "./components/Admin/KeHoachKhamBenh/KeHoachKhamBenh";
+import PageDatLichKham from "./pages/TrangChu/DatLich/datLichKhamDoctor";
 
 const App = () => {
 
@@ -19,6 +20,8 @@ const App = () => {
         <Route path="/" element={<Home/>} />  
         {/* xem chi tiet bac si */}
         <Route path="/view-doctor" element={<PageViewDoctor/>} />  
+        {/* page dat lich kham */}
+        <Route path="/page-dat-lich-kham" element={<PageDatLichKham/>} />  
 
 
         {/* home page admin */}
