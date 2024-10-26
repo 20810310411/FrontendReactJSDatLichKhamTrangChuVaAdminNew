@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, DatePicker, Divider, Form, Input, Radio, Row } from "antd"
+import { Avatar, Button, Col, DatePicker, Divider, Form, Input, message, notification, Radio, Row } from "antd"
 import Footer from "../../../components/TrangChu/Footer/Footer"
 import HeaderViewDoctor from "../../../components/TrangChu/Header/HeaderViewDoctor"
 import { PhoneOutlined, UserOutlined } from "@ant-design/icons"
@@ -6,11 +6,13 @@ import './styleDatLich.scss'
 import { BsFillCalendar2DateFill } from "react-icons/bs"
 import { FaRegHospital } from "react-icons/fa"
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
-import { fetchDoctorByNgayGio } from "../../../services/apiDoctor"
+import { useLocation, useNavigate } from "react-router-dom"
+import { datLichKhamBenh, fetchDoctorByNgayGio } from "../../../services/apiDoctor"
 import moment from "moment"
 import { HiOutlineMailOpen } from "react-icons/hi"
 import { IoAddCircleSharp, IoLocationSharp } from "react-icons/io5"
+import { useDispatch, useSelector } from "react-redux"
+import LoginPage from "../Login/Login"
 const { TextArea } = Input;
 const PageDatLichKham = () => {
 
@@ -27,6 +29,11 @@ const PageDatLichKham = () => {
     const [value, setValue] = useState(infoDoctorr?.giaKhamVN);
     const [tongtien, setTongTien] = useState(0)
     const [form] = Form.useForm()
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const isAuthenticated = useSelector(state => state.account.isAuthenticated)
+    const acc = useSelector(s => s.account.user)
 
     console.log("doctorId: ", doctorId);
     console.log("idGioKhamBenh: ", idGioKhamBenh);
@@ -70,6 +77,12 @@ const PageDatLichKham = () => {
         const vietnameseDay = englishToVietnameseDays[englishDay]; // Chuyển sang tiếng Việt
         return `${vietnameseDay} - ${date.format('DD/MM/YYYY')}`;
     }
+    const formatDateDatLich = (dateString) => {
+        const date = moment(dateString);
+        const englishDay = date.format('dddd'); // Lấy tên ngày bằng tiếng Anh
+        const vietnameseDay = englishToVietnameseDays[englishDay]; // Chuyển sang tiếng Việt
+        return `${date.format('DD/MM/YYYY')}`;
+    }
 
     
     const onChange = (e) => {
@@ -83,9 +96,74 @@ const PageDatLichKham = () => {
 
     const handleDatLich = async (values) => {
         console.log('Received values:', values);
+        const {_idDoctor, _idTaiKhoan, patientName, email,
+            gender, phone, dateBenhNhan, address, lidokham, 
+            hinhThucTT, tenGioKham, ngayKhamBenh, giaKham
+        } = values
+
+        if(!patientName){
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: "Vui lòng điền đầy đủ thông tin"
+            })
+            return
+        }
+
+        const res = await datLichKhamBenh(
+            _idDoctor, _idTaiKhoan, patientName, email,
+            gender, phone, dateBenhNhan, address, lidokham, 
+            hinhThucTT, tenGioKham, ngayKhamBenh, giaKham
+        )
+        console.log("res dat lich: ", res);
+        
+
+        if(res && res.data) {
+            message.success(res.message);
+            form.resetFields()
+            navigate('/')
+        } else {
+            notification.error({
+                message: 'Đã có lỗi xảy ra',
+                description: res.message
+            })
+        }
     }
     const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
     
+    useEffect(() => {
+        if (infoDoctorr) {
+            form.setFieldsValue({
+                // thongTinDoctor: `${infoDoctorr.chucVuId.map(item => item?.name).join(', ')} - ${infoDoctorr.lastName} ${infoDoctorr.firstName}`,
+                // noiKham: `${infoDoctorr?.phongKhamId.name}`,
+                // diaChiKham: `${infoDoctorr?.phongKhamId.address}`,
+                // avtDoctor: `${infoDoctorr?.image}`,
+                tenGioKham: `${tenGio?.tenGio}`,
+                ngayKhamBenh: `${formatDateDatLich(ngayKhamBenh)}`,
+                _idTaiKhoan: `${acc._id}`,
+                _idDoctor: `${infoDoctorr?._id}`
+            });
+        }
+    }, [infoDoctorr]);
+    
+    const [openModalLogin, setOpenModalLogin] = useState(false);
+
+    const notificationContent = () => (
+        <div>
+            <span>
+                Vui lòng đăng nhập trước khi đặt lịch! <br/> Bấm vào đây để
+            </span>
+            <Button 
+                type="link" 
+                style={{ marginLeft: '8px' }} 
+                onClick={() => {
+                    // navigator('/admin/ke-hoach-doctor')
+                    setOpenModalLogin(true)
+                }}
+            >
+                Tiến hành đăng nhập
+            </Button>
+        </div>
+    );
 
     return (
         <>
@@ -132,6 +210,18 @@ const PageDatLichKham = () => {
                                         </Col>
                                     </Row>
                                 </Col>
+                            </Row>
+
+                            {/* the input an luu cac gia tri de truyen len server */}
+                            <Row>
+                                <Form.Item name="_idTaiKhoan" hidden> <Input /> </Form.Item>
+                                {/* <Form.Item name="thongTinDoctor" hidden> <Input /> </Form.Item>
+                                <Form.Item name="noiKham" hidden> <Input /> </Form.Item>
+                                <Form.Item name="diaChiKham" hidden> <Input /> </Form.Item>
+                                <Form.Item name="avtDoctor" hidden> <Input /> </Form.Item> */}
+                                <Form.Item name="tenGioKham" hidden> <Input /> </Form.Item>
+                                <Form.Item name="ngayKhamBenh" hidden> <Input /> </Form.Item>
+                                <Form.Item name="_idDoctor" hidden> <Input /> </Form.Item>
                             </Row>
                         </Col>
 
@@ -388,7 +478,18 @@ const PageDatLichKham = () => {
                                                     color: 'white', fontWeight: "500" }}
                                                 // htmlType="submit"
                                                 size="large"
-                                                onClick={() => form.submit()}
+                                                onClick={() => {
+                                                    if (!isAuthenticated) {
+                                                        notification.warning({
+                                                            message: 'Cảnh báo',
+                                                            // description: 'Vui lòng đăng nhập trước khi đặt lịch.',
+                                                            description: notificationContent(),
+                                                            placement: 'topRight',
+                                                        });                                                       
+                                                    } else {
+                                                        form.submit(); // Proceed to submit the form
+                                                    }
+                                                }}
                                                 block
                                                 >Xác nhận đặt khám</Button>
                                             </Form.Item>
@@ -400,6 +501,11 @@ const PageDatLichKham = () => {
                                         <p>Bằng việc xác nhận đặt khám, bạn đã hoàn toàn đồng ý với <a href="#">Điều khoản sử dụng dịch vụ</a> của chúng tôi.</p>
                                         </Col>
                                     </Row>
+
+                                    <LoginPage
+                                        openModalLogin={openModalLogin}
+                                        setOpenModalLogin={setOpenModalLogin}
+                                    />
                                 </Col>
                             </Row>                    
                         </Col>

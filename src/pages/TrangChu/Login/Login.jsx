@@ -71,7 +71,7 @@ const LoginPage = (props) => {
                 localStorage.removeItem("rememberedAccountBenhNhan");
             }
 
-            navigate("/")
+            // navigate("/")
             formLogin.resetFields()
             setOpenModalLogin(false)
             // handleLoginSuccess(res.access_token);

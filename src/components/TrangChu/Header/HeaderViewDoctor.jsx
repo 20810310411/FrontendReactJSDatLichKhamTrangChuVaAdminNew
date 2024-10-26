@@ -62,7 +62,7 @@ const HeaderViewDoctor = () => {
             if (res) {
                 message.success("Đăng xuất thành công!");
                 dispatch(doLogoutAction())
-                navigate("/");
+                // navigate("/");
             }
         } catch (error) {
             console.error('Có lỗi xảy ra khi đăng xuất', error);

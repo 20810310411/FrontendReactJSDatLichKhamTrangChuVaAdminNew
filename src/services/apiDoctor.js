@@ -135,6 +135,18 @@ export const fetchDoctorByNgayGio = (query) => {
     return axios.get(URL_BACKEND)
 }
 
+// dat lich kham
+export const datLichKhamBenh = (
+    _idDoctor, _idTaiKhoan, patientName, email,
+    gender, phone, dateBenhNhan, address, lidokham, 
+    hinhThucTT, tenGioKham, ngayKhamBenh, giaKham
+) => { 
+    const data = {_idDoctor, _idTaiKhoan, patientName, email,
+        gender, phone, dateBenhNhan, address, lidokham, 
+        hinhThucTT, tenGioKham, ngayKhamBenh, giaKham
+    }
+    return axios.post('/api/doctor/dat-lich-kham', data) 
+}
 
 
 
