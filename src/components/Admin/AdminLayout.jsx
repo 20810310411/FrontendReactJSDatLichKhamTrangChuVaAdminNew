@@ -13,16 +13,10 @@ const AdminLayout = ({ children, pageTitle, placeholder,
             
             }) => {
 
-    const mode = useSelector(state => state.app.mode)
     const dispatch = useDispatch()
-    console.log("mode: ", mode);    
-    useEffect(() => {
-        const body = document.querySelector("body");
-        if (body) body.setAttribute('data-bs-theme', mode);
-    },[mode])
 
     return (
-        <Navbar className="bg-body-tertiary" data-bs-theme={mode}>
+        <Navbar className="bg-body-tertiary">
             <Container>
 
                 <div style={{ height: 250, 

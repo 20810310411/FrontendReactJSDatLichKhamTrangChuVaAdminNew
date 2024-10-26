@@ -1,4 +1,4 @@
-import { Col, Divider, Drawer, Input, Row } from 'antd'
+import { Avatar, Col, Divider, Drawer, Dropdown, Input, message, Row } from 'antd'
 import './HeaderViewDoctor.scss'
 import { IoMdMenu } from 'react-icons/io'
 import Container from 'react-bootstrap/Container';
@@ -7,14 +7,25 @@ import Navbar from 'react-bootstrap/Navbar';
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { RxTimer } from 'react-icons/rx';
+import LoginPage from '../../../pages/TrangChu/Login/Login';
+import { LuLogIn } from 'react-icons/lu';
+import { callLogoutBenhNhan } from '../../../services/api';
+import { useDispatch, useSelector } from 'react-redux';
+import { doLogoutAction } from '../../../redux/account/accountSlice';
+import { UserOutlined } from '@ant-design/icons';
 
 
 const HeaderViewDoctor = () => {
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false);
+    const [openModalLogin, setOpenModalLogin] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector(state => state.account.isAuthenticated)
+    const acc = useSelector(state => state.account.user)
+    console.log("isAuthenticated: ", isAuthenticated);
 
     const showDrawer = () => {
         setOpen(true);
@@ -27,6 +38,37 @@ const HeaderViewDoctor = () => {
         setActiveTxtMenu(section);
         navigate(`${section}`);
     };
+
+    const items = [
+        {
+          key: '1',
+          label: <label>Tài khoản của tôi</label>,
+        },        
+        {
+            key: '2',
+            label: <label>Lịch hẹn</label>,
+          },
+        {
+          key: '4',
+          danger: true,
+          label: <label onClick={() => handleLogout()}>Đăng xuất</label>,
+        },
+      ];
+    const handleLogout = async () => {
+        try {
+            const res = await callLogoutBenhNhan();
+            localStorage.removeItem('access_tokenBenhNhan');
+
+            if (res) {
+                message.success("Đăng xuất thành công!");
+                dispatch(doLogoutAction())
+                navigate("/");
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi đăng xuất', error);
+            message.error("Đăng xuất không thành công!");
+        }
+    }
 
     return (
         <>
@@ -70,9 +112,26 @@ const HeaderViewDoctor = () => {
                     </Navbar>
                 </Col>                
 
-                <Col md={5} sm={0} xs={0} className='col-top icon-container' style={{position: "relative", right: "-10vh"}}> 
+                <Col md={5} sm={3} xs={3} className='col-top icon-container' style={{position: "relative", right: "-10vh"}}> 
                     <div style={{ cursor: "pointer", color: "rgb(69, 195, 210)",  }}>
-                        <RxTimer size={"5vh"} title='Lịch hẹn' />
+                        {isAuthenticated ? 
+                        <>
+                            
+                            <Dropdown
+                                menu={{
+                                items,
+                                }}
+                            >
+                                <Avatar src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${acc.image}`} style={{cursor: "pointer"}} size={50} icon={<UserOutlined />} />
+                            </Dropdown>
+                        </> : 
+                        <>
+                            <LuLogIn  
+                            onClick={() => setOpenModalLogin(true)}
+                            size={"5vh"} 
+                            title='Login'
+                            style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                        </>}
                     </div>                
                 </Col>
             </Row>
@@ -105,6 +164,11 @@ const HeaderViewDoctor = () => {
                 <p className={`txt-menu ${activeTxtMenu === '#lien-he6' ? 'active-txt-menu' : ''}`} onClick={() => handleClick("#lien-he6")}>Vai trò của BookingCare</p>
                 <Divider/>
             </Drawer>
+
+            <LoginPage
+                openModalLogin={openModalLogin}
+                setOpenModalLogin={setOpenModalLogin}
+            />
             </div>
         </>
     )

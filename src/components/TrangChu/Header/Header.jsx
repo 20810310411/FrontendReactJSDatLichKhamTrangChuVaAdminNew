@@ -1,4 +1,4 @@
-import { Col, Row, Input, Drawer, Divider } from 'antd'
+import { Col, Row, Input, Drawer, Divider, Avatar, Dropdown, message } from 'antd'
 import '../Header/header.scss'
 import { IoMdMenu } from 'react-icons/io'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -6,18 +6,29 @@ import { useState } from 'react'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { SearchOutlined } from '@ant-design/icons'
+import { SearchOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons'
 import { FaRegHandshake } from 'react-icons/fa'
 import { GiTimeBomb } from 'react-icons/gi'
 import { RxTimer } from 'react-icons/rx'
 import { PiHandshakeBold } from 'react-icons/pi'
+import LoginPage from '../../../pages/TrangChu/Login/Login'
+import { LuLogIn } from 'react-icons/lu'
+import { useDispatch, useSelector } from 'react-redux'
+import { callLogoutBenhNhan } from '../../../services/api'
+import { doLogoutAction } from '../../../redux/account/accountSlice'
 const Header = () => {
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false);
+    const [openModalLogin, setOpenModalLogin] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
 
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector(state => state.account.isAuthenticated)
+    const acc = useSelector(state => state.account.user)
+    console.log("isAuthenticated: ", isAuthenticated);
+    
     const handleClick = (section) => {
         setActiveTxtMenu(section);
         navigate(`${section}`);
@@ -36,6 +47,38 @@ const Header = () => {
         }
         return location.hash === linkPath ? 'active' : '';
     };
+
+    const items = [
+        {
+          key: '1',
+          label: <label>Tài khoản của tôi</label>,
+        },   
+        {
+            key: '2',
+            label: <label>Lịch hẹn</label>,
+          },      
+        {
+          key: '4',
+          danger: true,
+          label: <label onClick={() => handleLogout()}>Đăng xuất</label>,
+        },
+      ];
+
+    const handleLogout = async () => {
+        try {
+            const res = await callLogoutBenhNhan();
+            localStorage.removeItem('access_tokenBenhNhan');
+
+            if (res) {
+                message.success("Đăng xuất thành công!");
+                dispatch(doLogoutAction())
+                navigate("/");
+            }
+        } catch (error) {
+            console.error('Có lỗi xảy ra khi đăng xuất', error);
+            message.error("Đăng xuất không thành công!");
+        }
+    }
 
     return (
         <div className='header-top'>
@@ -80,9 +123,26 @@ const Header = () => {
                     </div>                                    
                 </Col>
 
-                <Col md={3} sm={0} xs={0} className='col-top icon-container'> 
-                    <PiHandshakeBold size={"5vh"} title='Hợp tác' style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
-                    <RxTimer size={"5vh"} title='Lịch hẹn' style={{marginLeft: "5vh", cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                <Col md={3} sm={3} xs={3} className='col-top icon-container'> 
+                {isAuthenticated ? 
+                <>
+                    
+                    <Dropdown
+                        menu={{
+                        items,
+                        }}
+                    >
+                        <Avatar src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${acc.image}`} style={{cursor: "pointer"}} size={50} icon={<UserOutlined />} />
+                    </Dropdown>
+                </> : 
+                <>
+                    <LuLogIn  
+                    onClick={() => setOpenModalLogin(true)}
+                    size={"5vh"} 
+                    title='Login'
+                    style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                </>}                    
+                    {/* <RxTimer size={"5vh"} title='Lịch hẹn' style={{marginLeft: "5vh", cursor: "pointer", color: "rgb(69, 195, 210)"}} />  */}
                 </Col>
             </Row>
 
@@ -114,6 +174,11 @@ const Header = () => {
                 <p className={`txt-menu ${activeTxtMenu === '#lien-he6' ? 'active-txt-menu' : ''}`} onClick={() => handleClick("#lien-he6")}>Vai trò của BookingCare</p>
                 <Divider/>
             </Drawer>
+
+            <LoginPage
+                openModalLogin={openModalLogin}
+                setOpenModalLogin={setOpenModalLogin}
+            />
         </div>
     )
 }

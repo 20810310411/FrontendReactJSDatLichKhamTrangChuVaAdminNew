@@ -9,7 +9,7 @@ const instance = axios.create({
 
 export const handleLoginSuccess = (token) => {
     // Lưu token vào localStorage
-    localStorage.setItem('access_token', token);
+    localStorage.setItem('access_tokenBenhNhan', token);
     // Cập nhật Authorization header cho axios instance
     instance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     // Tùy chọn: Refresh lại trang

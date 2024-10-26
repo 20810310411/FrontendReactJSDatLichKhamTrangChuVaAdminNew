@@ -10,6 +10,8 @@ import QuanLyPhongKham from "./components/Admin/PhongKham/QuanLyPhongKham";
 import QuanLyChuyenKhoa from "./components/Admin/ChuyenKhoa/QuanLyChuyenKhoa";
 import KeHoachKhamBenh from "./components/Admin/KeHoachKhamBenh/KeHoachKhamBenh";
 import PageDatLichKham from "./pages/TrangChu/DatLich/datLichKhamDoctor";
+import LoginPage from "./pages/TrangChu/Login/Login";
+import RegisterPage from "./pages/TrangChu/Login/Register";
 
 const App = () => {
 
@@ -22,6 +24,10 @@ const App = () => {
         <Route path="/view-doctor" element={<PageViewDoctor/>} />  
         {/* page dat lich kham */}
         <Route path="/page-dat-lich-kham" element={<PageDatLichKham/>} />  
+        {/* login benh-nhan */}
+        <Route path="/user/login-benh-nhan" element={<LoginPage/>} /> 
+        {/* Register benh-nhan */}
+        <Route path="/user/register-benh-nhan" element={<RegisterPage />} />  
 
 
         {/* home page admin */}

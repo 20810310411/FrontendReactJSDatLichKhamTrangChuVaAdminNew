@@ -7,6 +7,7 @@ import HinhTronSlider from "../../../components/TrangChu/HinhVuong/HinhTronSlide
 import { useEffect, useState } from "react";
 import { fetchAllChuyenKhoa, fetchAllDoctor, fetchAllPhongKham } from "../../../services/apiDoctor";
 import { useNavigate } from "react-router-dom";
+import LoginPage from "../Login/Login";
 
 
 
@@ -294,6 +295,8 @@ const BodyHomePage = () => {
                     ))}                 
                 </Row>                                        
             </div>
+
+           
         </>
     )
 }

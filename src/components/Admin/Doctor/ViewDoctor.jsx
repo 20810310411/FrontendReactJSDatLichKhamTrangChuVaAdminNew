@@ -261,9 +261,9 @@ const ViewDoctor = (props) => {
                                 Xem tất cả
                             </Button>
                         )}
-                        <Button type="link" onClick={handleDeleteDateCu}>
+                        {/* <Button type="link" onClick={handleDeleteDateCu}>
                             Xóa lịch trình cũ
-                        </Button>
+                        </Button> */}
                     </div>       
               </>
             ),

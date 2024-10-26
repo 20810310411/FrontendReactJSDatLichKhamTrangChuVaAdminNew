@@ -12,9 +12,8 @@ const SearchComponent = ({ onSearch, placeholder }) => {
     const [searchValue, setSearchValue] = useState('');
     let searchTimeout; // Định nghĩa biến bên ngoài
 
-    const mode = useSelector(state => state.app.mode)
+    
     const dispatch = useDispatch()
-    console.log("mode: ", mode);    
 
     const handleSearchChange = (value) => {
         setSearchValue(value);
