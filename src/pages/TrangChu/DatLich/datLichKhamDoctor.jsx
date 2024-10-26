@@ -144,7 +144,7 @@ const PageDatLichKham = () => {
             });
         }
     }, [infoDoctorr]);
-    
+
     const [openModalLogin, setOpenModalLogin] = useState(false);
 
     const notificationContent = () => (
