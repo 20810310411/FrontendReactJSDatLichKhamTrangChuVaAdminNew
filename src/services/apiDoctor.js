@@ -25,6 +25,10 @@ export const fetchAllChuyenKhoa = (query) => {
     const URL_BACKEND = `/api/doctor/fetch-all-chuyen-khoa?${query}`    
     return axios.get(URL_BACKEND)
 }
+export const fetchChuyenKhoaByID = (query) => {
+    const URL_BACKEND = `/api/doctor/fetch-chuyen-khoa-by-id?id=${query}`    
+    return axios.get(URL_BACKEND)
+}
 export const createChuyenKhoa = (name, description, image) => {
     return axios.post('/api/doctor/create-chuyen-khoa', {
         name, description, image
@@ -151,6 +155,12 @@ export const datLichKhamBenh = (
 // get lich kham
 export const fetchLichKham = (idKhachHang) => {
     const URL_BACKEND = `/api/doctor/lich-hen?idKhachHang=${idKhachHang}`    
+    return axios.get(URL_BACKEND)
+}
+
+// tim bac si thong qua id chuyen khoa
+export const fetchDoctorByChuyenKhoa = (idChuyenKhoa) => {
+    const URL_BACKEND = `/api/doctor/doctor-chuyen-khoa?idChuyenKhoa=${idChuyenKhoa}`    
     return axios.get(URL_BACKEND)
 }
 

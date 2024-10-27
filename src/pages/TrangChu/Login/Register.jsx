@@ -1,6 +1,7 @@
 import { Button, Col, Divider, Form, Input, message, Modal, notification, Radio, Row } from "antd";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { callRegisterBenhNhan } from "../../../services/api";
 
 const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
 
@@ -17,21 +18,21 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
         // message.success(`Bạn vừa chọn giới tính là: ${genderText}`);
 
         setIsLoading(true)
-        // const res = await callRegister(email, password, firstName, lastName, address, phone, gender)
-        // console.log("res: ", res);
-        // if(res.data){
-        //     message.success(res.message)
-        //     formRegister.resetFields()
-        ////   navigate("/admin/login-admin")
-        //     setOpenRegisterKH(false)
-        // } else {
-        //     notification.error({ 
-        //         message: "Đăng ký không thành công!",
-        //         description:
-        //             res.message && Array.isArray(res.message) ? res.message[0] : res.message,
-        //         duration: 5
-        //     })
-        // }
+        const res = await callRegisterBenhNhan(email, password, firstName, lastName, address, phone, gender)
+        console.log("res: ", res);
+        if(res.data){
+            message.success(res.message)
+            formRegister.resetFields()
+        //   navigate("/admin/login-admin")
+            setOpenRegisterKH(false)
+        } else {
+            notification.error({ 
+                message: "Đăng ký không thành công!",
+                description:
+                    res.message && Array.isArray(res.message) ? res.message[0] : res.message,
+                duration: 5
+            })
+        }
         setIsLoading(false)
     }
 

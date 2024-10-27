@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Card, Carousel, Button } from 'antd';
 import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 
-const HinhVuong = ({ items, width, height, loadingCard }) => {
+const HinhVuong = ({ items, width, height, loadingCard, urlDoctor }) => {
   const carouselRef = useRef(null);
 
   const onChange = (currentSlide) => {
@@ -44,6 +44,7 @@ const HinhVuong = ({ items, width, height, loadingCard }) => {
                     borderRadius: "15px",
                   }}
                   loading={loadingCard}
+                  onClick={() => urlDoctor(item.id)}
                 >
                   <img src={item.src} alt={item.txtP} width={width} height={height} />
                   <p style={{ fontWeight: "500", fontSize: "20px", textAlign: "center" }}>{item.txtP}</p>

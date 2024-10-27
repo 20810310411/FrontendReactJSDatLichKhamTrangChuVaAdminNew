@@ -264,7 +264,6 @@ const PageViewDoctor = () => {
                                                     const formattedTime = moment(time).format("dddd - DD/MM"); // Định dạng lại thời gian
                                                     const vietnameseDay = englishToVietnameseDays[moment(time).format("dddd")]; // Chuyển đổi tên ngày sang tiếng Việt
                                                     const displayTime = `${vietnameseDay} - ${moment(time).format("DD/MM")}`; // Tạo chuỗi hiển thị
-                                                    // setHienThiTime(displayTime)
                                                     return (
                                                         <p 
                                                             onClick={() => {                                                    
@@ -356,13 +355,13 @@ const PageViewDoctor = () => {
                                             {formatCurrency(dataDoctor?.giaKhamNuocNgoai)}
                                             </span>
                                         </div>
-                                        <a href="#" onClick={toggleDetails} style={{ float: "right", marginTop: "5px" }}>Ẩn bảng giá</a>
+                                        <a onClick={toggleDetails} style={{ float: "right", marginTop: "5px" }}>Ẩn bảng giá</a>
                                     </div>
                                 ) : (
                                     <p>
                                         <span style={{ fontWeight: "500", color: "gray" }}>GIÁ KHÁM:</span> &nbsp;
                                         <span style={{color: "red", fontWeight: "500"}}>{formatCurrency(dataDoctor?.giaKhamVN)}</span> đến <span style={{color: "red", fontWeight: "500"}}>{formatCurrency(dataDoctor?.giaKhamNuocNgoai)}</span>
-                                        <a href='#' onClick={toggleDetails} style={{ marginLeft: "10px" }}>Xem chi tiết</a>
+                                        <a onClick={toggleDetails} style={{ marginLeft: "10px" }}>Xem chi tiết</a>
                                     </p>
                                 )}                                
                             </Col>

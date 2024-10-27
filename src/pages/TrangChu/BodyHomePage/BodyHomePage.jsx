@@ -111,6 +111,7 @@ const BodyHomePage = () => {
     ];
 
     const items_ChuyenKhoa = dataChuyenKhoa ? dataChuyenKhoa.map(chuyenKhoa => ({
+        id: chuyenKhoa._id, // Thêm _id vào đây
         src: `${import.meta.env.VITE_BACKEND_URL}/uploads/${chuyenKhoa?.image}`, 
         txtP: `${chuyenKhoa?.name}`,
         txtAddress: ``
@@ -133,6 +134,10 @@ const BodyHomePage = () => {
     
     const handleRedirectDoctor = (item) => {
         navigate(`/view-doctor?id=${item}`)
+    }  
+    
+    const handleRedirectChuyenKhoa = (item) => {
+        navigate(`/user/view-chuyen-khoa-kham?idChuyenKhoa=${item}`)
     }
 
     return (
@@ -197,10 +202,12 @@ const BodyHomePage = () => {
                             backgroundColor: "#d0edf7",
                             color: "rgb(45 145 179)",
                             marginTop: "10px",
+                            cursor: "pointer",
                             padding: "3px 10px"}}
+                            onClick={() => navigate('/user/chuyen-khoa-kham')}
                         >Xem thêm</span>    
                     </div>                     
-                    <HinhVuong items={items_ChuyenKhoa} width={300} height={250} loadingCard={loadingCard} />                     
+                    <HinhVuong items={items_ChuyenKhoa} width={300} height={250} loadingCard={loadingCard} urlDoctor={handleRedirectChuyenKhoa} />                     
                 </Row>                        
             </div>
 
@@ -248,7 +255,9 @@ const BodyHomePage = () => {
                             backgroundColor: "#d0edf7",
                             color: "rgb(45 145 179)",
                             margin: "3vh 22vh",
+                            cursor: "pointer",
                             padding: "3px 10px"}}
+                            onClick={() => navigate('/user/bac-si-noi-bat')}
                         >Xem thêm</span>    
                     </div> 
                     <div 

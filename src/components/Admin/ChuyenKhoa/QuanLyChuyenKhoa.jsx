@@ -141,7 +141,7 @@ const QuanLyChuyenKhoa = () => {
                                 title={<p className="title-col-style">Mô tả</p>} 
                                 dataIndex="description" 
                                 key="description" 
-                                // width={200}  
+                                width={500}  
                                 render={(text) => {
                                     if (!text) {
                                         return <div></div>; // Trả về một div trống nếu text là undefined hoặc falsy

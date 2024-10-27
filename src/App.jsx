@@ -13,6 +13,9 @@ import PageDatLichKham from "./pages/TrangChu/DatLich/datLichKhamDoctor";
 import LoginPage from "./pages/TrangChu/Login/Login";
 import RegisterPage from "./pages/TrangChu/Login/Register";
 import LichHen from "./pages/TrangChu/LichHen/lichHen";
+import BacSiNoiBat from "./pages/TrangChu/BacSiNoiBat/bacSiNoiBat";
+import ChuyenKhoa from "./pages/TrangChu/ChuyenKhoa/chuyenKhoa";
+import ViewChuyenKhoaVaKhamBenh from "./pages/TrangChu/ChuyenKhoa/viewChuyenKhoaVaKhamBenh";
 
 const App = () => {
 
@@ -23,6 +26,10 @@ const App = () => {
     { path: "/user/login-benh-nhan", element: <LoginPage /> },  // login benh-nhan
     { path: "/user/register-benh-nhan", element: <RegisterPage /> },  // Register benh-nhan
     { path: "/user/lich-hen", element: <LichHen /> },   // lich hen kham benh
+    { path: "/user/bac-si-noi-bat", element: <BacSiNoiBat /> },   // bac si noi bat
+    { path: "/user/chuyen-khoa-kham", element: <ChuyenKhoa /> },   
+    { path: "/user/view-chuyen-khoa-kham", element: <ViewChuyenKhoaVaKhamBenh /> },   
+
     { path: "/admin/home-page-admin", element: <HomeAdmin /> },   // home page admin
     { path: "/admin/login-admin", element: <Login /> },   // Login admin
     { path: "/admin/register-admin", element: <Register /> },   // Register admin
