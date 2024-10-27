@@ -94,7 +94,7 @@ const HeaderViewDoctor = () => {
                     <Navbar className="navbar-custom" style={{textAlign: "start"}}>
                         <Container>
                             <Nav className="me-auto nav-links">
-                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                <Nav.Link onClick={() => navigate("/user/chuyen-khoa-kham")} style={{textAlign: "start", lineHeight: "10px"}}>
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Chuyên khoa</p>
                                     <p style={{fontSize: "13px"}}>Tìm bác sĩ theo chuyên khoa</p>
                                 </Nav.Link>
@@ -102,7 +102,7 @@ const HeaderViewDoctor = () => {
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Cơ sở y tế</p>
                                     <p style={{fontSize: "13px"}}>Chọn bệnh viện phòng khám</p>
                                 </Nav.Link>
-                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                <Nav.Link onClick={() => navigate("/user/bac-si-noi-bat")} style={{textAlign: "start", lineHeight: "10px"}}>
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Bác sĩ</p>
                                     <p style={{fontSize: "13px"}}>Chọn bác sĩ giỏi</p>
                                 </Nav.Link>

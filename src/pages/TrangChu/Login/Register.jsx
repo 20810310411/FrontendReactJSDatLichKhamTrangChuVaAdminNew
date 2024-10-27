@@ -102,6 +102,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Không được nhập số!',
                                 },
                             ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -123,6 +124,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Không được nhập số!',
                                 },
                             ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>                            
@@ -145,6 +147,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Vui lòng nhập đúng định dạng địa chỉ email',
                                 },
                             ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -166,6 +169,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Không được nhập có dấu cách, tối thiểu có 6 kí tự!',
                                 },
                             ]}
+                            hasFeedback
                         >
                             <Input.Password />
                         </Form.Item>
@@ -184,6 +188,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Vui lòng nhập đầy đủ thông tin!',
                                 },                                    
                             ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>
@@ -204,6 +209,7 @@ const RegisterPage = ({setOpenRegisterKH, openRegisterKH}) => {
                                     message: 'Số điện thoại phải có 10 chữ số và bẳt đầu bằng số 0, không chứa kí tự!',
                                 },
                             ]}
+                            hasFeedback
                         >
                             <Input />
                         </Form.Item>                          

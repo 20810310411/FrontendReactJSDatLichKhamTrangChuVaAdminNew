@@ -393,7 +393,7 @@ const ViewChuyenKhoaVaKhamBenh = () => {
                             ))
                         ) : (
                             <Col span={24} className="box-lich-kham" style={{backgroundColor: "white"}}>
-                                <p style={{ color: "gray", fontSize: "18px" }}>Chưa có chuyên khoa khám nào.</p>
+                                <p style={{ color: "red", fontSize: "22px", textAlign: "center" }}>Chưa có bác sĩ nào thuộc chuyên khoa này.</p>
                             </Col>
                         )}    
                     </Col>

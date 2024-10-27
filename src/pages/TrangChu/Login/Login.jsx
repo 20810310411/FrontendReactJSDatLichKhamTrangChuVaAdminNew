@@ -25,13 +25,14 @@ const LoginPage = (props) => {
     
 
     // Kiểm tra access_token khi component load
-    useEffect(() => {
-        // const accessToken = localStorage.getItem("access_token");
-        // if (accessToken) {
-        //     // Nếu đã có token, điều hướng đến trang admin
-        //     navigate("/");
-        // }
-    }, [navigate]);
+    // useEffect(() => {
+    //     const accessToken = localStorage.getItem("access_tokenBenhNhan");
+    //     if (accessToken) {
+    //         // Nếu đã có token, điều hướng đến trang 
+    //         navigate("/");
+    //         // window.location.reload();
+    //     }
+    // }, [navigate]);
     
     // Khi trang load, kiểm tra xem có dữ liệu trong localStorage không
     useEffect(() => {
@@ -151,6 +152,7 @@ const LoginPage = (props) => {
                             },
 
                         ]}
+                        hasFeedback
                     >
                     <Input />
                 </Form.Item>
@@ -170,6 +172,7 @@ const LoginPage = (props) => {
                             },                                  
 
                         ]}
+                        hasFeedback
                     >
                     <Input.Password onKeyDown={(e) => {
                         console.log("check key: ", e.key);

@@ -57,12 +57,14 @@ const BodyHomePage = () => {
         {
             key: '0',
             src: 'https://cdn.bookingcare.vn/fo/w384/2023/11/01/140234-bac-si.png',
-            txtP: 'Bác sĩ'
+            txtP: 'Bác sĩ',
+            navigate: '/user/bac-si-noi-bat'
         },
         {
             key: '1',
             src: 'https://cdn.bookingcare.vn/fo/w384/2023/11/01/140537-chuyen-khoa.png',
-            txtP: 'Chuyên khoa'
+            txtP: 'Chuyên khoa',
+            navigate: '/user/chuyen-khoa-kham'
         }
         // Thêm các đối tượng khác nếu cần
     ];
@@ -140,6 +142,7 @@ const BodyHomePage = () => {
         navigate(`/user/view-chuyen-khoa-kham?idChuyenKhoa=${item}`)
     }
 
+
     return (
         <>
             <Row className="body-top">
@@ -170,7 +173,7 @@ const BodyHomePage = () => {
                     <span style={{fontWeight: "500", fontSize: "4vh", width: "100%", padding: "4vh 0"}}>Dành cho bạn</span>                    
                     {items.map((item, index) => (
                         <Col key={index} md={6} sm={10} xs={24} className="cot-ben-trong">
-                            <HinhTron src={item.src} txtP={item.txtP} />
+                            <HinhTron src={item.src} txtP={item.txtP} redirectChuyenKhoa={item.navigate} />
                         </Col>
                     ))}                 
                 </Row>                                        

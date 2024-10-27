@@ -131,7 +131,7 @@ const PageDatLichKham = () => {
         setLoadingSubmit(false)
     }
     const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
-    
+    const idKH = acc?._id
     useEffect(() => {
         if (infoDoctorr) {
             form.setFieldsValue({
@@ -141,11 +141,11 @@ const PageDatLichKham = () => {
                 // avtDoctor: `${infoDoctorr?.image}`,
                 tenGioKham: `${tenGio?.tenGio}`,
                 ngayKhamBenh: `${formatDateDatLich(ngayKhamBenh)}`,
-                _idTaiKhoan: `${acc._id}`,
+                _idTaiKhoan: `${idKH}`,
                 _idDoctor: `${infoDoctorr?._id}`
             });
         }
-    }, [infoDoctorr]);
+    }, [infoDoctorr, idKH]);
 
     const [openModalLogin, setOpenModalLogin] = useState(false);
 
@@ -487,7 +487,8 @@ const PageDatLichKham = () => {
                                                             // description: 'Vui lòng đăng nhập trước khi đặt lịch.',
                                                             description: notificationContent(),
                                                             placement: 'topRight',
-                                                        });                                                       
+                                                        });    
+                                                        return;                                                   
                                                     } else {
                                                         form.submit(); // Proceed to submit the form
                                                     }

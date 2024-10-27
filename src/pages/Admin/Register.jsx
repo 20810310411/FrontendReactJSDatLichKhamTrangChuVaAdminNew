@@ -84,6 +84,7 @@ const Register = () => {
                                         message: 'Không được nhập số!',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -105,6 +106,7 @@ const Register = () => {
                                         message: 'Không được nhập số!',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>                            
@@ -127,6 +129,7 @@ const Register = () => {
                                         message: 'Vui lòng nhập đúng định dạng địa chỉ email',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -148,6 +151,7 @@ const Register = () => {
                                         message: 'Không được nhập có dấu cách, tối thiểu có 6 kí tự!',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input.Password />
                             </Form.Item>
@@ -166,6 +170,7 @@ const Register = () => {
                                         message: 'Vui lòng nhập đầy đủ thông tin!',
                                     },                                    
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>
@@ -186,6 +191,7 @@ const Register = () => {
                                         message: 'Số điện thoại phải có 10 chữ số và bẳt đầu bằng số 0, không chứa kí tự!',
                                     },
                                 ]}
+                                hasFeedback
                             >
                                 <Input />
                             </Form.Item>                          

@@ -98,6 +98,7 @@ const Login = () => {
                                         },
         
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input />
                             </Form.Item>
@@ -117,6 +118,7 @@ const Login = () => {
                                         },                                  
         
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input.Password onKeyDown={(e) => {
                                     console.log("check key: ", e.key);
