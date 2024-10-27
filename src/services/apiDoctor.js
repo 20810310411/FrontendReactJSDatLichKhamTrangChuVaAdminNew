@@ -148,6 +148,11 @@ export const datLichKhamBenh = (
     return axios.post('/api/doctor/dat-lich-kham', data) 
 }
 
+// get lich kham
+export const fetchLichKham = (idKhachHang) => {
+    const URL_BACKEND = `/api/doctor/lich-hen?idKhachHang=${idKhachHang}`    
+    return axios.get(URL_BACKEND)
+}
 
 
 

@@ -55,7 +55,7 @@ const Header = () => {
         },   
         {
             key: '2',
-            label: <label>Lịch hẹn</label>,
+            label: <label onClick={() => handleRedirectLichHen(acc._id)}>Lịch hẹn</label>,
           },      
         {
           key: '4',
@@ -72,12 +72,16 @@ const Header = () => {
             if (res) {
                 message.success("Đăng xuất thành công!");
                 dispatch(doLogoutAction())
-                // navigate("/");
+                navigate("/");
             }
         } catch (error) {
             console.error('Có lỗi xảy ra khi đăng xuất', error);
             message.error("Đăng xuất không thành công!");
         }
+    }
+
+    const handleRedirectLichHen = (item) => {
+        navigate(`/user/lich-hen?idKhachHang=${item}`)
     }
 
     return (

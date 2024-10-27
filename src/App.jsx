@@ -12,42 +12,32 @@ import KeHoachKhamBenh from "./components/Admin/KeHoachKhamBenh/KeHoachKhamBenh"
 import PageDatLichKham from "./pages/TrangChu/DatLich/datLichKhamDoctor";
 import LoginPage from "./pages/TrangChu/Login/Login";
 import RegisterPage from "./pages/TrangChu/Login/Register";
+import LichHen from "./pages/TrangChu/LichHen/lichHen";
 
 const App = () => {
 
+  const routeConfig = [
+    { path: "/", element: <Home /> }, // trang chu
+    { path: "/view-doctor", element: <PageViewDoctor /> }, // xem chi tiet bac si
+    { path: "/page-dat-lich-kham", element: <PageDatLichKham /> },  // page dat lich kham
+    { path: "/user/login-benh-nhan", element: <LoginPage /> },  // login benh-nhan
+    { path: "/user/register-benh-nhan", element: <RegisterPage /> },  // Register benh-nhan
+    { path: "/user/lich-hen", element: <LichHen /> },   // lich hen kham benh
+    { path: "/admin/home-page-admin", element: <HomeAdmin /> },   // home page admin
+    { path: "/admin/login-admin", element: <Login /> },   // Login admin
+    { path: "/admin/register-admin", element: <Register /> },   // Register admin
+    { path: "/admin/quan-ly-doctor", element: <QuanLyDoctor /> },   // quan ly doctor
+    { path: "/admin/quan-ly-chuc-vu", element: <QuanLyChucVu /> },    // quan ly chuc vu 
+    { path: "/admin/quan-ly-phong-kham", element: <QuanLyPhongKham /> },    // quan ly phong kham
+    { path: "/admin/quan-ly-chuyen-khoa", element: <QuanLyChuyenKhoa /> },  // quan ly chuyen khoa
+    { path: "/admin/ke-hoach-doctor", element: <KeHoachKhamBenh /> },   // ke hoach kham benh     
+  ];
   return (
     <>
       <Routes>
-        {/* trang chu */}
-        <Route path="/" element={<Home/>} />  
-        {/* xem chi tiet bac si */}
-        <Route path="/view-doctor" element={<PageViewDoctor/>} />  
-        {/* page dat lich kham */}
-        <Route path="/page-dat-lich-kham" element={<PageDatLichKham/>} />  
-        {/* login benh-nhan */}
-        <Route path="/user/login-benh-nhan" element={<LoginPage/>} /> 
-        {/* Register benh-nhan */}
-        <Route path="/user/register-benh-nhan" element={<RegisterPage />} />  
-
-
-        {/* home page admin */}
-        <Route path="/admin/home-page-admin" element={<HomeAdmin/>} />  
-        {/* Login admin */}
-        <Route path="/admin/login-admin" element={<Login/>} />  
-        {/* Register admin */}
-        <Route path="/admin/register-admin" element={<Register />} />  
-        {/* quan ly doctor */}
-        <Route path="/admin/quan-ly-doctor" element={<QuanLyDoctor />} />  
-        {/* quan ly chuc vu */}
-        <Route path="/admin/quan-ly-chuc-vu" element={<QuanLyChucVu />} />  
-        {/* quan ly phong kham */}
-        <Route path="/admin/quan-ly-phong-kham" element={<QuanLyPhongKham />} />  
-        {/* quan ly chuyen khoa */}
-        <Route path="/admin/quan-ly-chuyen-khoa" element={<QuanLyChuyenKhoa />} />  
-        {/* ke hoach kham benh */}
-        <Route path="/admin/ke-hoach-doctor" element={<KeHoachKhamBenh />} />  
-
-
+        {routeConfig.map((route, index) => (
+            <Route key={index} path={route.path} element={route.element} />
+        ))}
       </Routes>
     </>
   )

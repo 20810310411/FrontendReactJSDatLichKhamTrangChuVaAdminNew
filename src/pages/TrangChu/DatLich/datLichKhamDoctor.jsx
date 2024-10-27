@@ -28,6 +28,7 @@ const PageDatLichKham = () => {
 
     const [value, setValue] = useState(infoDoctorr?.giaKhamVN);
     const [tongtien, setTongTien] = useState(0)
+    const [loadingSubmit, setLoadingSubmit] = useState(false)
     const [form] = Form.useForm()
 
     const dispatch = useDispatch()
@@ -108,7 +109,7 @@ const PageDatLichKham = () => {
             })
             return
         }
-
+        setLoadingSubmit(true)
         const res = await datLichKhamBenh(
             _idDoctor, _idTaiKhoan, patientName, email,
             gender, phone, dateBenhNhan, address, lidokham, 
@@ -127,6 +128,7 @@ const PageDatLichKham = () => {
                 description: res.message
             })
         }
+        setLoadingSubmit(false)
     }
     const dateFormatList = ['DD/MM/YYYY', 'DD/MM/YY', 'DD-MM-YYYY', 'DD-MM-YY'];
     
@@ -491,6 +493,7 @@ const PageDatLichKham = () => {
                                                     }
                                                 }}
                                                 block
+                                                loading={loadingSubmit}
                                                 >Xác nhận đặt khám</Button>
                                             </Form.Item>
                                         </Col>
