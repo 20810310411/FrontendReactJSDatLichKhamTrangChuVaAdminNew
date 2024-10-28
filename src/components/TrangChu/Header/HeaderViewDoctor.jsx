@@ -1,5 +1,4 @@
 import { Avatar, Col, Divider, Drawer, Dropdown, Input, message, Row } from 'antd'
-import './HeaderViewDoctor.scss'
 import { IoMdMenu } from 'react-icons/io'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
