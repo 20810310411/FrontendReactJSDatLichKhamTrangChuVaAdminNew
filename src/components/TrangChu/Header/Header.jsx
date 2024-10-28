@@ -1,5 +1,4 @@
 import { Col, Row, Input, Drawer, Divider, Avatar, Dropdown, message } from 'antd'
-// import '../Header/header.scss'
 import './header.scss'
 import { IoMdMenu } from 'react-icons/io'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
@@ -8,10 +7,6 @@ import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { SearchOutlined, SmileOutlined, UserOutlined } from '@ant-design/icons'
-import { FaRegHandshake } from 'react-icons/fa'
-import { GiTimeBomb } from 'react-icons/gi'
-import { RxTimer } from 'react-icons/rx'
-import { PiHandshakeBold } from 'react-icons/pi'
 import LoginPage from '../../../pages/TrangChu/Login/Login'
 import { LuLogIn } from 'react-icons/lu'
 import { useDispatch, useSelector } from 'react-redux'
