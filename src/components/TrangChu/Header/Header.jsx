@@ -1,5 +1,6 @@
 import { Col, Row, Input, Drawer, Divider, Avatar, Dropdown, message } from 'antd'
-import '../Header/header.scss'
+// import '../Header/header.scss'
+import './header.scss'
 import { IoMdMenu } from 'react-icons/io'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
