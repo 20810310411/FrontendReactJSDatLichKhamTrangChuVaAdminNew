@@ -12,10 +12,12 @@ import { LuLogIn } from 'react-icons/lu'
 import { useDispatch, useSelector } from 'react-redux'
 import { callLogoutBenhNhan } from '../../../services/api'
 import { doLogoutAction } from '../../../redux/account/accountSlice'
+import ModalDoiMK from '../ModalDoiMK/ModalDoiMK'
 const Header = () => {
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false);
+    const [openModalDoiMK, setOpenModalDoiMK] = useState(false);
     const [openModalLogin, setOpenModalLogin] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
@@ -47,7 +49,7 @@ const Header = () => {
     const items = [
         {
           key: '1',
-          label: <label>Tài khoản của tôi</label>,
+          label: <label onClick={() => setOpenModalDoiMK(true)}>Tài khoản của tôi</label>,
         },   
         {
             key: '2',
@@ -178,6 +180,11 @@ const Header = () => {
             <LoginPage
                 openModalLogin={openModalLogin}
                 setOpenModalLogin={setOpenModalLogin}
+            />
+
+            <ModalDoiMK
+            openModalDoiMK={openModalDoiMK}
+            setOpenModalDoiMK={setOpenModalDoiMK}
             />
         </div>
     )

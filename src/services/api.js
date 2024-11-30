@@ -41,3 +41,14 @@ export const callLogoutBenhNhan = () => {
     const URL_BACKEND = '/api/users/logout-benh-nhan'    
     return axios.post(URL_BACKEND)
 }
+
+export const fetchOneAccKH = (id) => {
+    const URL_BACKEND = `/api/users/get-one-kh?${id}`    
+    return axios.get(URL_BACKEND)
+}
+
+export const doiThongTinKH = (_idAcc, lastName, firstName, email, phone, address, passwordMoi, image) => {
+    return axios.put('/api/users/doi-thong-tin', {
+        _idAcc, lastName, firstName, email, phone, address, passwordMoi, image
+    })
+}

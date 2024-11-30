@@ -12,12 +12,14 @@ import { callLogoutBenhNhan } from '../../../services/api';
 import { useDispatch, useSelector } from 'react-redux';
 import { doLogoutAction } from '../../../redux/account/accountSlice';
 import { UserOutlined } from '@ant-design/icons';
+import ModalDoiMK from '../ModalDoiMK/ModalDoiMK';
 
 
 const HeaderViewDoctor = () => {
     const navigate = useNavigate()
 
     const [open, setOpen] = useState(false);
+    const [openModalDoiMK, setOpenModalDoiMK] = useState(false);
     const [openModalLogin, setOpenModalLogin] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
@@ -41,7 +43,7 @@ const HeaderViewDoctor = () => {
     const items = [
         {
           key: '1',
-          label: <label>Tài khoản của tôi</label>,
+          label: <label onClick={() => setOpenModalDoiMK(true)}>Tài khoản của tôi</label>,
         },        
         {
             key: '2',
@@ -170,6 +172,10 @@ const HeaderViewDoctor = () => {
             <LoginPage
                 openModalLogin={openModalLogin}
                 setOpenModalLogin={setOpenModalLogin}
+            />
+            <ModalDoiMK
+            openModalDoiMK={openModalDoiMK}
+            setOpenModalDoiMK={setOpenModalDoiMK}
             />
             </div>
         </>
