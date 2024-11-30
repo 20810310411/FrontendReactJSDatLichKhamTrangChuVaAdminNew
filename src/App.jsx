@@ -16,6 +16,7 @@ import LichHen from "./pages/TrangChu/LichHen/lichHen";
 import BacSiNoiBat from "./pages/TrangChu/BacSiNoiBat/bacSiNoiBat";
 import ChuyenKhoa from "./pages/TrangChu/ChuyenKhoa/chuyenKhoa";
 import ViewChuyenKhoaVaKhamBenh from "./pages/TrangChu/ChuyenKhoa/viewChuyenKhoaVaKhamBenh";
+import QuanLyLichHen from "./components/Admin/LichHen/QuanLyLichHen";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
     { path: "/admin/quan-ly-phong-kham", element: <QuanLyPhongKham /> },    // quan ly phong kham
     { path: "/admin/quan-ly-chuyen-khoa", element: <QuanLyChuyenKhoa /> },  // quan ly chuyen khoa
     { path: "/admin/ke-hoach-doctor", element: <KeHoachKhamBenh /> },   // ke hoach kham benh     
+    { path: "/admin/quan-ly-lich-hen", element: <QuanLyLichHen /> },   // ke hoach kham benh     
   ];
   return (
     <>

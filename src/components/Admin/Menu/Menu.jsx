@@ -1,4 +1,4 @@
-import { HomeOutlined, HomeTwoTone, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { FieldTimeOutlined, HomeOutlined, HomeTwoTone, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Menu, message } from 'antd';
 import { useEffect, useState } from 'react';
 import { FaCircleInfo, FaRankingStar, FaUserDoctor } from 'react-icons/fa6';
@@ -95,6 +95,11 @@ const MenuNav = (props) => {
                     icon: <MdOutlineLocalFireDepartment size={20} />
                 },                
             ],
+        },
+        {
+            key: '/admin/quan-ly-lich-hen',
+            label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-lich-hen">Lịch hẹn</Link>,     
+            icon: <FieldTimeOutlined size={20}/>,    
         },
         {
             key: 'acc-web',

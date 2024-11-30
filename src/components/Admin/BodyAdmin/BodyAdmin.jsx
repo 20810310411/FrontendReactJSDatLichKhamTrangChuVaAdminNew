@@ -6,7 +6,7 @@ const BodyAdmin = ({ content, pageTitle, placeholder,
                     setFirstName, setLastName, setAddress,
                     setTenChucVu,
                     setTenPK, setAddressPK,
-                    setTenCK,                    
+                    setTenCK, setLichHen                   
                  }) => {
 
     const onSearch = (value) => {
@@ -26,6 +26,7 @@ const BodyAdmin = ({ content, pageTitle, placeholder,
         setTenPK(value || '');
         setAddressPK(value || '');
         setTenCK(value || '');
+        setLichHen(value || '');
     };
     
 

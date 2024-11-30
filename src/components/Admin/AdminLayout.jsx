@@ -9,7 +9,8 @@ const AdminLayout = ({ children, pageTitle, placeholder,
                 setFirstName, setLastName, setAddress, 
                 setTenChucVu,
                 setTenPK, setAddressPK,
-                setTenCK
+                setTenCK,
+                setLichHen
             
             }) => {
 
@@ -36,6 +37,7 @@ const AdminLayout = ({ children, pageTitle, placeholder,
                         setTenPK={setTenPK || (() => {})}
                         setAddressPK={setAddressPK || (() => {})}
                         setTenCK={setTenCK || (() => {})}
+                        setLichHen={setLichHen || (() => {})}
                         placeholder={placeholder}
                     /> {/* Truyền nội dung vào BodyAdmin */}
                 </div>

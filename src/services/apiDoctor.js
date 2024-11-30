@@ -169,6 +169,9 @@ export const handleHuyOrder = (query) => {
     return axios.post(URL_BACKEND)
 }
 
-
+export const findAllLichHen = (query) => {
+    const URL_BACKEND = `/api/doctor/find-all-order?${query}`    
+    return axios.get(URL_BACKEND)
+}
 
 

@@ -64,24 +64,24 @@ const LichHen = () => {
                     <Col span={24}>
                         <p className="title-lichhen">Lịch hẹn đã đặt</p>
                     </Col>                
-                    {dataLichHen?.length > 0 ? (
+                    {dataLichHen?.some(item => item?.trangThaiHuyDon === 'Không Hủy') ? (
                         dataLichHen.map((item, index) => (
-                            item?.trangThaiHuyDon === 'Không Hủy' ? <>
+                            item?.trangThaiHuyDon === 'Không Hủy' ? (
                                 <Col key={index} span={21} className="box-lich-kham">
                                     <Row gutter={[0, 20]}>
-                                        <Col span={24} style={{display: "flex", justifyContent: "flex-end"}}>
-                                        <Tooltip title="Huỷ lịch này" color={'red'} key={'red'}>
-                                            <Popconfirm
-                                                title={`Huỷ lịch này`}
-                                                description="Bạn có chắc chắn muốn hủy?"
-                                                onConfirm={() => handleHuyLich(item._id)}
-                                                onCancel={() => message.error('no delete')}
-                                                okText="Xác nhận hủy"
-                                                cancelText="Không hủy"
-                                            >
-                                                <CloseOutlined style={{cursor: "pointer", color: "red", fontSize: "20px"}} />
-                                            </Popconfirm>
-                                        </Tooltip>
+                                        <Col span={24} style={{ display: "flex", justifyContent: "flex-end" }}>
+                                            <Tooltip title="Huỷ lịch này" color={'red'} key={'red'}>
+                                                <Popconfirm
+                                                    title={`Huỷ lịch này`}
+                                                    description="Bạn có chắc chắn muốn hủy?"
+                                                    onConfirm={() => handleHuyLich(item._id)}
+                                                    onCancel={() => message.error('no delete')}
+                                                    okText="Xác nhận hủy"
+                                                    cancelText="Không hủy"
+                                                >
+                                                    <CloseOutlined style={{ cursor: "pointer", color: "red", fontSize: "20px" }} />
+                                                </Popconfirm>
+                                            </Tooltip>
                                         </Col>
                                         <Col span={6} className="ben-trai">
                                             <Avatar
@@ -126,17 +126,15 @@ const LichHen = () => {
                                             <hr style={{ border: "1px solid rgb(235, 235, 235)" }} />
                                         </Col>
                                     </Row>
-                                </Col>                            
-                            </> :  
-                            <Col span={21} className="box-lich-kham">
-                                <p style={{ textAlign: "center", color: "red", fontSize: "30px" }}>Chưa có lịch khám nào.</p>
-                            </Col>
+                                </Col>
+                            ) : null
                         ))
                     ) : (
                         <Col span={21} className="box-lich-kham">
                             <p style={{ textAlign: "center", color: "red", fontSize: "30px" }}>Chưa có lịch khám nào.</p>
                         </Col>
                     )}
+
                 </Row>
             </Col>
         </Row>
