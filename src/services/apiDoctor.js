@@ -164,7 +164,10 @@ export const fetchDoctorByChuyenKhoa = (idChuyenKhoa) => {
     return axios.get(URL_BACKEND)
 }
 
-
+export const handleHuyOrder = (query) => {
+    const URL_BACKEND = `/api/doctor/huy-order?idHuy=${query}`    
+    return axios.post(URL_BACKEND)
+}
 
 
 
