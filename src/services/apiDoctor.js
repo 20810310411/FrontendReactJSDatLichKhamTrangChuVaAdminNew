@@ -69,6 +69,7 @@ export const fetchAllPhongKham = (query) => {
     const URL_BACKEND = `/api/doctor/fetch-all-phong-kham?${query}`    
     return axios.get(URL_BACKEND)
 }
+
 export const createPhongKham = (name, address, description , image) => {
     return axios.post('/api/doctor/create-phong-kham', {
         name, address, description , image
@@ -171,6 +172,16 @@ export const handleHuyOrder = (query) => {
 
 export const findAllLichHen = (query) => {
     const URL_BACKEND = `/api/doctor/find-all-order?${query}`    
+    return axios.get(URL_BACKEND)
+}
+
+export const fetchDoctorByPhongKham = (idPhongKham) => {
+    const URL_BACKEND = `/api/doctor/doctor-phong-kham?idPhongKham=${idPhongKham}`    
+    return axios.get(URL_BACKEND)
+}
+
+export const fetchPhongKhamByID = (query) => {
+    const URL_BACKEND = `/api/doctor/fetch-phong-kham-by-id?id=${query}`    
     return axios.get(URL_BACKEND)
 }
 

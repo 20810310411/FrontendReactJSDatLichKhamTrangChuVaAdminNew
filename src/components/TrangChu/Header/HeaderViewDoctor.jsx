@@ -99,7 +99,7 @@ const HeaderViewDoctor = () => {
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Chuyên khoa</p>
                                     <p style={{fontSize: "13px"}}>Tìm bác sĩ theo chuyên khoa</p>
                                 </Nav.Link>
-                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                <Nav.Link onClick={() => navigate("/user/phong-kham")} style={{textAlign: "start", lineHeight: "10px"}}>
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Cơ sở y tế</p>
                                     <p style={{fontSize: "13px"}}>Chọn bệnh viện phòng khám</p>
                                 </Nav.Link>

@@ -17,6 +17,8 @@ import BacSiNoiBat from "./pages/TrangChu/BacSiNoiBat/bacSiNoiBat";
 import ChuyenKhoa from "./pages/TrangChu/ChuyenKhoa/chuyenKhoa";
 import ViewChuyenKhoaVaKhamBenh from "./pages/TrangChu/ChuyenKhoa/viewChuyenKhoaVaKhamBenh";
 import QuanLyLichHen from "./components/Admin/LichHen/QuanLyLichHen";
+import PhongKham from "./pages/TrangChu/PhongKham/PhongKham";
+import ViewPhongKhamVaKhamBenh from "./pages/TrangChu/PhongKham/viewPhongKhamVaKhamBenh";
 
 const App = () => {
 
@@ -30,6 +32,8 @@ const App = () => {
     { path: "/user/bac-si-noi-bat", element: <BacSiNoiBat /> },   // bac si noi bat
     { path: "/user/chuyen-khoa-kham", element: <ChuyenKhoa /> },   
     { path: "/user/view-chuyen-khoa-kham", element: <ViewChuyenKhoaVaKhamBenh /> },   
+    { path: "/user/phong-kham", element: <PhongKham /> },   // phong kham
+    { path: "/user/view-phong-kham", element: <ViewPhongKhamVaKhamBenh /> },   
 
     { path: "/admin/home-page-admin", element: <HomeAdmin /> },   // home page admin
     { path: "/admin/login-admin", element: <Login /> },   // Login admin

@@ -230,6 +230,7 @@ const BodyHomePage = () => {
                             color: "rgb(45 145 179)",
                             marginTop: "10px",
                             padding: "3px 10px"}}
+                            onClick={() => navigate('/user/phong-kham')}
                         >Xem thêm</span>    
                     </div> 
                     <HinhVuong items={items_PhongKham} width={300} height={200} loadingCard={loadingCard}  />              
