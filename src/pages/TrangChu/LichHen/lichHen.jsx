@@ -1,15 +1,16 @@
-import { Avatar, Button, Col, Divider, message, notification, Popconfirm, Row, Tooltip } from "antd"
+import { Avatar, Button, Col, Divider, message, Modal, notification, Popconfirm, Row, Tooltip } from "antd"
 import Footer from "../../../components/TrangChu/Footer/Footer"
 import HeaderViewDoctor from "../../../components/TrangChu/Header/HeaderViewDoctor"
 import './lichhen.scss'
 import { IoHomeSharp } from "react-icons/io5"
-import { CloseOutlined, UserOutlined } from "@ant-design/icons"
+import { CheckCircleTwoTone, CloseOutlined, UserOutlined } from "@ant-design/icons"
 import { MdAccessTimeFilled } from "react-icons/md"
 import { BsCalendar2Date } from "react-icons/bs"
 import icKham from '../../../assets/ic_kham.b8b58dd8.png'; // Import the image
 import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { fetchLichKham, handleHuyOrder } from "../../../services/apiDoctor"
+import { FaRegEye } from "react-icons/fa"
 
 
 const LichHen = () => {
@@ -22,6 +23,7 @@ const LichHen = () => {
     console.log("check idKhachHang: ", idKhachHang);
     const [dataLichHen, setDataLichHen] = useState([])
     console.log("check dataLichHen: ", dataLichHen);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
         fetchLichHenByIdKH();
@@ -113,7 +115,35 @@ const LichHen = () => {
                                                 <span style={{ lineHeight: "25px", fontSize: "18px", marginLeft: "5px" }}>{item._idDoctor?.phongKhamId?.address}</span>
                                             </p>
                                             <p className="txt-phai">Lí do khám: <span style={{ marginLeft: "5px" }}>{item.lidokham}</span></p>
-                                            <Button size="large" className="btn-dat-kham" type="warning">Đã đặt khám</Button>
+                                            {item.trangThaiXacNhan ? <>                                                
+                                                <Button size="large" type="primary" style={{color: "#52c41a", border: "1px solid #52c41a"}} ghost icon={<CheckCircleTwoTone twoToneColor="#52c41a" />}>
+                                                Đã xác nhận
+                                                </Button>                                              
+                                            </> : <>
+                                            <Button size="large" danger loading={true}>
+                                                Chờ xác nhận
+                                            </Button>  
+                                            </>}   
+
+                                            {item.trangThaiKham ? <>                                                
+                                                <Button 
+                                                    size="large" 
+                                                    onClick={() => setIsModalOpen(true)}
+                                                    type="primary" 
+                                                    style={{color: "#52c41a", border: "1px solid #52c41a", marginLeft: "20px"}} ghost icon={<FaRegEye twoToneColor="#52c41a" />}>
+                                                Xem bệnh án
+                                                </Button>                                              
+                                            </> : ''}   
+
+                                            <Modal 
+                                            style={{marginTop: '100px'}} width={300} 
+                                            title={`Bệnh án chi tiết của ${item?.patientName}`} footer={null} open={isModalOpen}  onCancel={() => setIsModalOpen(false)}>
+                                                <Row>
+                                                    <Col span={24} md={24}>
+                                                    {item.benhAn}
+                                                    </Col>
+                                                </Row>
+                                            </Modal>  
                                         </Col>
                                         <Col span={22} style={{ margin: "auto" }}>
                                             <hr style={{ border: "1px solid rgb(235, 235, 235)" }} />
