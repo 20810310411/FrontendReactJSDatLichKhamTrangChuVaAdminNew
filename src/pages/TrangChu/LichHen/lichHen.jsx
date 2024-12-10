@@ -11,6 +11,7 @@ import { useLocation } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { fetchLichKham, handleHuyOrder } from "../../../services/apiDoctor"
 import { FaRegEye } from "react-icons/fa"
+import ModalLichHen from "./ModalLichHen"
 
 
 const LichHen = () => {
@@ -24,6 +25,15 @@ const LichHen = () => {
     const [dataLichHen, setDataLichHen] = useState([])
     console.log("check dataLichHen: ", dataLichHen);
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [openModalId, setOpenModalId] = useState(null); // Track which modal is open
+    const handleModalOpen = (id) => {
+        setOpenModalId(id); // Open specific modal
+    }
+
+    const handleModalClose = () => {
+        setOpenModalId(null); // Close the modal
+    }
 
     useEffect(() => {
         fetchLichHenByIdKH();
@@ -127,23 +137,20 @@ const LichHen = () => {
 
                                             {item.trangThaiKham ? <>                                                
                                                 <Button 
+                                                    key={index}
                                                     size="large" 
-                                                    onClick={() => setIsModalOpen(true)}
+                                                    onClick={() => handleModalOpen(item._id)}
                                                     type="primary" 
                                                     style={{color: "#52c41a", border: "1px solid #52c41a", marginLeft: "20px"}} ghost icon={<FaRegEye twoToneColor="#52c41a" />}>
                                                 Xem bệnh án
                                                 </Button>                                              
                                             </> : ''}   
 
-                                            <Modal 
-                                            style={{marginTop: '100px'}} width={300} 
-                                            title={`Bệnh án chi tiết của ${item?.patientName}`} footer={null} open={isModalOpen}  onCancel={() => setIsModalOpen(false)}>
-                                                <Row>
-                                                    <Col span={24} md={24}>
-                                                    {item.benhAn}
-                                                    </Col>
-                                                </Row>
-                                            </Modal>  
+                                            <ModalLichHen
+                                                isModalOpen={openModalId === item._id} 
+                                                setIsModalOpen={handleModalClose}
+                                                item={item} 
+                                            />                                           
                                         </Col>
                                         <Col span={22} style={{ margin: "auto" }}>
                                             <hr style={{ border: "1px solid rgb(235, 235, 235)" }} />
@@ -164,7 +171,6 @@ const LichHen = () => {
                             <p style={{ textAlign: "center", color: "red", fontSize: "30px" }}>Chưa có lịch khám nào.</p>
                         </Col>
                     )}
-
                 </Row>
             </Col>
         </Row>
