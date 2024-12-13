@@ -102,6 +102,11 @@ const MenuNav = (props) => {
             icon: <FieldTimeOutlined size={20}/>,    
         },
         {
+            key: '/admin/quan-ly-kh',
+            label: <Link style={{fontSize: "17px"}} to="/admin/quan-ly-kh">Quản lý khách hàng</Link>,     
+            icon: <FaUserDoctor />,    
+        },
+        {
             key: 'acc-web',
             label: <p style={{fontWeight: "500", fontSize: "18px" }}>Tài khoản trang</p>,      
             style: { pointerEvents: "none", userSelect: "none" }     

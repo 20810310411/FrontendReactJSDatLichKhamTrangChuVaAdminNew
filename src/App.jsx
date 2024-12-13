@@ -19,6 +19,7 @@ import ViewChuyenKhoaVaKhamBenh from "./pages/TrangChu/ChuyenKhoa/viewChuyenKhoa
 import QuanLyLichHen from "./components/Admin/LichHen/QuanLyLichHen";
 import PhongKham from "./pages/TrangChu/PhongKham/PhongKham";
 import ViewPhongKhamVaKhamBenh from "./pages/TrangChu/PhongKham/viewPhongKhamVaKhamBenh";
+import QuanLyKhachHang from "./components/Admin/BenhNhan/QuanLyKhachHang";
 
 const App = () => {
 
@@ -44,6 +45,7 @@ const App = () => {
     { path: "/admin/quan-ly-chuyen-khoa", element: <QuanLyChuyenKhoa /> },  // quan ly chuyen khoa
     { path: "/admin/ke-hoach-doctor", element: <KeHoachKhamBenh /> },   // ke hoach kham benh     
     { path: "/admin/quan-ly-lich-hen", element: <QuanLyLichHen /> },   // ke hoach kham benh     
+    { path: "/admin/quan-ly-kh", element: <QuanLyKhachHang /> },   // ke hoach kham benh     
   ];
   return (
     <>

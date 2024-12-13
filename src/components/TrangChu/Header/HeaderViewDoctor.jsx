@@ -87,7 +87,7 @@ const HeaderViewDoctor = () => {
                 backgroundColor: "rgb(226, 250, 242)"
             }}>
                 <Col md={6} sm={20} className='col-top'>                
-                    <IoMdMenu style={{fontSize: "6vh", cursor: "pointer"}} onClick={() => showDrawer()} />
+                    {/* <IoMdMenu style={{fontSize: "6vh", cursor: "pointer"}} onClick={() => showDrawer()} /> */}
                     <img style={{cursor: "pointer", height: "5vh"}} onClick={() => navigate("/")} src="../../../../public/Remove-bg.ai_1726163241481.png" alt="" />
                 </Col>
 

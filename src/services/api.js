@@ -52,3 +52,13 @@ export const doiThongTinKH = (_idAcc, lastName, firstName, email, phone, address
         _idAcc, lastName, firstName, email, phone, address, passwordMoi, image
     })
 }
+
+export const fetchAllAccKH = (query) => {
+    const URL_BACKEND = `/api/users/get-all-kh?${query}`    
+    return axios.get(URL_BACKEND)
+}
+
+export const deleteAccKH = (id) => {
+    const URL_BACKEND = `/api/users/delete-kh/${id}`    
+    return axios.delete(URL_BACKEND)
+}
