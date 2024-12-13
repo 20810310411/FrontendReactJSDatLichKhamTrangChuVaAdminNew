@@ -44,6 +44,7 @@ const UpdatePhongKham = (props) => {
                 _id: dataUpdate._id,
                 name: dataUpdate.name,                    
                 address: dataUpdate.address,
+                sdtPK: dataUpdate.sdtPK,
                 description: dataUpdate.description || '',                    
                 image: dataUpdate.image                        
             }
@@ -128,7 +129,7 @@ const UpdatePhongKham = (props) => {
 
     const handleUpdatePK  = async (values) => {
 
-        const {_id, name, address, description , image} = values
+        const {_id, name, address, description , image, sdtPK} = values
         if (!imageUrl) {
             notification.error({
                 message: 'Lỗi validate',
@@ -141,7 +142,7 @@ const UpdatePhongKham = (props) => {
         console.log("hinhanh: ", hinhAnh);
 
         setIsSubmit(true)
-        const res = await updatePhongKham( _id, name, address, description , hinhAnh)
+        const res = await updatePhongKham( _id, name, address, description , hinhAnh, sdtPK)
 
         if(res){
             message.success(res.message);
@@ -209,6 +210,7 @@ const UpdatePhongKham = (props) => {
                                             message: 'Vui lòng nhập đầy đủ thông tinị!',
                                         },                                        
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input />
                                 </Form.Item>
@@ -225,8 +227,30 @@ const UpdatePhongKham = (props) => {
                                             message: 'Vui lòng nhập đầy đủ thông tinị!',
                                         },                                        
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={24} md={24} sm={24} xs={24}>
+                                <Form.Item
+                                    layout="vertical"
+                                    label="Số điện thoại phòng khám"
+                                    name="sdtPK"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập đầy đủ thông tinị!',
+                                        }, 
+                                        {
+                                            pattern: /^0\d{9}$/,
+                                            message: 'Số điện thoại phải có 10 chữ số và bẳt đầu bằng số 0, không chứa kí tự!',
+                                        },                                       
+                                    ]}
+                                    hasFeedback
+                                >
+                                <Input style={{width: "100%"}} />
                                 </Form.Item>
                             </Col>
 

@@ -70,17 +70,17 @@ export const fetchAllPhongKham = (query) => {
     return axios.get(URL_BACKEND)
 }
 
-export const createPhongKham = (name, address, description , image) => {
+export const createPhongKham = (name, address, description , image, sdtPK) => {
     return axios.post('/api/doctor/create-phong-kham', {
-        name, address, description , image
+        name, address, description , image, sdtPK
     })
 }
 export const deletePhongKham = (_id) => {
     return axios.delete(`/api/doctor/delete-phong-kham/${_id}`)
 }
-export const updatePhongKham = (_id, name, address, description , image) => {
+export const updatePhongKham = (_id, name, address, description , image, sdtPK) => {
     return axios.put('/api/doctor/update-phong-kham', {
-        _id, name, address, description , image
+        _id, name, address, description , image, sdtPK
     })
 }
 

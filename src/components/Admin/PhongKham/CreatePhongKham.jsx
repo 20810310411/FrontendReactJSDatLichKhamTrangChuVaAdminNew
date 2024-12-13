@@ -1,4 +1,4 @@
-import { Col, Divider, Form, Input, message, Modal, notification, Row, Upload } from "antd"
+import { Col, Divider, Form, Input, InputNumber, message, Modal, notification, Row, Upload } from "antd"
 import { useState } from "react";
 import { callUploadDoctorImg, createPhongKham } from "../../../services/apiDoctor";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
@@ -25,7 +25,7 @@ const CreatePhongKham = (props) => {
     };
 
     const handleCreatePK = async (values) => {
-        const {name, address, description} = values              
+        const {name, address, description, sdtPK} = values              
 
         if (!imageUrl) {
             notification.error({
@@ -39,7 +39,7 @@ const CreatePhongKham = (props) => {
         console.log("hinhanh: ", hinhAnh);
 
         setIsSubmit(true)
-        const res = await createPhongKham(name, address, description , hinhAnh)
+        const res = await createPhongKham(name, address, description , hinhAnh, sdtPK)
         console.log("Data sent to API:", { name, address, description, hinhAnh });
         console.log("res create: ", res);
         if(res && res.data){
@@ -151,6 +151,7 @@ const CreatePhongKham = (props) => {
                                             message: 'Vui lòng nhập đầy đủ thông tinị!',
                                         },                                        
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input />
                                 </Form.Item>
@@ -167,8 +168,30 @@ const CreatePhongKham = (props) => {
                                             message: 'Vui lòng nhập đầy đủ thông tinị!',
                                         },                                        
                                     ]}
+                                    hasFeedback
                                 >
                                 <Input />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={24} md={24} sm={24} xs={24}>
+                                <Form.Item
+                                    layout="vertical"
+                                    label="Số điện thoại phòng khám"
+                                    name="sdtPK"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập đầy đủ thông tinị!',
+                                        }, 
+                                        {
+                                            pattern: /^0\d{9}$/,
+                                            message: 'Số điện thoại phải có 10 chữ số và bẳt đầu bằng số 0, không chứa kí tự!',
+                                        },                                       
+                                    ]}
+                                    hasFeedback
+                                >
+                                <Input style={{width: "100%"}} />
                                 </Form.Item>
                             </Col>
 

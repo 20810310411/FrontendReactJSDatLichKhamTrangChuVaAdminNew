@@ -34,7 +34,8 @@ const ViewPhongKham = (props) => {
                 style={{ width: 300, textAlign: "center", margin: "auto" }}
                 cover={<img width={300} height={300} alt="example" src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${dataDetail?.image}`} />}
             >
-                <Meta title={` Phòng khám: ${dataDetail?.name}`} description={`${dataDetail?.address}`} />
+                <Meta title={` Phòng khám: ${dataDetail?.name}`} description={`${dataDetail?.address}`} />   <br/>             
+                <strong>Số điện thoại: {dataDetail?.sdtPK}</strong>
             </Card>
             <Collapse
                 style={{marginTop: "30px"}}
