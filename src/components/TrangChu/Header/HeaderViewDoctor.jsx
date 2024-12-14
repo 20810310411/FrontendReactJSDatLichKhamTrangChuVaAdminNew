@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doLogoutAction } from '../../../redux/account/accountSlice';
 import { UserOutlined } from '@ant-design/icons';
 import ModalDoiMK from '../ModalDoiMK/ModalDoiMK';
+import { FaRegCircleQuestion } from 'react-icons/fa6';
+import ModalCauHoi from '../ModalDoiMK/ModalCauHoi';
 
 
 const HeaderViewDoctor = () => {
@@ -21,6 +23,7 @@ const HeaderViewDoctor = () => {
     const [open, setOpen] = useState(false);
     const [openModalDoiMK, setOpenModalDoiMK] = useState(false);
     const [openModalLogin, setOpenModalLogin] = useState(false);
+    const [openModalCauHoi, setOpenModalCauHoi] = useState(false);
     const [placement, setPlacement] = useState('left');
     const [activeTxtMenu, setActiveTxtMenu] = useState('');
     const dispatch = useDispatch()
@@ -54,6 +57,17 @@ const HeaderViewDoctor = () => {
           danger: true,
           label: <label onClick={() => handleLogout()}>Đăng xuất</label>,
         },
+      ];
+
+      const itemss = [
+        {
+          key: 'loginn',
+          label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalLogin(true)}><LuLogIn size={20}/> &nbsp; Đăng nhập</label>,
+        },        
+        {
+            key: 'cauhoi',
+            label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalCauHoi(true)}><FaRegCircleQuestion size={20} /> &nbsp; Hỏi đáp</label>,
+        },        
       ];
     const handleLogout = async () => {
         try {
@@ -130,11 +144,19 @@ const HeaderViewDoctor = () => {
                             </Dropdown>
                         </> : 
                         <>
-                            <LuLogIn  
+                            <Dropdown
+                                menu={{
+                                items: itemss || [],
+                                }}
+                            >
+                                <LuLogIn size={"5vh"} />
+                            </Dropdown>
+
+                            {/* <LuLogIn  
                             onClick={() => setOpenModalLogin(true)}
                             size={"5vh"} 
                             title='Login'
-                            style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} /> 
+                            style={{cursor: "pointer", color: "rgb(69, 195, 210)"}} />  */}
                         </>}
                     </div>                
                 </Col>
@@ -172,6 +194,10 @@ const HeaderViewDoctor = () => {
             <LoginPage
                 openModalLogin={openModalLogin}
                 setOpenModalLogin={setOpenModalLogin}
+            />
+            <ModalCauHoi
+                openModalCauHoi={openModalCauHoi}
+                setOpenModalCauHoi={setOpenModalCauHoi}
             />
             <ModalDoiMK
             openModalDoiMK={openModalDoiMK}

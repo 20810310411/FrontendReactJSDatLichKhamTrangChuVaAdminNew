@@ -185,4 +185,11 @@ export const fetchPhongKhamByID = (query) => {
     return axios.get(URL_BACKEND)
 }
 
+export const handleCreateCauHoi = (email, firstName, lastName, chuyenKhoaId, cauHoi) => {
+    const URL_BACKEND = `/api/cauhoi/create-cau-hoi`    
+    const data = {
+        email, firstName, lastName, chuyenKhoaId, cauHoi
+    }
+    return axios.post(URL_BACKEND, data)
+}
 
