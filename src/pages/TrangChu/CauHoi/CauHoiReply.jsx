@@ -63,12 +63,12 @@ const CauHoiReply = () => {
         <>
         <HeaderViewDoctor />
         <Row>
-            <Col span={18} className="col-body">
+            <Col span={18} className="col-body" >
                 <Row gutter={[20,30]}>
+                   
                     <Col span={24}>
                         <p className="txt-title"><IoHomeSharp /> / Hỏi đáp</p>                        
                     </Col>
-
                     <Col span={12}>
                         <Button size="large" type="primary" style={{width: "100%"}} onClick={() => setOpenModalCauHoi(true)}>Đặt câu hỏi</Button>
                     </Col>

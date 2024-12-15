@@ -5,6 +5,9 @@
     background-color: rgb(226, 250, 242);
     display: flex;
     justify-content: center;
+    z-index: 100;
+    position: sticky;
+    top: 0;
 
     .menu-header {
         background-color: rgb(226, 250, 242);        
