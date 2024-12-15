@@ -7,6 +7,7 @@ import { UserOutlined } from "@ant-design/icons"
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { fetchAllChuyenKhoa, getAllCauHoi } from "../../../services/apiDoctor"
+import ModalCauHoi from "../../../components/TrangChu/ModalDoiMK/ModalCauHoi"
 
 
 
@@ -17,7 +18,7 @@ const CauHoiReply = () => {
     const [itemsToShow, setItemsToShow] = useState(3); // Mặc định sẽ hiển thị 3 câu hỏi
     const [dataChuyenKhoa, setDataChuyenKhoa] = useState([])   
     const [selectedLocTheoChuyenKhoa, setSelectedLocTheoChuyenKhoa] = useState([]);
-
+    const [openModalCauHoi, setOpenModalCauHoi] = useState(false);
     
     useEffect(() => {
         fetchListCauHoi()
@@ -65,17 +66,16 @@ const CauHoiReply = () => {
             <Col span={18} className="col-body">
                 <Row gutter={[20,30]}>
                     <Col span={24}>
-                        <p className="txt-title"><IoHomeSharp /> / Hỏi đáp</p>
-                        {/* <Divider/> */}
-                        {/* <hr style={{border: "1px solid rgb(243, 243, 243)"}} /> */}
+                        <p className="txt-title"><IoHomeSharp /> / Hỏi đáp</p>                        
                     </Col>
-                    {/* <Col span={24}>
-                        <p className="title-lichhen">Hỏi đáp</p>
-                    </Col>    */}
 
-                    <Col span={24}>
+                    <Col span={12}>
+                        <Button size="large" type="primary" style={{width: "100%"}} onClick={() => setOpenModalCauHoi(true)}>Đặt câu hỏi</Button>
+                    </Col>
+                    <Col span={12}>
                     <div style={{alignItems: "center", display: "flex"}}>
                         <Select
+                            size="large"
                             showSearch
                             mode="multiple"
                             style={{ width: "100%" }}
@@ -137,7 +137,11 @@ const CauHoiReply = () => {
                             <Button onClick={handleLoadMore}>Xem thêm</Button>
                         </Col>
                     )}
-                                    
+
+                    <ModalCauHoi
+                        openModalCauHoi={openModalCauHoi}
+                        setOpenModalCauHoi={setOpenModalCauHoi}
+                    />       
                 </Row>
             </Col>
         </Row>
