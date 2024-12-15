@@ -1,5 +1,5 @@
 import { Avatar, Col, Divider, Drawer, Dropdown, Input, message, Row } from 'antd'
-import { IoMdMenu } from 'react-icons/io'
+import { IoIosTimer, IoMdMenu } from 'react-icons/io'
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -15,6 +15,8 @@ import { UserOutlined } from '@ant-design/icons';
 import ModalDoiMK from '../ModalDoiMK/ModalDoiMK';
 import { FaRegCircleQuestion } from 'react-icons/fa6';
 import ModalCauHoi from '../ModalDoiMK/ModalCauHoi';
+import { RiAccountCircleFill } from "react-icons/ri";
+import { FiLogOut } from "react-icons/fi";
 
 
 const HeaderViewDoctor = () => {
@@ -46,20 +48,20 @@ const HeaderViewDoctor = () => {
     const items = [
         {
           key: '1',
-          label: <label onClick={() => setOpenModalDoiMK(true)}>Tài khoản của tôi</label>,
+          label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalDoiMK(true)}><RiAccountCircleFill size={20}/> &nbsp; Tài khoản của tôi</label>,
         },        
         {
             key: '2',
-            label: <label onClick={() => handleRedirectLichHen(acc._id)}>Lịch hẹn</label>,
+            label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => handleRedirectLichHen(acc._id)}><IoIosTimer size={20}/> &nbsp; Lịch hẹn</label>,
         },
         {
             key: 'cauhoi',
-            label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalCauHoi(true)}> Hỏi đáp</label>,
+            label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalCauHoi(true)}><FaRegCircleQuestion size={20} /> &nbsp; Hỏi đáp</label>,
         }, 
         {
           key: '4',
           danger: true,
-          label: <label onClick={() => handleLogout()}>Đăng xuất</label>,
+          label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => handleLogout()}><FiLogOut size={20}/> &nbsp; Đăng xuất</label>,
         },
       ];
 
