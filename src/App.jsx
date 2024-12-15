@@ -20,6 +20,7 @@ import QuanLyLichHen from "./components/Admin/LichHen/QuanLyLichHen";
 import PhongKham from "./pages/TrangChu/PhongKham/PhongKham";
 import ViewPhongKhamVaKhamBenh from "./pages/TrangChu/PhongKham/viewPhongKhamVaKhamBenh";
 import QuanLyKhachHang from "./components/Admin/BenhNhan/QuanLyKhachHang";
+import CauHoiReply from "./pages/TrangChu/CauHoi/CauHoiReply";
 
 const App = () => {
 
@@ -31,6 +32,7 @@ const App = () => {
     { path: "/user/register-benh-nhan", element: <RegisterPage /> },  // Register benh-nhan
     { path: "/user/lich-hen", element: <LichHen /> },   // lich hen kham benh
     { path: "/user/bac-si-noi-bat", element: <BacSiNoiBat /> },   // bac si noi bat
+    { path: "/user/cau-hoi-dap", element: <CauHoiReply /> },   // bac si noi bat
     { path: "/user/chuyen-khoa-kham", element: <ChuyenKhoa /> },   
     { path: "/user/view-chuyen-khoa-kham", element: <ViewChuyenKhoaVaKhamBenh /> },   
     { path: "/user/phong-kham", element: <PhongKham /> },   // phong kham

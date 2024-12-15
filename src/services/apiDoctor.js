@@ -193,3 +193,7 @@ export const handleCreateCauHoi = (email, firstName, lastName, chuyenKhoaId, cau
     return axios.post(URL_BACKEND, data)
 }
 
+export const getAllCauHoi = (query) => {
+    const URL_BACKEND = `/api/cauhoi/get-all-cau-hoi?${query}`    
+    return axios.get(URL_BACKEND)
+}

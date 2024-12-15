@@ -51,7 +51,11 @@ const HeaderViewDoctor = () => {
         {
             key: '2',
             label: <label onClick={() => handleRedirectLichHen(acc._id)}>Lịch hẹn</label>,
-          },
+        },
+        {
+            key: 'cauhoi',
+            label: <label style={{display: "flex", cursor: "pointer"}} onClick={() => setOpenModalCauHoi(true)}> Hỏi đáp</label>,
+        }, 
         {
           key: '4',
           danger: true,
@@ -121,9 +125,9 @@ const HeaderViewDoctor = () => {
                                     <p style={{fontSize: "16px", fontWeight: "bold"}}>Bác sĩ</p>
                                     <p style={{fontSize: "13px"}}>Chọn bác sĩ giỏi</p>
                                 </Nav.Link>
-                                <Nav.Link onClick={() => navigate("/")} style={{textAlign: "start", lineHeight: "10px"}}>
-                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Gói khám</p>
-                                    <p style={{fontSize: "13px"}}>Khám sức khỏe tổng quát</p>
+                                <Nav.Link onClick={() => navigate("/user/cau-hoi-dap")} style={{textAlign: "start", lineHeight: "10px"}}>
+                                    <p style={{fontSize: "16px", fontWeight: "bold"}}>Hỏi đáp</p>
+                                    <p style={{fontSize: "13px"}}>Các câu hỏi</p>
                                 </Nav.Link>                                
                             </Nav>
                         </Container>
