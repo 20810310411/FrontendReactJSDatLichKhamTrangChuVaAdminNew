@@ -22,7 +22,7 @@ const CauHoiReply = () => {
     useEffect(() => {
         fetchListCauHoi()
     }, [selectedLocTheoChuyenKhoa])
-    
+
     useEffect(() => {
         fetchAllChuyenKhoaDoctor()
     }, [])
@@ -113,9 +113,9 @@ const CauHoiReply = () => {
                                         <Avatar style={{border: "1px solid green"}} src={`${import.meta.env.VITE_BACKEND_URL}/uploads/${item?.doctors.image}`}  size={64} icon={<UserOutlined />} />                            
                                         <div style={{display: "flex", flexDirection: "column", padding: "0 15px", lineHeight: "15px"}}>
                                             <span>Được trả lời bởi:</span> <br/>
-                                            <span style={{color: "rgb(69, 195, 210)"}}>
+                                            <span style={{color: "rgb(69, 195, 210)", lineHeight: "1.5"}}>
                                                 {item?.doctors.chucVuId.map(item => item?.name).join(', ')} - &nbsp;
-                                                <span>{item?.lastName} {item?.firstName}</span>
+                                                <span>{item?.doctors.lastName} {item?.doctors.firstName}</span>
                                             </span>
                                         </div>                                                                        
                                     </div>
