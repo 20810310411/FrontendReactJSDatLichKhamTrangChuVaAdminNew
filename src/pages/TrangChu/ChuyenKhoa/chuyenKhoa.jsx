@@ -9,6 +9,7 @@ import { BsCalendar2Date } from "react-icons/bs"
 import { useEffect, useState } from "react"
 import { fetchAllChuyenKhoa } from "../../../services/apiDoctor"
 import { useNavigate } from "react-router-dom"
+import SearchComponent from "../../../components/TrangChu/SearchComponent/SearchComponent"
 
 
 
@@ -16,14 +17,18 @@ const ChuyenKhoa = () => {
 
     const [dataAllDoctor, setDataAllDoctor] = useState([])
     const navigate = useNavigate()
+    const [dataSearch, setDataSearch] = useState('')
     
     useEffect(() => {
         fetchListDoctor()
-    }, [])
+    }, [dataSearch])
 
     const fetchListDoctor = async () => {
 
         let query = ''
+        if (dataSearch) {
+            query += `&name=${encodeURIComponent(dataSearch)}`;
+        }
         const res = await fetchAllChuyenKhoa(query)
         console.log("res all doctor: ", res);
         if(res && res.data) {
@@ -34,6 +39,12 @@ const ChuyenKhoa = () => {
     const handleRedirectChuyenKhoa = (item) => {
         navigate(`/user/view-chuyen-khoa-kham?idChuyenKhoa=${item}`)
     }
+
+    const onSearch = (value) => {
+        console.log("Giá trị tìm kiếm:", value); // Thêm log này
+    
+        setDataSearch(value || '');
+    };
 
     return (
         <>
@@ -49,6 +60,9 @@ const ChuyenKhoa = () => {
                     <Col span={24}>
                         <p className="title-lichhen"> Chuyên khoa khám</p>
                     </Col>   
+                    <Col span={24} style={{marginBottom: "20px"}}>
+                        <SearchComponent placeholder="Tìm kiếm chuyên khoa" onSearch={onSearch}/>
+                    </Col>  
 
                     {dataAllDoctor?.length > 0 ? (
                         dataAllDoctor.map((item, index) => (

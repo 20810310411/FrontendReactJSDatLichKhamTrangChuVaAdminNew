@@ -7,25 +7,39 @@ import { useNavigate } from "react-router-dom"
 import { fetchAllPhongKham } from "../../../services/apiDoctor"
 import { IoHomeSharp } from "react-icons/io5"
 import { UserOutlined } from "@ant-design/icons"
+import SearchComponent from "../../../components/TrangChu/SearchComponent/SearchComponent"
 
 const PhongKham = () => {
 
     const [dataPK, setDataPK] = useState([])
     const navigate = useNavigate()
-    
+    const [dataSearch, setDataSearch] = useState('')
+
     useEffect(() => {
         fetchListPK()
-    }, [])
+    }, [dataSearch])
 
     const fetchListPK = async () => {
 
         let query = ''
+        if (dataSearch) {
+            query += `&name=${encodeURIComponent(dataSearch)}`;
+        }
+        if (dataSearch) {
+            query += `&address=${encodeURIComponent(dataSearch)}`;
+        }
         const res = await fetchAllPhongKham(query)
         console.log("res all doctor: ", res);
         if(res && res.data) {
             setDataPK(res.data)
         }
     }
+
+    const onSearch = (value) => {
+        console.log("Giá trị tìm kiếm:", value); // Thêm log này
+    
+        setDataSearch(value || '');
+    };
 
     const handleRedirectPK = (item) => {
         navigate(`/user/view-phong-kham?idPhongKham=${item}`)
@@ -44,6 +58,9 @@ const PhongKham = () => {
                     </Col>
                     <Col span={24}>
                         <p className="title-lichhen"> Phòng khám</p>
+                    </Col>  
+                    <Col span={24} style={{marginBottom: "20px"}}>
+                        <SearchComponent placeholder="Tìm kiếm tên, địa chỉ phòng khám" onSearch={onSearch}/>
                     </Col>   
 
                     {dataPK?.length > 0 ? (

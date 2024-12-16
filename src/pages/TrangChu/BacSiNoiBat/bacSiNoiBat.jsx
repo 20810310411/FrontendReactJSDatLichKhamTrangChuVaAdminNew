@@ -1,4 +1,4 @@
-import { Avatar, Button, Col, Row } from "antd"
+import { Avatar, Button, Col, Row, Input } from "antd"
 import Footer from "../../../components/TrangChu/Footer/Footer"
 import HeaderViewDoctor from "../../../components/TrangChu/Header/HeaderViewDoctor"
 import '../LichHen/lichhen.scss'
@@ -9,21 +9,30 @@ import { BsCalendar2Date } from "react-icons/bs"
 import { useEffect, useState } from "react"
 import { fetchAllDoctor } from "../../../services/apiDoctor"
 import { useNavigate } from "react-router-dom"
-
+import SearchComponent from "../../../components/TrangChu/SearchComponent/SearchComponent"
+const { Search } = Input;
 
 
 const BacSiNoiBat = () => {
 
-    const [dataAllDoctor, setDataAllDoctor] = useState([])
+    const [dataAllDoctor, setDataAllDoctor] = useState([])    
+    const [dataSearch, setDataSearch] = useState('')
+
     const navigate = useNavigate()
     
     useEffect(() => {
         fetchListDoctor()
-    }, [])
+    }, [dataSearch])
 
     const fetchListDoctor = async () => {
 
         let query = ''
+        if (dataSearch) {
+            query += `&firstName=${encodeURIComponent(dataSearch)}`;
+        }
+        if (dataSearch) {
+            query += `&lastName=${encodeURIComponent(dataSearch)}`;
+        }
         const res = await fetchAllDoctor(query)
         console.log("res all doctor: ", res);
         if(res && res.data) {
@@ -34,6 +43,12 @@ const BacSiNoiBat = () => {
     const handleRedirectDoctor = (item) => {
         navigate(`/view-doctor?id=${item}`)
     }
+
+    const onSearch = (value) => {
+        console.log("Giá trị tìm kiếm:", value); // Thêm log này
+    
+        setDataSearch(value || '');
+    };
 
     return (
         <>
@@ -50,6 +65,9 @@ const BacSiNoiBat = () => {
                         <p className="title-lichhen">Bác sĩ nổi bật
                         </p>
                     </Col>   
+                    <Col span={24} style={{marginBottom: "20px"}}>
+                        <SearchComponent placeholder="Tìm kiếm tên bác sĩ" onSearch={onSearch}/>
+                    </Col>                  
 
                     {dataAllDoctor?.length > 0 ? (
                         dataAllDoctor.map((item, index) => (
