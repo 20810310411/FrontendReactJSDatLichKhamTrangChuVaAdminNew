@@ -97,44 +97,106 @@ const QuanLyLichHen = () => {
                 )
             },
             sorter: true
-        },        
+        }, 
         {
-          title: <span style={{justifyContent: "center", display: "flex"}}>Trạng thái</span>,
-          key: 'status',
-          dataIndex: 'status',
-          render: (text, record) => {            
-            const getStatusTagForTinhTrangDonHang = (status) => {
-                if (status === "Không Hủy") {
-                    return { color: 'green', icon: <CheckCircleOutlined /> }; // khong huy
-                }                
-                return { color: 'red', icon: <ExclamationCircleOutlined /> }; // da huy
-            };
+            title: (
+                <span style={{ justifyContent: "center", display: "flex" }}>
+                    Trạng thái
+                </span>
+            ),
+            key: "status",
+            dataIndex: "status",
+            render: (text, record) => {
+                const getStatusTag = () => {
+                    // Kiểm tra nếu trangThaiHuyDon là "Đã Hủy"
+                    if (record.trangThaiHuyDon === 'Đã Hủy') {
+                        return {
+                            color: "red",
+                            icon: <ExclamationCircleOutlined />,
+                            label: "Đã Hủy",
+                        };
+                    }
+
+                    // Khi trangThaiXacNhan === false và trangThaiKham === false: Chờ xác nhận
+                    if (!record.trangThaiXacNhan && !record.trangThaiKham) {
+                        return {
+                            color: "orange",
+                            icon: <ExclamationCircleOutlined />,
+                            label: "Chờ xác nhận",
+                        };
+                    }
+                    // Khi trangThaiXacNhan === true và trangThaiKham === false: Không hủy
+                    if (record.trangThaiXacNhan && !record.trangThaiKham) {
+                        return {
+                            color: "blue",
+                            icon: <CheckCircleOutlined />,
+                            label: "Chờ khám",
+                        };
+                    }
+                    // Khi trangThaiKham === true: Đã khám
+                    if (record.trangThaiKham) {
+                        return {
+                            color: "green",
+                            icon: <CheckCircleOutlined />,
+                            label: "Đã khám",
+                        };
+                    }
+                    // Mặc định trả về trạng thái "Chờ khám"
+                    return {
+                        color: "blue",
+                        icon: <CheckCircleOutlined />,
+                        label: "Chờ khám",
+                    };
+                };
+
+                const statusTag = getStatusTag();  // Lấy thông tin trạng thái dựa trên các điều kiện
+
+                return (
+                    <div style={{ display: "flex", justifyContent: "center" }}>
+                        <Tag color={statusTag.color} icon={statusTag.icon}>
+                            {statusTag.label}
+                        </Tag>
+                    </div>
+                );
+            },
+        },       
+        // {
+        //   title: <span style={{justifyContent: "center", display: "flex"}}>Trạng thái</span>,
+        //   key: 'status',
+        //   dataIndex: 'status',
+        //   render: (text, record) => {            
+        //     const getStatusTagForTinhTrangDonHang = (status) => {
+        //         if (status === "Không Hủy") {
+        //             return { color: 'green', icon: <CheckCircleOutlined /> }; // khong huy
+        //         }                
+        //         return { color: 'red', icon: <ExclamationCircleOutlined /> }; // da huy
+        //     };
         
-            const getStatusTagForTinhTrangThanhToan = (status) => {
-                return status === "Chưa đặt lịch"
-                ? { color: 'red', icon: <ExclamationCircleOutlined /> }
-                : { color: 'green', icon: <CheckCircleOutlined /> }; // "Đã Thanh Toán"
-            };
+        //     const getStatusTagForTinhTrangThanhToan = (status) => {
+        //         return status === "Chưa đặt lịch"
+        //         ? { color: 'red', icon: <ExclamationCircleOutlined /> }
+        //         : { color: 'green', icon: <CheckCircleOutlined /> }; // "Đã Thanh Toán"
+        //     };
         
-            const donHangTag = getStatusTagForTinhTrangDonHang(record.trangThaiHuyDon);
-            const thanhToanTag = getStatusTagForTinhTrangThanhToan(record.trangThai);
-            return (
-                <div style={{display: "flex", justifyContent: "center"}}>
-                {record.trangThaiHuyDon === "Không Hủy" ? <>
-                    <Tag color={thanhToanTag.color} icon={thanhToanTag.icon}>
-                        {record.trangThai}
-                    </Tag>
-                </> : 
-                <Tag color={donHangTag.color} icon={donHangTag.icon}>
-                    {record.trangThaiHuyDon}
-                </Tag>
-                }
+        //     const donHangTag = getStatusTagForTinhTrangDonHang(record.trangThaiHuyDon);
+        //     const thanhToanTag = getStatusTagForTinhTrangThanhToan(record.trangThai);
+        //     return (
+        //         <div style={{display: "flex", justifyContent: "center"}}>
+        //         {record.trangThaiHuyDon === "Không Hủy" ? <>
+        //             <Tag color={thanhToanTag.color} icon={thanhToanTag.icon}>
+        //                 {record.trangThai}
+        //             </Tag>
+        //         </> : 
+        //         <Tag color={donHangTag.color} icon={donHangTag.icon}>
+        //             {record.trangThaiHuyDon}
+        //         </Tag>
+        //         }
                 
                 
-                </div>                
-            );
-          },
-        },
+        //         </div>                
+        //     );
+        //   },
+        // },
         {
             title: 'Thông tin',
             dataIndex: 'total',

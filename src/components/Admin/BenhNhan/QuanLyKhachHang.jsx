@@ -4,6 +4,8 @@ import AdminLayout from "../AdminLayout";
 import { IoAddOutline } from "react-icons/io5";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { deleteAccKH, fetchAllAccKH } from "../../../services/api";
+import CreateBN from "./CreateBN";
+import UpdateKH from "./UpdateKhachHang";
 
 const { Search } = Input;
 const { Column, ColumnGroup } = Table;
@@ -26,7 +28,7 @@ const QuanLyKhachHang = () => {
 
     useEffect(() => {
         fetchListCK()
-    },[currentPage, pageSize, tenCK])
+    }, [currentPage, pageSize, tenCK])
 
     const fetchListCK = async () => {
 
@@ -35,21 +37,21 @@ const QuanLyKhachHang = () => {
         // Thêm tham số tìm kiếm vào query nếu có
         if (tenCK) {
             query += `&tenKH=${encodeURIComponent(tenCK)}`;
-        } 
+        }
 
         setLoadingTable(true)
-        const res = await fetchAllAccKH(query)         
+        const res = await fetchAllAccKH(query)
         if (res && res.data) {
             setDataChuyenKhoa(res.data)
             setTotalChuyenKhoas(res.totalKH); // Lưu tổng số bác sĩ
         }
         setLoadingTable(false)
     }
-    
+
     const handleDeleteCK = async (id) => {
 
         const res = await deleteAccKH(id)
-        if(res){
+        if (res) {
             notification.success({
                 message: "Xóa thông tin bênh nhân",
                 description: "Bạn đã xoá thành công"
@@ -70,54 +72,54 @@ const QuanLyKhachHang = () => {
     const cancelXoa = (e) => {
         console.log(e);
         message.error('Huỷ xoá');
-    }; 
+    };
 
     return (
-        <AdminLayout 
-                pageTitle="Quản lý tài khoản bênh nhân" 
-                setTenCK={setTenCK}
-                placeholder={'Tìm kiếm tài khoản bênh nhân ở đây...'}
+        <AdminLayout
+            pageTitle="Quản lý tài khoản bênh nhân"
+            setTenCK={setTenCK}
+            placeholder={'Tìm kiếm tài khoản bênh nhân ở đây...'}
         >
             <Row>
-                <Col span={24} style={{padding: "0 0 20px", fontSize: "18px"}}>
-                    <span style={{fontWeight: "500", color: "navy"}}>THÔNG TIN BỆNH NHÂN</span>
+                <Col span={24} style={{ padding: "0 0 20px", fontSize: "18px" }}>
+                    <span style={{ fontWeight: "500", color: "navy" }}>THÔNG TIN BỆNH NHÂN</span>
                     <Space size={10} style={{ float: "right" }}>
-                        {/* <Button 
-                        type="primary" 
-                        style={{
-                            lineHeight: "15px"
-                        }}
-                        icon={<IoAddOutline size={20} />} 
-                        className="custom-row"
-                        onClick={() => {
-                            setOpenCreateChuyenKhoa(true)
-                        }}
-                        >Thêm thông tin chuyên khoa</Button> */}
+                        <Button
+                            type="primary"
+                            style={{
+                                lineHeight: "15px"
+                            }}
+                            icon={<IoAddOutline size={20} />}
+                            className="custom-row"
+                            onClick={() => {
+                                setOpenCreateChuyenKhoa(true)
+                            }}
+                        >Thêm thông tin bệnh nhân</Button>
                     </Space>
                 </Col>
             </Row>
             <Row>
                 <Col xs={24} sm={12} md={24} span={24}>
-                    <Table  dataSource={dataChuyenKhoa} 
-                            loading={loadingTable}
-                            pagination={false} // Tắt phân trang mặc định của Table
-                            scroll={{ x: 'max-content' }}
-                            rowClassName="custom-row" // Thêm lớp cho hàng    
-                            headerClassName="custom-header" // Lớp cho tiêu đề 
-                            rowKey="_id" // Hoặc key tương ứng                           
+                    <Table dataSource={dataChuyenKhoa}
+                        loading={loadingTable}
+                        pagination={false} // Tắt phân trang mặc định của Table
+                        scroll={{ x: 'max-content' }}
+                        rowClassName="custom-row" // Thêm lớp cho hàng    
+                        headerClassName="custom-header" // Lớp cho tiêu đề 
+                        rowKey="_id" // Hoặc key tương ứng                           
                     >
                         <Column title={<p className="title-col-style">STT</p>}
-                            dataIndex="stt" 
-                            key="stt" 
+                            dataIndex="stt"
+                            key="stt"
                             render={(_, record, index) => {
                                 //   console.log("index: ", index+1);
                                 return (
                                     <>
-                                    {(index+1) + (currentPage - 1) * pageSize}
+                                        {(index + 1) + (currentPage - 1) * pageSize}
                                     </>
                                 )
                             }
-                        }/> 
+                            } />
 
                         <Column
                             title={<p className="title-col-style">Image</p>}
@@ -135,37 +137,37 @@ const QuanLyKhachHang = () => {
                                 );
                             }}
                         />
-                         <Column 
-                        title={<p className="title-col-style">Email</p>} 
-                        dataIndex="email" key="email" 
-                        render={(text, record) => {                            
-                            return (
-                                <span>{record.email}</span>
-                            );
-                        }}
+                        <Column
+                            title={<p className="title-col-style">Email</p>}
+                            dataIndex="email" key="email"
+                            render={(text, record) => {
+                                return (
+                                    <span>{record.email}</span>
+                                );
+                            }}
                         />
-                        <Column 
-                        title={<p className="title-col-style">Tên bệnh nhân</p>} 
-                        dataIndex="name" key="name" 
-                        render={(text, record) => {                            
-                            return (
-                                <span>{record.lastName} {record.firstName}</span>
-                            );
-                        }}
+                        <Column
+                            title={<p className="title-col-style">Tên bệnh nhân</p>}
+                            dataIndex="name" key="name"
+                            render={(text, record) => {
+                                return (
+                                    <span>{record.lastName} {record.firstName}</span>
+                                );
+                            }}
                         />
-                        <Column 
-                                title={<p className="title-col-style">Số điện thoại</p>} 
-                                dataIndex="phone" 
-                                key="phone" 
-                                render={(text, record) => {                            
-                                    return (
-                                        <div>
-                                            <span>{record.phone}</span> <br/>
-                                            Địa chỉ: <span>{record.address}</span>
-                                        </div>
-                                    );
-                                }}
-                            />
+                        <Column
+                            title={<p className="title-col-style">Số điện thoại</p>}
+                            dataIndex="phone"
+                            key="phone"
+                            render={(text, record) => {
+                                return (
+                                    <div>
+                                        <span>{record.phone}</span> <br />
+                                        Địa chỉ: <span>{record.address}</span>
+                                    </div>
+                                );
+                            }}
+                        />
                         <Column
                             title={<p className="title-col-style">Chức năng</p>}
                             key="action"
@@ -179,12 +181,12 @@ const QuanLyKhachHang = () => {
                                             // setDataDetail(record)
                                         }} 
                                     /> */}
-{/* 
-                                    <EditOutlined style={{color: "orange"}} onClick={() => {
+
+                                    <EditOutlined style={{ color: "orange" }} onClick={() => {
                                         console.log("record update: ", record);
                                         setOpenModalUpdate(true)
                                         setDataUpdate(record)
-                                    }} />  */}
+                                    }} />
 
                                     <Popconfirm
                                         title={`xóa chuyên khoa`}
@@ -194,14 +196,14 @@ const QuanLyKhachHang = () => {
                                         okText="Xác nhận xoá"
                                         cancelText="Không Xoá"
                                     >
-                                        <DeleteOutlined style={{color: "red"}} />
+                                        <DeleteOutlined style={{ color: "red" }} />
                                     </Popconfirm>
                                 </Space>
                             )}
                         />
                     </Table>
 
-                    <Pagination 
+                    <Pagination
                         style={{
                             fontSize: "17px",
                             display: "flex",
@@ -224,7 +226,20 @@ const QuanLyKhachHang = () => {
                             page: '',  // Bỏ hoặc thay đổi chữ "Page" nếu cần
                         }}
                     />
-                   
+
+                    <CreateBN
+                        openCreateChuyenKhoa={openCreateChuyenKhoa}
+                        setOpenCreateChuyenKhoa={setOpenCreateChuyenKhoa}
+                        fetchListCK={fetchListCK}
+                    />
+
+                    <UpdateKH
+                        fetchListCK={fetchListCK}
+                        setOpenModalUpdate={setOpenModalUpdate}
+                        dataUpdate={dataUpdate}
+                        openModalUpdate={openModalUpdate}
+                    />
+
                 </Col>
             </Row>
 
